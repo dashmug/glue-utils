@@ -1,0 +1,15 @@
+__pycache__
+.coverage*
+.mypy_cache
+.pytest_cache
+.ruff_cache
+.venv
+.vscode
+coverage
+docker-compose.yml
+htmlcov
+mypy-results
+poetry.*
+test
+Dockerfile
+Makefile

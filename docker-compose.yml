@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  glue-utils-dev:
+    image: glue-utils-dev:latest
+    build: .
+    volumes:
+      - .:/home/glue_user/workspace
+    tty: true
+    environment:
+      - AWS_REGION=ap-southeast-2
+      - DISABLE_SSL=true
