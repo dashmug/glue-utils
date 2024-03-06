@@ -27,7 +27,7 @@ pip-audit = "^2.7.2"
 # documentation. 
 # https://docs.aws.amazon.com/glue/latest/dg/aws-glue-programming-python-libraries.html#glue-modules-provided
 aws-glue-libs = { git = "https://github.com/awslabs/aws-glue-libs.git", rev = "master" }
-pyspark = "3.3.0"
+pyspark = "3.5.1"
 
 [build-system]
 requires = ["poetry-core"]
