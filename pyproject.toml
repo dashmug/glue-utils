@@ -83,6 +83,12 @@ filterwarnings = [
 [tool.coverage.run]
 omit = ["**/test_*.py"]
 
+[tool.coverage.paths]
+source = [
+    "src/glue_utils",
+    "*/site-packages/glue_utils"
+]
+
 [tool.coverage.report]
 skip_empty = true
 exclude_also = [

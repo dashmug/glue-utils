@@ -6,7 +6,7 @@ COPY . ./
 
 RUN pip3 install --no-cache-dir --no-warn-script-location --user --upgrade pip==24.0 \
   # Install dev requirements.
-  && pip3 install --no-cache-dir --no-warn-script-location --user -r requirements.txt  \
+  && pip3 install --no-cache-dir --no-warn-script-location --user -r requirements.test.txt  \
   # Install this package.
   && pip3 install --no-cache-dir --no-warn-script-location --user . \
   # Prepare a /tmp directory needed by Spark to start.
