@@ -1,21 +1,42 @@
 [tool.poetry]
 name = "glue-utils"
-version = "0.1.0"
+version = "0.1.1"
+package-mode = true
 description = "Reusable utilities for working with Glue PySpark jobs"
 authors = ["Noel Llevares <dashmug@gmail.com>"]
 license = "MIT"
 readme = "README.md"
+homepage = "https://github.com/dashmug/glue-utils"
+repository = "https://github.com/dashmug/glue-utils/issues"
+documentation = "https://github.com/dashmug/glue-utils/wiki"
+classifiers = [
+    "Operating System :: OS Independent",
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+keywords = [
+    "aws",
+    "glue",
+    "pyspark",
+    "spark",
+    "etl",
+    "data",
+    "data-engineering",
+]
 
 [tool.poetry.dependencies]
 python = "^3.10"
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.8.0"
-ruff = "^0.3.0"
 pytest = "^8.0.2"
 pytest-randomly = "^3.15.0"
 pytest-cov = "^4.1.0"
 pip-audit = "^2.7.2"
+ruff = "^0.3.1"
 
 [tool.poetry.group.local.dependencies]
 # The "local" dependency group refers to dependencies that already 
@@ -76,7 +97,7 @@ disallow_untyped_calls = false
 
 [tool.pytest.ini_options]
 filterwarnings = [
-    "ignore::DeprecationWarning", 
+    "ignore::DeprecationWarning",
     "ignore::FutureWarning:.*pyspark.*",
 ]
 
@@ -84,10 +105,7 @@ filterwarnings = [
 omit = ["**/test_*.py"]
 
 [tool.coverage.paths]
-source = [
-    "src/glue_utils",
-    "*/site-packages/glue_utils"
-]
+source = ["src/glue_utils", "*/site-packages/glue_utils"]
 
 [tool.coverage.report]
 skip_empty = true

@@ -8,6 +8,4 @@ RUN pip3 install --no-cache-dir --no-warn-script-location --user --upgrade pip==
   # Install dev requirements.
   && pip3 install --no-cache-dir --no-warn-script-location --user -r requirements.test.txt  \
   # Install this package.
-  && pip3 install --no-cache-dir --no-warn-script-location --user . \
-  # Prepare a /tmp directory needed by Spark to start.
-  && mkdir -p /tmp/spark-events
+  && pip3 install --no-cache-dir --no-warn-script-location --user .
