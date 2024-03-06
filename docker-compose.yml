@@ -1,8 +1,8 @@
 version: "3.8"
 
 services:
-  glue-utils-dev:
-    image: glue-utils-dev:latest
+  glue-utils:
+    image: glue-utils:latest
     build: .
     volumes:
       - .:/home/glue_user/workspace

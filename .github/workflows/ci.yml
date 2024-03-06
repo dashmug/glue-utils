@@ -1,4 +1,4 @@
-name: Checks
+name: Continuous Integration
 
 on:
   pull_request:
@@ -11,8 +11,8 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
-  python:
-    name: Python
+  checks:
+    name: Check for code errors
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4.1.1
@@ -23,11 +23,11 @@ jobs:
           key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
           restore-keys: |
             ${{ runner.os }}-poetry-
-      - name: Set up Python 3.10
+      - name: Set up python3.10
         uses: actions/setup-python@v5.0.0
         with:
           python-version: "3.10.13"
-      - name: Setup Poetry
+      - name: Set up poetry
         uses: Gr1N/setup-poetry@v9
       - name: Install Python Dependencies
         run: |
@@ -35,44 +35,30 @@ jobs:
           poetry install
       - name: Check poetry config
         run: poetry check
-      - name: Lint Python code
+      - name: Lint code using ruff
         run: |
           poetry run ruff format . --check
           poetry run ruff check .
-      - name: Check type annotations
+      - name: Check type annotations using mypy
         run: poetry run mypy
-      - name: Check if requirements.txt is up-to-date
-        run: poetry export --output requirements.txt && git diff --exit-code
-      - name: Audit Python dependencies
-        run: poetry run pip-audit --requirement requirements.txt 
-        continue-on-error: true
-  container:
-    name: Container
+      - name: Check if requirements.test.txt is up-to-date
+        run: poetry export --with=dev --output requirements.test.txt && git diff --exit-code
+  tests:
+    name: Run tests in container
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4.1.1
-      - name: Run the checks inside Docker
-        uses: addnab/docker-run-action@v3
-        with:
-          image: amazon/aws-glue-libs:glue_libs_4.0.0_image_01
-          options: --volume ${{ github.workspace }}:/home/glue_user/workspace --env AWS_REGION=us-east-1
-          run: |
-            pip3 install --no-cache-dir --no-warn-script-location --user --upgrade pip==24.0 
-            pip3 install --no-cache-dir --no-warn-script-location --user -r requirements.txt
-            pip3 install --no-cache-dir --no-warn-script-location --user .
-            /home/glue_user/.local/bin/ruff format . --check --no-cache
-            /home/glue_user/.local/bin/ruff check . --no-cache
-            /home/glue_user/.local/bin/mypy
-            /home/glue_user/.local/bin/pytest -p no:cacheprovider
-  shell:
-    name: Shell
+      - name: Build container and run tests
+        run: docker compose run --rm --remove-orphans --build glue-utils -c 'pytest -p no:cacheprovider'
+  pip-audit:
+    name: Audit requirements
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4.1.1
-      - name: Check shell scripts
-        uses: ludeeus/action-shellcheck@2.0.0
+      - name: Audit requirements using pip-audit
+        uses: pypa/gh-action-pip-audit@v1.0.8
         with:
-          scandir: '.'
+          inputs: requirements.test.txt
   dockerfile:
     name: Dockerfile
     runs-on: ubuntu-latest

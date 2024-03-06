@@ -12,6 +12,15 @@ install: clean ## Create virtualenv and install dependencies
 	@poetry install
 
 
+.PHONY: outdated
+outdated: ## Check for outdated dependencies
+	@poetry show --latest --outdated
+
+
+requirements.test.txt: poetry.lock
+	@poetry export --with=dev --output requirements.test.txt
+
+
 .PHONY: format
 format: ## Format project source code
 	@poetry run ruff check . --fix --unsafe-fixes
@@ -31,12 +40,12 @@ typecheck: ## Check type annotations
 
 .PHONY: test
 test: ## Run automated tests
-	@docker compose run --build glue-utils-dev -c pytest
+	@docker compose run --rm --remove-orphans --build glue-utils -c pytest
 
 
 .PHONY: coverage
 coverage: ## Generate test coverage HTML report
-	@docker compose run --build glue-utils-dev -c "pytest --cov=src --cov-branch --cov-report=term --cov-report=html"
+	@docker compose run --rm --remove-orphans --build glue-utils -c "pytest --cov=glue_utils --cov-branch --cov-report=term --cov-report=html"
 
 
 .PHONY: checks
@@ -44,9 +53,9 @@ checks: format typecheck test
 
 
 .PHONY: audit
-audit: ## Audit dependencies for security issues
+audit: requirements.test.txt ## Audit dependencies for security issues
 	@poetry check --lock
-	@poetry run pip-audit --requirement requirements.txt
+	@poetry run pip-audit --requirement requirements.test.txt
 
 
 .PHONY: clean
