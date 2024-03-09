@@ -39,12 +39,12 @@ typecheck: ## Check type annotations
 
 
 .PHONY: test
-test: ## Run automated tests
+test: requirements.test.txt ## Run automated tests
 	@docker compose run --rm --remove-orphans --build glue-utils -c pytest
 
 
 .PHONY: coverage
-coverage: ## Generate test coverage HTML report
+coverage: requirements.test.txt ## Generate test coverage HTML report
 	@docker compose run --rm --remove-orphans --build glue-utils -c "pytest --cov=glue_utils --cov-branch --cov-report=term --cov-report=html"
 
 
