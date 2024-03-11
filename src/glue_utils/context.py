@@ -16,28 +16,34 @@ class ManagedGlueContext(ContextDecorator):
     This context manager ensures that Job.commit() is called.
     """
 
-    options: dict[str, str]
-    conf: SparkConf | None
+    glue_context: GlueContext
     job: Job
 
     def __init__(
         self: Self,
         *,
-        options: dict[str, str] | None = None,
-        conf: SparkConf | None = None,
+        job_options: dict[str, str] | None = None,
+        spark_conf: SparkConf | None = None,
     ) -> None:
         """Create the context manager with the given options and configuration.
 
         Parameters
         ----------
-        options : dict[str, str] | None, optional
+        job_options : dict[str, str] | None, optional
             Dictionary of key-value pairs to pass to Job.init(), by default None
-        conf : SparkConf | None, optional
+        spark_conf : SparkConf | None, optional
             Custom SparkConf to use with SparkContext.getOrCreate(), by default None
 
         """
-        self.options = options or {}
-        self.conf = conf
+        job_options = job_options or {}
+        job_name = job_options.get("JOB_NAME", "")
+
+        spark_conf = spark_conf or SparkConf().setAppName(job_name)
+
+        self.glue_context = GlueContext(SparkContext.getOrCreate(spark_conf))
+
+        self.job = Job(self.glue_context)
+        self.job.init(job_name, job_options)
 
         super().__init__()
 
@@ -50,17 +56,6 @@ class ManagedGlueContext(ContextDecorator):
             This GlueContext object.
 
         """
-        job_name = self.options.get("JOB_NAME", "")
-
-        conf = self.conf or SparkConf()
-        conf = conf.setAppName(job_name)
-
-        spark_context = SparkContext.getOrCreate(conf)
-        self.glue_context = GlueContext(spark_context)
-
-        self.job = Job(self.glue_context)
-        self.job.init(job_name, self.options)
-
         return self.glue_context
 
     def __exit__(
