@@ -31,12 +31,12 @@ keywords = [
 python = "^3.10"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^8.0.2"
 pytest-randomly = "^3.15.0"
 pytest-cov = "^4.1.0"
 pip-audit = "^2.7.2"
 mypy = "^1.9.0"
 ruff = "^0.3.2"
+pytest = "^8.1.1"
 
 [tool.poetry.group.local.dependencies]
 # The "local" dependency group refers to dependencies that already 

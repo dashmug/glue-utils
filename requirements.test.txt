@@ -276,9 +276,9 @@ mypy==1.9.0 ; python_version >= "3.10" and python_version < "4.0" \
 packageurl-python==0.14.0 ; python_version >= "3.10" and python_version < "4.0" \
     --hash=sha256:cf5e55cdcd61e6de858f47c4986aa87ba493bfa56ba58de11103dfdc2c00e4e1 \
     --hash=sha256:ff09147cddaae9e5c59ffcb12df8ec0e1b774b45099399f28c36b1a3dfdf52e2
-packaging==23.2 ; python_version >= "3.10" and python_version < "4.0" \
-    --hash=sha256:048fb0e9405036518eaaf48a55953c750c11e1a1b68e0dd1a9d62ed0c092cfc5 \
-    --hash=sha256:8c491190033a9af7e1d931d0b5dacc2ef47509b34dd0de67ed209b5203fc88c7
+packaging==24.0 ; python_version >= "3.10" and python_version < "4.0" \
+    --hash=sha256:2ddfb553fdf02fb784c234c7ba6ccc288296ceabec964ad2eae3777778130bc5 \
+    --hash=sha256:eb82c5e3e56209074766e6885bb04b8c38a0c015d0a30036ebe7ece34c9989e9
 pip-api==0.0.33 ; python_version >= "3.10" and python_version < "4.0" \
     --hash=sha256:1c2522ae21efcb034d89cc99f6cf1025293b31c63c29ee98b23f03a85f36bdae \
     --hash=sha256:b8d6eb5a87d3a9e112a20a8e9d24a6fc12d4e1c94d7595eeaf74be11ad47276c
@@ -309,9 +309,9 @@ pytest-cov==4.1.0 ; python_version >= "3.10" and python_version < "4.0" \
 pytest-randomly==3.15.0 ; python_version >= "3.10" and python_version < "4.0" \
     --hash=sha256:0516f4344b29f4e9cdae8bce31c4aeebf59d0b9ef05927c33354ff3859eeeca6 \
     --hash=sha256:b908529648667ba5e54723088edd6f82252f540cc340d748d1fa985539687047
-pytest==8.0.2 ; python_version >= "3.10" and python_version < "4.0" \
-    --hash=sha256:d4051d623a2e0b7e51960ba963193b09ce6daeb9759a451844a21e4ddedfc1bd \
-    --hash=sha256:edfaaef32ce5172d5466b5127b42e0d6d35ebbe4453f0e3505d96afd93f6b096
+pytest==8.1.1 ; python_version >= "3.10" and python_version < "4.0" \
+    --hash=sha256:2a8386cfc11fa9d2c50ee7b2a57e7d898ef90470a7a34c4b949ff59662bb78b7 \
+    --hash=sha256:ac978141a75948948817d360297b7aae0fcb9d6ff6bc9ec6d514b85d5a65c044
 requests==2.31.0 ; python_version >= "3.10" and python_version < "4.0" \
     --hash=sha256:58cd2187c01e70e6e26505bca751777aa9f2ee0b7f4300988b709f44e013003f \
     --hash=sha256:942c5a758f98d790eaed1a29cb6eefc7ffb0d1cf7af05c3d2791656dbd6ad1e1
