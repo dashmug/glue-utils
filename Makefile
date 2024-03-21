@@ -52,12 +52,6 @@ coverage: requirements.test.txt ## Generate test coverage HTML report
 checks: format typecheck test 
 
 
-.PHONY: audit
-audit: requirements.test.txt ## Audit dependencies for security issues
-	@poetry check --lock
-	@poetry run pip-audit --requirement requirements.test.txt
-
-
 .PHONY: clean
 clean: ## Delete generated artifacts
 	@rm -rf __pycache__ .coverage .mypy_cache .pytest_cache .ruff_cache dist htmlcov
