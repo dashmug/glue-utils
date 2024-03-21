@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4.1.1
       - name: Setup Virtualenv Cache
-        uses: actions/cache@v4.0.1
+        uses: actions/cache@v4.0.2
         with:
           path: .venv
           key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
