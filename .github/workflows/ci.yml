@@ -16,23 +16,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4.1.2
-      - name: Setup Virtualenv Cache
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5.0.0
+        with:
+          python-version: "3.10.13"
+      - name: Install Poetry Action
+        uses: snok/install-poetry@v1.3.4
+      - name: Set up Virtualenv Cache
         uses: actions/cache@v4.0.2
         with:
           path: .venv
           key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-poetry-
-      - name: Set up python3.10
-        uses: actions/setup-python@v5.0.0
-        with:
-          python-version: "3.10.13"
-      - name: Set up poetry
-        uses: Gr1N/setup-poetry@v9
-      - name: Check poetry config
-        run: poetry check --lock
+          restore-keys: ${{ runner.os }}-poetry-
       - name: Install Python Dependencies
-        run: poetry install
+        run: |
+          poetry check --lock
+          poetry install --no-root
       - name: Lint code using ruff
         run: |
           poetry run ruff format . --check
@@ -48,6 +47,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4.1.2
+      - name: Set up Docker cache
+        uses: ScribeMD/docker-cache@0.4.0
+        with:
+          key: docker-${{ runner.os }}-${{ hashFiles('Dockerfile') }}
       - name: Build container and run tests
         run: docker compose run --rm --remove-orphans --build glue-utils -c 'pytest -p no:cacheprovider'
   pip-audit:
