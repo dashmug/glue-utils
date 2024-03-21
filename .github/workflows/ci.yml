@@ -47,10 +47,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4.1.2
-      - name: Set up Docker cache
-        uses: ScribeMD/docker-cache@0.4.0
-        with:
-          key: docker-${{ runner.os }}-${{ hashFiles('Dockerfile') }}
       - name: Build container and run tests
         run: docker compose run --rm --remove-orphans --build glue-utils -c 'pytest -p no:cacheprovider'
   pip-audit:
