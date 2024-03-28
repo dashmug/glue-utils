@@ -2,7 +2,6 @@
 
 from contextlib import ContextDecorator
 from types import TracebackType
-from typing import cast
 
 from awsglue.context import GlueContext
 from awsglue.job import Job
@@ -84,4 +83,4 @@ class ManagedGlueContext(ContextDecorator):
         """
         self.job.commit()
 
-        return cast(bool, False)  # noqa: FBT003
+        return None

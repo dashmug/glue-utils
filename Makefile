@@ -17,8 +17,8 @@ outdated: ## Check for outdated dependencies
 	@poetry show --latest --outdated
 
 
-requirements.test.txt: poetry.lock
-	@poetry export --with=dev --output requirements.test.txt
+docker/requirements.txt: poetry.lock
+	@poetry export --with=dev --output docker/requirements.txt
 
 
 .PHONY: format
@@ -39,13 +39,13 @@ typecheck: ## Check type annotations
 
 
 .PHONY: test
-test: requirements.test.txt ## Run automated tests
-	@docker compose run --rm --remove-orphans --build glue-utils -c pytest
+test: docker/requirements.txt ## Run automated tests
+	@docker compose --file docker/docker-compose.yml run --rm --build glue-utils -c pytest
 
 
 .PHONY: coverage
-coverage: requirements.test.txt ## Generate test coverage HTML report
-	@docker compose run --rm --remove-orphans --build glue-utils -c "pytest --cov=glue_utils --cov-branch --cov-report=term --cov-report=html"
+coverage: docker/requirements.txt ## Generate test coverage HTML report
+	@docker compose --file docker/docker-compose.yml run --rm --build glue-utils -c "pytest --cov=glue_utils --cov-branch --cov-report=term --cov-report=html"
 
 
 .PHONY: checks

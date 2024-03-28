@@ -3,9 +3,11 @@ version: "3.8"
 services:
   glue-utils:
     image: glue-utils:latest
-    build: .
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
     volumes:
-      - .:/home/glue_user/workspace
+      - ..:/home/glue_user/workspace
     tty: true
     environment:
       - AWS_REGION=ap-southeast-2
