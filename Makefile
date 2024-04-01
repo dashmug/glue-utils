@@ -1,5 +1,5 @@
-.PHONY: help
-help: ## Show help (default)
+.PHONY: all
+all: ## Show help (default)
 	@echo "=== Glue Utils ==="
 	@echo
 	@echo "Available commands:"
@@ -46,6 +46,11 @@ test: docker/requirements.txt ## Run automated tests
 .PHONY: coverage
 coverage: docker/requirements.txt ## Generate test coverage HTML report
 	@docker compose --file docker/docker-compose.yml run --rm --build glue-utils -c "pytest --cov=glue_utils --cov-branch --cov-report=term --cov-report=html"
+
+
+.PHONY: shell
+shell: docker/requirements.txt ## Enter a shell in the container
+	@docker compose --file docker/docker-compose.yml run --rm --build glue-utils -c bash
 
 
 .PHONY: checks
