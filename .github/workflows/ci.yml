@@ -15,7 +15,7 @@ jobs:
     name: Check for code errors
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.2
+      - uses: actions/checkout@v4.1.4
       - name: Set up Python 3.10
         uses: actions/setup-python@v5.1.0
         with:
@@ -46,14 +46,14 @@ jobs:
     name: Run tests in container
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.2
+      - uses: actions/checkout@v4.1.4
       - name: Build container and run tests
         run: docker compose --file docker/docker-compose.yml run --rm --remove-orphans --build glue-utils -c 'pytest -p no:cacheprovider'
   pip-audit:
     name: Audit requirements
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.2
+      - uses: actions/checkout@v4.1.4
       - name: Audit requirements using pip-audit
         uses: pypa/gh-action-pip-audit@v1.0.8
         with:
@@ -62,7 +62,7 @@ jobs:
     name: Dockerfile
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.2
+      - uses: actions/checkout@v4.1.4
       - name: Validate Dockerfile using hadolint
         uses: hadolint/hadolint-action@v3.1.0
         with:
