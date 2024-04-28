@@ -31,13 +31,13 @@ jobs:
       - name: Install Python Dependencies
         run: |
           poetry check --lock
-          poetry install --no-root
+          poetry install
       - name: Lint code using ruff
         run: |
           poetry run ruff format . --check
           poetry run ruff check .
       - name: Check type annotations using mypy
-        run: poetry run mypy
+        run: poetry run mypy -p glue_utils
       - name: Check if requirements.txt is up-to-date
         run: poetry export --with=dev --output docker/requirements.txt && git diff --exit-code
       - name: Build python packages

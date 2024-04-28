@@ -69,6 +69,10 @@ ignore = [
     # Conflicts with ruff format
     "COM812",
     "ISC001",
+    # missing-type-self
+    "ANN101",
+    # missing-type-cls
+    "ANN102",
 ]
 exclude = ["snapshots", ".venv"]
 # # Allow unused variables when underscore-prefixed.
@@ -78,7 +82,7 @@ dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 max-complexity = 5
 
 [tool.ruff.lint.per-file-ignores]
-"test/**" = ["S101", "ANN", "PT", "PD", "D"]
+"test/**" = ["S101", "ANN", "ARG001", "ARG002", "PLR2004", "PT", "PD", "D"]
 
 [tool.mypy]
 files = "**/*.py"
