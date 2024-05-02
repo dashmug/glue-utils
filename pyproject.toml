@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "glue-utils"
-version = "0.1.2"
+version = "0.2.0"
 # Uncomment this when dependabot has finally been updated to it is 
 # supported by dependabot.
 # package-mode = true
