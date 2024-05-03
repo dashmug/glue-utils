@@ -28,7 +28,7 @@ def mock_job():
 
 
 @pytest.fixture
-def glueetl_job(mock_get_resolved_options: MagicMock, mock_job: MagicMock):
+def glueetl_job(mock_get_resolved_options: MagicMock):
     mock_get_resolved_options.return_value = {
         "JOB_NAME": "test-job",
     }
@@ -100,7 +100,7 @@ class TestGlueETLJob:
     def test_managed_glue_context(
         self,
         mock_job: MagicMock,
-        glueetl_job: GlueETLJob[MockOptions],
+        glueetl_job: GlueETLJob,
     ):
         with glueetl_job.managed_glue_context() as glue_context:
             assert isinstance(glue_context, GlueContext)
@@ -112,7 +112,7 @@ class TestGlueETLJob:
     def test_managed_glue_context_without_commit(
         self,
         mock_job: MagicMock,
-        glueetl_job: GlueETLJob[MockOptions],
+        glueetl_job: GlueETLJob,
     ):
         with glueetl_job.managed_glue_context(commit=False) as glue_context:
             assert isinstance(glue_context, GlueContext)
@@ -124,7 +124,7 @@ class TestGlueETLJob:
     def test_commit(
         self,
         mock_job: MagicMock,
-        glueetl_job: GlueETLJob[MockOptions],
+        glueetl_job: GlueETLJob,
     ):
         glueetl_job.commit()
 

@@ -4,7 +4,7 @@ import sys
 from collections.abc import Generator
 from contextlib import contextmanager
 from dataclasses import fields
-from typing import Generic
+from typing import Generic, cast, overload
 
 from awsglue.context import GlueContext
 from awsglue.job import Job
@@ -15,7 +15,7 @@ from typing_extensions import TypeVar
 
 from glue_utils import BaseOptions
 
-T = TypeVar("T", bound=BaseOptions)
+T = TypeVar("T", bound=BaseOptions, default=BaseOptions)
 
 
 class GlueETLJob(Generic[T]):
@@ -25,18 +25,41 @@ class GlueETLJob(Generic[T]):
     glue_context: GlueContext
     spark: SparkSession
 
+    @overload
+    def __init__(
+        self: "GlueETLJob[BaseOptions]",
+    ) -> None: ...
+
+    @overload
+    def __init__(
+        self: "GlueETLJob[T]",
+        *,
+        options_cls: type[T],
+    ) -> None: ...
+
     def __init__(
         self,
         *,
-        options_cls: type[T] = BaseOptions,  # type: ignore[assignment]
+        options_cls: type[T] | type[BaseOptions] = BaseOptions,
     ) -> None:
-        """Initialize the GlueETLJob."""
+        """Initialize the GlueETLJob.
+
+        Parameters
+        ----------
+        options_cls, optional
+            Has to be a subclass of BaseOptions, by default BaseOptions
+
+        """
+        if not issubclass(options_cls, BaseOptions):
+            msg = "options_cls must be a subclass of BaseOptions."
+            raise TypeError(msg)
+
         job_options = getResolvedOptions(
             sys.argv,
             [field.name for field in fields(options_cls)],
         )
 
-        self.options = options_cls.from_resolved_options(job_options)
+        self.options = cast(T, options_cls.from_resolved_options(job_options))
 
         self.glue_context = self.create_glue_context()
         self.spark = self.glue_context.spark_session
