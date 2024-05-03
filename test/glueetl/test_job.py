@@ -40,6 +40,24 @@ def glueetl_job(mock_get_resolved_options: MagicMock):
     job.glue_context.spark_session.sparkContext.stop()
 
 
+def assert_glue_context_attributes(glue_context: GlueContext):
+    assert isinstance(glue_context, GlueContext)
+    assert isinstance(glue_context.spark_session, SparkSession)
+    assert isinstance(glue_context.spark_session.sparkContext, SparkContext)
+
+
+def assert_job_attributes(job: GlueETLJob):
+    sc = job.sc
+
+    assert isinstance(sc, SparkContext)
+
+    glue_context = job.glue_context
+
+    assert_glue_context_attributes(glue_context)
+
+    assert job.sc == glue_context.spark_session.sparkContext
+
+
 class TestGlueETLJob:
     def test_init(self, mock_get_resolved_options: MagicMock, mock_job: MagicMock):
         mock_get_resolved_options.return_value = {
@@ -50,14 +68,9 @@ class TestGlueETLJob:
 
         mock_get_resolved_options.assert_called_once()
 
-        assert job.options.JOB_NAME == "test-job"
-        assert len(fields(job.options)) == 1
+        assert len(fields(job.options)) == 0
 
-        glue_context = job.glue_context
-
-        assert isinstance(glue_context, GlueContext)
-        assert isinstance(glue_context.spark_session, SparkSession)
-        assert isinstance(glue_context.spark_session.sparkContext, SparkContext)
+        assert_job_attributes(job)
 
         mock_job.return_value.init.assert_called_once_with(
             "test-job",
@@ -78,16 +91,11 @@ class TestGlueETLJob:
 
         mock_get_resolved_options.assert_called_once()
 
-        assert job.options.JOB_NAME == "test-job"
         assert job.options.OPTION_FROM_CLASS_A == "mock-option"
         assert job.options.OPTION_FROM_CLASS_B == "default-value"
-        assert len(fields(job.options)) == 3
+        assert len(fields(job.options)) == 2
 
-        glue_context = job.glue_context
-
-        assert isinstance(glue_context, GlueContext)
-        assert isinstance(glue_context.spark_session, SparkSession)
-        assert isinstance(glue_context.spark_session.sparkContext, SparkContext)
+        assert_job_attributes(job)
 
         mock_job.return_value.init.assert_called_once_with(
             "test-job",
@@ -103,9 +111,7 @@ class TestGlueETLJob:
         glueetl_job: GlueETLJob,
     ):
         with glueetl_job.managed_glue_context() as glue_context:
-            assert isinstance(glue_context, GlueContext)
-            assert isinstance(glue_context.spark_session, SparkSession)
-            assert isinstance(glue_context.spark_session.sparkContext, SparkContext)
+            assert_glue_context_attributes(glue_context)
 
         mock_job.return_value.commit.assert_called_once()
 
@@ -115,9 +121,7 @@ class TestGlueETLJob:
         glueetl_job: GlueETLJob,
     ):
         with glueetl_job.managed_glue_context(commit=False) as glue_context:
-            assert isinstance(glue_context, GlueContext)
-            assert isinstance(glue_context.spark_session, SparkSession)
-            assert isinstance(glue_context.spark_session.sparkContext, SparkContext)
+            assert_glue_context_attributes(glue_context)
 
         mock_job.return_value.commit.assert_not_called()
 

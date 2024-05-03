@@ -10,22 +10,14 @@ from typing_extensions import Self
 class BaseOptions:
     """Dataclass for storing resolved options."""
 
-    JOB_NAME: str
-
     @classmethod
     def from_resolved_options(
         cls,
         resolved_options: dict[str, Any] | None = None,
     ) -> Self:
         """Create an instance of the class from Glue's resolved options."""
-        default_job_name = ""
-
         if not resolved_options:
-            return cls(JOB_NAME=default_job_name)
-
-        resolved_options["JOB_NAME"] = resolved_options.get(
-            "JOB_NAME", default_job_name
-        )
+            return cls()
 
         field_names = {field.name for field in fields(cls)}
 

@@ -16,8 +16,7 @@ class TestBaseOptions:
     def test_from_resolved_options(self, resolved_options, job_name):
         options = BaseOptions.from_resolved_options(resolved_options)
 
-        assert job_name == options.JOB_NAME
-        assert len(fields(options)) == 1
+        assert len(fields(options)) == 0
 
 
 @dataclass(frozen=True)
@@ -36,9 +35,9 @@ class TestOptions:
 
         options = Options.from_resolved_options(resolved_options)
 
-        assert options.JOB_NAME == "test-job"
         assert options.connection_name == "test-connection"
-        assert len(fields(options)) == 3
+        assert options.source_database == "test-source-database"
+        assert len(fields(options)) == 2
 
     def test_missing_options(self):
         resolved_options = {
@@ -65,10 +64,9 @@ class TestNullableOptions:
 
         options = NullableOptions.from_resolved_options(resolved_options)
 
-        assert options.JOB_NAME == "test-job"
         assert options.connection_name == "test-connection"
         assert options.source_database == "test-source-database"
-        assert len(fields(options)) == 3
+        assert len(fields(options)) == 2
 
     def test_missing_options(self):
         resolved_options = {
@@ -77,10 +75,9 @@ class TestNullableOptions:
 
         options = NullableOptions.from_resolved_options(resolved_options)
 
-        assert options.JOB_NAME == ""
         assert options.connection_name == "test-connection"
         assert options.source_database is None
-        assert len(fields(options)) == 3
+        assert len(fields(options)) == 2
 
 
 @dataclass(frozen=True)
@@ -99,10 +96,9 @@ class TestNullableOptionsWithDefaults:
 
         options = NullableOptionsWithDefaults.from_resolved_options(resolved_options)
 
-        assert options.JOB_NAME == "test-job"
         assert options.connection_name == "test-connection"
         assert options.source_database == "test-source-database"
-        assert len(fields(options)) == 3
+        assert len(fields(options)) == 2
 
     def test_missing_options(self):
         resolved_options = {
@@ -111,7 +107,6 @@ class TestNullableOptionsWithDefaults:
 
         options = NullableOptionsWithDefaults.from_resolved_options(resolved_options)
 
-        assert options.JOB_NAME == "test-job"
         assert options.connection_name == "my connection"
         assert options.source_database == "my source"
-        assert len(fields(options)) == 3
+        assert len(fields(options)) == 2
