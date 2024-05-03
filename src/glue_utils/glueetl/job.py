@@ -88,7 +88,7 @@ class GlueETLJob(Generic[T]):
 
         Override this method to customize the GlueContext creation.
         """
-        return GlueContext(self.create_spark_context())
+        return GlueContext(self.sc)
 
     @contextmanager
     def managed_glue_context(
