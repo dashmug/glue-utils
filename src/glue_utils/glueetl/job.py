@@ -1,19 +1,24 @@
 """Module providing the GlueETLJob class for handling Glue ETL jobs."""
 
+from __future__ import annotations
+
 import sys
-from collections.abc import Generator
 from contextlib import contextmanager
 from dataclasses import fields
-from typing import Generic, cast, overload
+from typing import TYPE_CHECKING, Generic, cast, overload
 
 from awsglue.context import GlueContext
 from awsglue.job import Job
 from awsglue.utils import getResolvedOptions
 from pyspark import SparkConf, SparkContext
-from pyspark.sql import SparkSession
 from typing_extensions import TypeVar
 
 from glue_utils import BaseOptions
+
+if TYPE_CHECKING:
+    from collections.abc import Generator
+
+    from pyspark.sql import SparkSession
 
 T = TypeVar("T", bound=BaseOptions, default=BaseOptions)
 
@@ -29,12 +34,12 @@ class GlueETLJob(Generic[T]):
 
     @overload
     def __init__(
-        self: "GlueETLJob[BaseOptions]",
+        self: GlueETLJob[BaseOptions],
     ) -> None: ...
 
     @overload
     def __init__(
-        self: "GlueETLJob[T]",
+        self: GlueETLJob[T],
         *,
         options_cls: type[T],
     ) -> None: ...
@@ -42,7 +47,7 @@ class GlueETLJob(Generic[T]):
     def __init__(
         self,
         *,
-        options_cls: type[T] | type[BaseOptions] = BaseOptions,
+        options_cls: type[T | BaseOptions] = BaseOptions,
     ) -> None:
         """Initialize the GlueETLJob.
 

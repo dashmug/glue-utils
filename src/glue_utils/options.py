@@ -1,5 +1,7 @@
 """Module for conveniently parsing options resolved from command-line arguments."""
 
+from __future__ import annotations
+
 from dataclasses import dataclass, fields
 from typing import Any
 

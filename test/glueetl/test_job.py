@@ -37,7 +37,7 @@ def glueetl_job(mock_get_resolved_options: MagicMock):
 
     yield job
 
-    job.glue_context.spark_session.sparkContext.stop()
+    job.sc.stop()
 
 
 def assert_glue_context_attributes(glue_context: GlueContext):
