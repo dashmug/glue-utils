@@ -18,8 +18,5 @@
     "python.analysis.typeCheckingMode": "off",
     "python.testing.pytestEnabled": true,
     "autoDocstring.docstringFormat": "numpy-notypes",
-    "mypy-type-checker.importStrategy": "fromEnvironment",
-    "mypy-type-checker.preferDaemon": true,
-    "mypy-type-checker.reportingScope": "workspace",
   }
   

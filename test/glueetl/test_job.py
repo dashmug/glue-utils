@@ -7,12 +7,16 @@ from glue_utils import BaseOptions
 from glue_utils.glueetl import GlueETLJob
 from pyspark import SparkContext
 from pyspark.sql import SparkSession
+from typing_extensions import TypeVar
 
 
-@dataclass(frozen=True)
+@dataclass
 class MockOptions(BaseOptions):
     OPTION_FROM_CLASS_A: str
     OPTION_FROM_CLASS_B: str = "default-value"
+
+
+class NotBaseOptions: ...
 
 
 @pytest.fixture
@@ -28,7 +32,7 @@ def mock_job():
 
 
 @pytest.fixture
-def glueetl_job(mock_get_resolved_options: MagicMock):
+def glueetl_job(mock_get_resolved_options):
     mock_get_resolved_options.return_value = {
         "JOB_NAME": "test-job",
     }
@@ -46,7 +50,10 @@ def assert_glue_context_attributes(glue_context: GlueContext):
     assert isinstance(glue_context.spark_session.sparkContext, SparkContext)
 
 
-def assert_job_attributes(job: GlueETLJob):
+T = TypeVar("T", bound=BaseOptions, default=BaseOptions)
+
+
+def assert_job_attributes(job: GlueETLJob[T]):
     sc = job.sc
 
     assert isinstance(sc, SparkContext)
@@ -59,7 +66,7 @@ def assert_job_attributes(job: GlueETLJob):
 
 
 class TestGlueETLJob:
-    def test_init(self, mock_get_resolved_options: MagicMock, mock_job: MagicMock):
+    def test_init(self, mock_get_resolved_options, mock_job):
         mock_get_resolved_options.return_value = {
             "JOB_NAME": "test-job",
         }
@@ -79,9 +86,7 @@ class TestGlueETLJob:
             },
         )
 
-    def test_init_options_cls(
-        self, mock_get_resolved_options: MagicMock, mock_job: MagicMock
-    ):
+    def test_init_options_cls(self, mock_get_resolved_options, mock_job):
         mock_get_resolved_options.return_value = {
             "JOB_NAME": "test-job",
             "OPTION_FROM_CLASS_A": "mock-option",
@@ -104,6 +109,15 @@ class TestGlueETLJob:
                 "OPTION_FROM_CLASS_A": "mock-option",
             },
         )
+
+    def test_init_with_invalid_options_cls(self, mock_get_resolved_options):
+        mock_get_resolved_options.return_value = {
+            "JOB_NAME": "test-job",
+            "OPTION_FROM_CLASS_A": "mock-option",
+        }
+
+        with pytest.raises(TypeError):
+            GlueETLJob(options_cls=NotBaseOptions)  # type: ignore[type-var]
 
     def test_managed_glue_context(
         self,

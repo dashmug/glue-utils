@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "glue-utils"
-version = "0.2.1"
+version = "0.2.2b2"
 # Uncomment this when dependabot has finally been updated to it is 
 # supported by dependabot.
 # package-mode = true
@@ -36,7 +36,6 @@ python = "^3.9"
 pytest-randomly = "^3.15.0"
 pytest-cov = "^5.0.0"
 mypy = "^1.10.0"
-pytest = "^8.2.0"
 ruff = "^0.4.3"
 
 [tool.poetry.group.local.dependencies]

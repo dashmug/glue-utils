@@ -36,6 +36,7 @@ lint: ## Check source code for common errors
 .PHONY: typecheck
 typecheck: ## Check type annotations
 	@poetry run mypy -p glue_utils
+	@poetry run mypy test
 
 
 .PHONY: test

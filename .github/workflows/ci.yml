@@ -40,7 +40,9 @@ jobs:
           poetry run ruff format . --check
           poetry run ruff check .
       - name: Check type annotations using mypy
-        run: poetry run mypy -p glue_utils
+        run: |
+          poetry run mypy -p glue_utils
+          poetry run mypy test
       - name: Check if requirements.txt is up-to-date
         run: poetry export --with=dev --output docker/requirements.txt && git diff --exit-code
       - name: Build python packages
