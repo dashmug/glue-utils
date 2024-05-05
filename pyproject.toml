@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "glue-utils"
-version = "0.2.2"
+version = "0.2.3"
 # Uncomment this when dependabot has finally been updated to it is 
 # supported by dependabot.
 # package-mode = true
@@ -128,7 +128,7 @@ exclude_also = [
 ]
 
 [tool.bumpver]
-current_version = "0.2.2"
+current_version = "0.2.3"
 version_pattern = "MAJOR.MINOR.PATCH"
 commit_message = "release: Bump version {old_version} -> {new_version}"
 commit = true
