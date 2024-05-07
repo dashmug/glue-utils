@@ -37,6 +37,7 @@ mypy = "^1.10.0"
 ruff = "^0.4.3"
 bumpver = "^2023.1129"
 pytest = "^8.2.0"
+import-linter = "^2.0"
 
 [tool.poetry.group.local.dependencies]
 # The "local" dependency group refers to dependencies that already 
@@ -141,3 +142,10 @@ commit = true
     '^__version__ = "{version}"$',
 ]
 
+[tool.importlinter]
+root_package = "glue_utils"
+
+[[tool.importlinter.contracts]]
+name = "Generic code should not import specific code"
+type = "layers"
+layers = ["glue_utils.glueetl", "glue_utils.options"]

@@ -16,6 +16,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
+        # Glue Pythonshell supports only Python 3.9.
+        # Glue ETL supports only Python 3.10.
         python-version: ["3.9", "3.10"]
     steps:
       - uses: actions/checkout@v4.1.5
@@ -43,6 +45,8 @@ jobs:
         run: |
           poetry run mypy -p glue_utils
           poetry run mypy test
+      - name: Check imports between modules
+        run: poetry run lint-imports
       - name: Check if requirements.txt is up-to-date
         run: poetry export --with=dev --output docker/requirements.txt && git diff --exit-code
       - name: Build python packages

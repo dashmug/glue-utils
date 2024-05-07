@@ -2,7 +2,7 @@
     "files.exclude": {
       ".idea": true,
       "**/__pycache__": true,
-      "**/.ipynb_checkpoints": true,
+      "**/.import_linter_cache": true,
       "**/.mypy_cache": true,
       "**/.pytest_cache": true,
       "**/.ruff_cache": true,

@@ -39,6 +39,11 @@ typecheck: ## Check type annotations
 	@poetry run mypy test
 
 
+.PHONY: importcheck
+importcheck: ## Check import rules
+	@poetry run lint-imports
+
+
 .PHONY: test
 test: docker/requirements.txt ## Run automated tests
 	@docker compose --file docker/docker-compose.yml run --rm --build glue-utils -c pytest
@@ -55,7 +60,7 @@ shell: docker/requirements.txt ## Enter a shell in the container
 
 
 .PHONY: checks
-checks: format typecheck test 
+checks: format typecheck importcheck test 
 
 
 .PHONY: clean
