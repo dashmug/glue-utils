@@ -45,6 +45,7 @@ class GlueETLJob(Generic[T]):
 
     def __init__(
         self,
+        *,
         options_cls: type[T | BaseOptions] = BaseOptions,
     ) -> None:
         """Initialize the GlueETLJob.

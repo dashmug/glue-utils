@@ -23,7 +23,7 @@ docker/requirements.txt: poetry.lock
 
 .PHONY: format
 format: ## Format project source code
-	@poetry run ruff check . --fix --unsafe-fixes
+	@poetry run ruff check . --fix
 	@poetry run ruff format .
 
 

@@ -38,6 +38,7 @@ pytest-cov = "^5.0.0"
 mypy = "^1.10.0"
 ruff = "^0.4.3"
 bumpver = "^2023.1129"
+pytest = "^8.2.0"
 
 [tool.poetry.group.local.dependencies]
 # The "local" dependency group refers to dependencies that already 
@@ -58,8 +59,9 @@ build-backend = "poetry.core.masonry.api"
 [tool.ruff]
 line-length = 88
 output-format = "full"
-respect-gitignore = true
 target-version = "py39"
+unsafe-fixes = true
+show-fixes = true
 
 [tool.ruff.lint]
 select = ["ALL"]
@@ -74,7 +76,6 @@ ignore = [
     # missing-type-cls
     "ANN102",
 ]
-exclude = [".venv"]
 # # Allow unused variables when underscore-prefixed.
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
@@ -102,8 +103,7 @@ disallow_untyped_calls = false
 
 [tool.pytest.ini_options]
 filterwarnings = [
-    "ignore::DeprecationWarning",
-    "ignore::FutureWarning:.*pyspark.*",
+    "ignore::FutureWarning:pyspark.sql.context",
 ]
 
 [tool.coverage.run]
@@ -125,6 +125,7 @@ exclude_also = [
     "if TYPE_CHECKING:",
     "class .*\\bProtocol\\):",
     "@(abc\\.)?abstractmethod",
+    "@overload",
 ]
 
 [tool.bumpver]

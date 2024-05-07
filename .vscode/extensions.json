@@ -3,9 +3,6 @@
     "charliermarsh.ruff",
     "ms-python.python",
     "ms-python.vscode-pylance",
-    "ms-vscode.makefile-tools",
     "njpwerner.autodocstring",
-    "streetsidesoftware.code-spell-checker",
-    "tamasfe.even-better-toml"
   ]
 }

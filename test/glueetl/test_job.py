@@ -1,5 +1,5 @@
 from dataclasses import dataclass, fields
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
 from awsglue.context import GlueContext
@@ -28,7 +28,7 @@ def mock_get_resolved_options():
 @pytest.fixture
 def mock_job():
     with patch("glue_utils.glueetl.job.Job") as patched:
-        yield patched
+        yield patched.return_value
 
 
 @pytest.fixture
@@ -66,25 +66,32 @@ def assert_job_attributes(job: GlueETLJob[T]):
 
 
 class TestGlueETLJob:
-    def test_init(self, mock_get_resolved_options, mock_job):
-        mock_get_resolved_options.return_value = {
-            "JOB_NAME": "test-job",
-        }
+    @pytest.mark.parametrize(
+        ("args", "resolved_options"),
+        [
+            (
+                ["--JOB_NAME", "test-job"],
+                {"JOB_NAME": "test-job"},
+            ),
+            ([], {}),
+        ],
+    )
+    def test_init(self, args, resolved_options, mock_get_resolved_options, mock_job):
+        mock_get_resolved_options.return_value = resolved_options
 
-        job = GlueETLJob()
+        with patch("sys.argv", ["test.py", *args]):
+            job = GlueETLJob()
 
-        mock_get_resolved_options.assert_called_once()
+            mock_get_resolved_options.assert_called_once()
 
-        assert len(fields(job.options)) == 0
+            assert len(fields(job.options)) == 0
 
-        assert_job_attributes(job)
+            assert_job_attributes(job)
 
-        mock_job.return_value.init.assert_called_once_with(
-            "test-job",
-            {
-                "JOB_NAME": "test-job",
-            },
-        )
+            mock_job.init.assert_called_once_with(
+                resolved_options.get("JOB_NAME", ""),
+                resolved_options,
+            )
 
     def test_init_options_cls(self, mock_get_resolved_options, mock_job):
         mock_get_resolved_options.return_value = {
@@ -102,7 +109,7 @@ class TestGlueETLJob:
 
         assert_job_attributes(job)
 
-        mock_job.return_value.init.assert_called_once_with(
+        mock_job.init.assert_called_once_with(
             "test-job",
             {
                 "JOB_NAME": "test-job",
@@ -119,31 +126,19 @@ class TestGlueETLJob:
         with pytest.raises(TypeError):
             GlueETLJob(options_cls=NotBaseOptions)  # type: ignore[type-var]
 
-    def test_managed_glue_context(
-        self,
-        mock_job: MagicMock,
-        glueetl_job: GlueETLJob,
-    ):
+    def test_managed_glue_context(self, mock_job, glueetl_job):
         with glueetl_job.managed_glue_context() as glue_context:
             assert_glue_context_attributes(glue_context)
 
-        mock_job.return_value.commit.assert_called_once()
+        mock_job.commit.assert_called_once()
 
-    def test_managed_glue_context_without_commit(
-        self,
-        mock_job: MagicMock,
-        glueetl_job: GlueETLJob,
-    ):
+    def test_managed_glue_context_without_commit(self, mock_job, glueetl_job):
         with glueetl_job.managed_glue_context(commit=False) as glue_context:
             assert_glue_context_attributes(glue_context)
 
-        mock_job.return_value.commit.assert_not_called()
+        mock_job.commit.assert_not_called()
 
-    def test_commit(
-        self,
-        mock_job: MagicMock,
-        glueetl_job: GlueETLJob,
-    ):
+    def test_commit(self, mock_job, glueetl_job):
         glueetl_job.commit()
 
-        mock_job.return_value.commit.assert_called_once()
+        mock_job.commit.assert_called_once()
