@@ -1,4 +1,4 @@
-"""Module providing the GlueETLJob class for handling Glue ETL jobs."""
+"""Module providing the GluePySparkJob class for handling Glue ETL jobs."""
 
 from __future__ import annotations
 
@@ -7,13 +7,13 @@ from contextlib import contextmanager
 from dataclasses import fields
 from typing import TYPE_CHECKING, Generic, cast, overload
 
-from awsglue.context import GlueContext
 from awsglue.job import Job
 from awsglue.utils import getResolvedOptions
 from pyspark import SparkContext
 from typing_extensions import TypeVar
 
 from glue_utils import BaseOptions
+from glue_utils.pyspark.context import GluePySparkContext
 
 if TYPE_CHECKING:
     from collections.abc import Generator
@@ -23,22 +23,22 @@ if TYPE_CHECKING:
 T = TypeVar("T", bound=BaseOptions, default=BaseOptions)
 
 
-class GlueETLJob(Generic[T]):
+class GluePySparkJob(Generic[T]):
     """Class that handles the boilerplate setup for Glue ETL jobs."""
 
     options: T
     sc: SparkContext
     spark: SparkSession
-    glue_context: GlueContext
+    glue_context: GluePySparkContext
 
     @overload
     def __init__(
-        self: GlueETLJob[BaseOptions],
+        self: GluePySparkJob[BaseOptions],
     ) -> None: ...
 
     @overload
     def __init__(
-        self: GlueETLJob[T],
+        self: GluePySparkJob[T],
         *,
         options_cls: type[T],
     ) -> None: ...
@@ -72,7 +72,7 @@ class GlueETLJob(Generic[T]):
         self.options = cast(T, options_cls.from_options(_options))
 
         self.sc = SparkContext.getOrCreate()
-        self.glue_context = GlueContext(self.sc)
+        self.glue_context = GluePySparkContext(self.sc)
         self.spark = self.glue_context.spark_session
 
         self._job = Job(self.glue_context)
@@ -83,8 +83,8 @@ class GlueETLJob(Generic[T]):
         self,
         *,
         commit: bool = True,
-    ) -> Generator[GlueContext, None, None]:
-        """Context manager for managing the GlueContext.
+    ) -> Generator[GluePySparkContext, None, None]:
+        """Context manager for managing the GluePySparkContext.
 
         Parameters
         ----------

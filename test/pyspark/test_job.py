@@ -4,7 +4,7 @@ from unittest.mock import patch
 import pytest
 from awsglue.context import GlueContext
 from glue_utils import BaseOptions
-from glue_utils.glueetl import GlueETLJob
+from glue_utils.pyspark import GluePySparkJob
 from pyspark import SparkContext
 from pyspark.sql import SparkSession
 from typing_extensions import TypeVar
@@ -21,26 +21,24 @@ class NotBaseOptions: ...
 
 @pytest.fixture
 def mock_get_resolved_options():
-    with patch("glue_utils.glueetl.job.getResolvedOptions") as patched:
+    with patch("glue_utils.pyspark.job.getResolvedOptions") as patched:
         yield patched
 
 
 @pytest.fixture
 def mock_job():
-    with patch("glue_utils.glueetl.job.Job") as patched:
+    with patch("glue_utils.pyspark.job.Job") as patched:
         yield patched.return_value
 
 
 @pytest.fixture
-def glueetl_job(mock_get_resolved_options):
+def glue_pyspark_job(mock_get_resolved_options):
     mock_get_resolved_options.return_value = {
         "JOB_NAME": "test-job",
     }
 
-    job = GlueETLJob()
-
+    job = GluePySparkJob()
     yield job
-
     job.sc.stop()
 
 
@@ -53,7 +51,7 @@ def assert_glue_context_attributes(glue_context: GlueContext):
 T = TypeVar("T", bound=BaseOptions, default=BaseOptions)
 
 
-def assert_job_attributes(job: GlueETLJob[T]):
+def assert_job_attributes(job: GluePySparkJob[T]):
     sc = job.sc
 
     assert isinstance(sc, SparkContext)
@@ -65,7 +63,7 @@ def assert_job_attributes(job: GlueETLJob[T]):
     assert job.sc == glue_context.spark_session.sparkContext
 
 
-class TestGlueETLJob:
+class TestGluePySparkJob:
     @pytest.mark.parametrize(
         ("args", "resolved_options"),
         [
@@ -80,7 +78,7 @@ class TestGlueETLJob:
         mock_get_resolved_options.return_value = resolved_options
 
         with patch("sys.argv", ["test.py", *args]):
-            job = GlueETLJob()
+            job = GluePySparkJob()
 
             mock_get_resolved_options.assert_called_once()
 
@@ -99,7 +97,7 @@ class TestGlueETLJob:
             "OPTION_FROM_CLASS_A": "mock-option",
         }
 
-        job = GlueETLJob(options_cls=MockOptions)
+        job = GluePySparkJob(options_cls=MockOptions)
 
         mock_get_resolved_options.assert_called_once()
 
@@ -124,21 +122,21 @@ class TestGlueETLJob:
         }
 
         with pytest.raises(TypeError):
-            GlueETLJob(options_cls=NotBaseOptions)  # type: ignore[type-var]
+            GluePySparkJob(options_cls=NotBaseOptions)  # type: ignore[type-var]
 
-    def test_managed_glue_context(self, mock_job, glueetl_job):
-        with glueetl_job.managed_glue_context() as glue_context:
+    def test_managed_glue_context(self, mock_job, glue_pyspark_job):
+        with glue_pyspark_job.managed_glue_context() as glue_context:
             assert_glue_context_attributes(glue_context)
 
         mock_job.commit.assert_called_once()
 
-    def test_managed_glue_context_without_commit(self, mock_job, glueetl_job):
-        with glueetl_job.managed_glue_context(commit=False) as glue_context:
+    def test_managed_glue_context_without_commit(self, mock_job, glue_pyspark_job):
+        with glue_pyspark_job.managed_glue_context(commit=False) as glue_context:
             assert_glue_context_attributes(glue_context)
 
         mock_job.commit.assert_not_called()
 
-    def test_commit(self, mock_job, glueetl_job):
-        glueetl_job.commit()
+    def test_commit(self, mock_job, glue_pyspark_job):
+        glue_pyspark_job.commit()
 
         mock_job.commit.assert_called_once()

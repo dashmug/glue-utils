@@ -34,10 +34,10 @@ python = "^3.9"
 pytest-randomly = "^3.15.0"
 pytest-cov = "^5.0.0"
 mypy = "^1.10.0"
-ruff = "^0.4.3"
 bumpver = "^2023.1129"
 pytest = "^8.2.0"
 import-linter = "^2.0"
+ruff = "^0.4.4"
 
 [tool.poetry.group.local.dependencies]
 # The "local" dependency group refers to dependencies that already 
@@ -65,6 +65,7 @@ show-fixes = true
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = [
+    "D104",
     "D203",
     "D213",
     # Conflicts with ruff format
@@ -74,6 +75,8 @@ ignore = [
     "ANN101",
     # missing-type-cls
     "ANN102",
+    # line-too-long
+    "E501"
 ]
 # # Allow unused variables when underscore-prefixed.
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
@@ -82,7 +85,7 @@ dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 max-complexity = 5
 
 [tool.ruff.lint.per-file-ignores]
-"test/**" = ["S101", "ANN", "ARG001", "ARG002", "PLR2004", "PT", "PD", "D"]
+"test/**" = ["S101", "ANN", "ARG001", "ARG002", "PLR2004", "PLR0913", "PT", "PD", "D"]
 
 [tool.mypy]
 files = "**/*.py"
@@ -98,7 +101,6 @@ explicit_package_bases = true
 module = "test.*"
 disallow_incomplete_defs = false
 disallow_untyped_defs = false
-disallow_untyped_calls = false
 
 [tool.pytest.ini_options]
 filterwarnings = [
@@ -148,4 +150,4 @@ root_package = "glue_utils"
 [[tool.importlinter.contracts]]
 name = "Generic code should not import specific code"
 type = "layers"
-layers = ["glue_utils.glueetl", "glue_utils.options"]
+layers = ["glue_utils.pyspark", "glue_utils.options"]

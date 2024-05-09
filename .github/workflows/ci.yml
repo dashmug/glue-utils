@@ -42,9 +42,7 @@ jobs:
           poetry run ruff format . --check
           poetry run ruff check .
       - name: Check type annotations using mypy
-        run: |
-          poetry run mypy -p glue_utils
-          poetry run mypy test
+        run: MYPYPATH=src poetry run mypy .
       - name: Check imports between modules
         run: poetry run lint-imports
       - name: Check if requirements.txt is up-to-date
