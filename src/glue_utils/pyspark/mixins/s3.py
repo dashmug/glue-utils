@@ -90,7 +90,7 @@ class S3SinkConnectionOptions(TypedDict, total=False):
     partitionKeys: list[str]
 
 
-class BaseFormatOptions(TypedDict, total=False):
+class S3FormatOptions(TypedDict, total=False):
     """Options for configuring the base format.
 
     Parameters
@@ -106,7 +106,7 @@ class BaseFormatOptions(TypedDict, total=False):
     attachTimestamp: str
 
 
-class CSVFormatOptions(BaseFormatOptions, total=False):
+class CSVFormatOptions(S3FormatOptions, total=False):
     """Format options for CSV files.
 
     Parameters
@@ -151,7 +151,7 @@ class CSVFormatOptions(BaseFormatOptions, total=False):
 class S3CSVMixin:
     """Mixin for working with CSV files in S3."""
 
-    def create_dynamic_frame_from_csv_in_s3(
+    def create_dynamic_frame_from_s3_csv(
         self: GlueContext,
         connection_options: S3SourceConnectionOptions,
         format_options: CSVFormatOptions | None = None,
@@ -182,7 +182,7 @@ class S3CSVMixin:
             transformation_ctx=transformation_ctx,
         )
 
-    def write_dynamic_frame_to_csv_in_s3(
+    def write_dynamic_frame_to_s3_csv(
         self: GlueContext,
         frame: DynamicFrame,
         connection_options: S3SourceConnectionOptions,
@@ -218,7 +218,7 @@ class S3CSVMixin:
         )
 
 
-class ParquetFormatOptions(BaseFormatOptions, total=False):
+class ParquetFormatOptions(S3FormatOptions, total=False):
     """Format options for Parquet files.
 
     Parameters
@@ -253,7 +253,7 @@ class ParquetFormatOptions(BaseFormatOptions, total=False):
 class S3ParquetMixin:
     """Mixin for working with Parquet files in S3."""
 
-    def create_dynamic_frame_from_parquet_in_s3(
+    def create_dynamic_frame_from_s3_parquet(
         self: GlueContext,
         connection_options: S3SourceConnectionOptions,
         format_options: ParquetFormatOptions | None = None,
@@ -284,7 +284,7 @@ class S3ParquetMixin:
             transformation_ctx=transformation_ctx,
         )
 
-    def write_dynamic_frame_to_parquet_in_s3(
+    def write_dynamic_frame_to_s3_parquet(
         self: GlueContext,
         frame: DynamicFrame,
         connection_options: S3SinkConnectionOptions,
@@ -320,7 +320,7 @@ class S3ParquetMixin:
         )
 
 
-class JSONFormatOptions(BaseFormatOptions, total=False):
+class JSONFormatOptions(S3FormatOptions, total=False):
     """Format options for JSON files.
 
     Parameters
@@ -350,7 +350,7 @@ class JSONFormatOptions(BaseFormatOptions, total=False):
 class S3JSONMixin:
     """Mixin for working with JSON files in S3."""
 
-    def create_dynamic_frame_from_json_in_s3(
+    def create_dynamic_frame_from_s3_json(
         self: GlueContext,
         connection_options: S3SourceConnectionOptions,
         format_options: JSONFormatOptions | None = None,
@@ -381,7 +381,7 @@ class S3JSONMixin:
             transformation_ctx=transformation_ctx,
         )
 
-    def write_dynamic_frame_to_json_in_s3(
+    def write_dynamic_frame_to_s3_json(
         self: GlueContext,
         frame: DynamicFrame,
         connection_options: S3SinkConnectionOptions,
@@ -417,7 +417,7 @@ class S3JSONMixin:
         )
 
 
-class XMLFormatOptions(BaseFormatOptions, total=False):
+class XMLFormatOptions(S3FormatOptions, total=False):
     """Format options for XML files.
 
     Parameters
@@ -459,7 +459,7 @@ class XMLFormatOptions(BaseFormatOptions, total=False):
 class S3XMLMixin:
     """Mixin for working with XML files in S3."""
 
-    def create_dynamic_frame_from_xml_in_s3(
+    def create_dynamic_frame_from_s3_xml(
         self: GlueContext,
         connection_options: S3SourceConnectionOptions,
         format_options: XMLFormatOptions | None = None,
@@ -490,7 +490,7 @@ class S3XMLMixin:
             transformation_ctx=transformation_ctx,
         )
 
-    def write_dynamic_frame_to_xml_in_s3(
+    def write_dynamic_frame_to_s3_xml(
         self: GlueContext,
         frame: DynamicFrame,
         connection_options: S3SinkConnectionOptions,

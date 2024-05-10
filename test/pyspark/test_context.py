@@ -1,13 +1,13 @@
 from unittest.mock import patch, sentinel
 
 import pytest
-from glue_utils.pyspark.context import GluePySparkContext
-from glue_utils.pyspark.mixins.jdbc import JDBCConnectionOptions
-from glue_utils.pyspark.mixins.s3 import (
-    BaseFormatOptions,
+from glue_utils.pyspark import (
     CSVFormatOptions,
+    GluePySparkContext,
+    JDBCConnectionOptions,
     JSONFormatOptions,
     ParquetFormatOptions,
+    S3FormatOptions,
     S3SinkConnectionOptions,
     S3SourceConnectionOptions,
     XMLFormatOptions,
@@ -138,17 +138,17 @@ class TestGluePySparkContextForS3:
             ),
         ],
     )
-    def test_create_dynamic_frame_in_s3(
+    def test_create_dynamic_frame_from_s3(
         self,
         format_name: str,
-        format_options_cls: type[BaseFormatOptions],
+        format_options_cls: type[S3FormatOptions],
         format_options: dict[str, str],
         glue_pyspark_context: GluePySparkContext,
         mock_create_dynamic_frame_from_options,
     ):
         create_dynamic_frame = getattr(
             glue_pyspark_context,
-            f"create_dynamic_frame_from_{format_name}_in_s3",
+            f"create_dynamic_frame_from_s3_{format_name}",
         )
         dynamic_frame = create_dynamic_frame(
             connection_options=S3SourceConnectionOptions(
@@ -192,16 +192,16 @@ class TestGluePySparkContextForS3:
             ),
         ],
     )
-    def test_write_dynamic_frame_in_s3(
+    def test_write_dynamic_frame_to_s3(
         self,
         format_name: str,
-        format_options_cls: type[BaseFormatOptions],
+        format_options_cls: type[S3FormatOptions],
         format_options: dict[str, str],
         glue_pyspark_context: GluePySparkContext,
         mock_write_dynamic_frame_from_options,
     ):
         write_dynamic_frame = getattr(
-            glue_pyspark_context, f"write_dynamic_frame_to_{format_name}_in_s3"
+            glue_pyspark_context, f"write_dynamic_frame_to_s3_{format_name}"
         )
         dynamic_frame = write_dynamic_frame(
             frame=sentinel.dynamic_frame,

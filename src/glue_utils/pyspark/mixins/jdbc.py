@@ -64,6 +64,8 @@ class JDBCConnectionOptions(TypedDict, total=False):
     sampleQuery: str
     enablePartitioningForSampleQuery: bool
     sampleSize: int
+    jobBookmarkKeys: list[str]
+    jobBookmarkKeysSortOrder: Literal["asc", "desc"]
 
 
 class SQLServerMixin:
