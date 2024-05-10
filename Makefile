@@ -67,31 +67,30 @@ clean: ## Delete generated artifacts
 	@rm -rf __pycache__ .coverage .mypy_cache .pytest_cache .ruff_cache dist htmlcov
 
 
-.PHONY: bumpver-patch-rc
-bumpver-patch-rc: ## Bump patch version to release candidate
-	@poetry run bumpver update --no-fetch --patch --tag=rc --tag-num
+.PHONY: publish
+publish: ## Publish package to PyPI
+	@poetry publish --build
+
+
+.PHONY: bumpver-rc
+bumpver-rc: ## Bump release candidate
+	@poetry run bumpver update --no-fetch --tag=rc --tag-num
+	@$(MAKE) publish
 
 
 .PHONY: bumpver-patch
 bumpver-patch: ## Bump patch version
 	@poetry run bumpver update --no-fetch --patch
-
-
-.PHONY: bumpver-minor-rc
-bumpver-minor-rc: ## Bump minor version to release candidate
-	@poetry run bumpver update --no-fetch --minor --tag=rc --tag-num
+	@$(MAKE) publish
 
 
 .PHONY: bumpver-minor
 bumpver-minor: ## Bump minor version
 	@poetry run bumpver update --no-fetch --minor
-
-
-.PHONY: bumpver-major-rc
-bumpver-major-rc: ## Bump major version to release candidate
-	@poetry run bumpver update --no-fetch --major --tag=rc --tag-num
+	@$(MAKE) publish
 
 
 .PHONY: bumpver-major
 bumpver-major: ## Bump major version
 	@poetry run bumpver update --no-fetch --major
+	@$(MAKE) publish
