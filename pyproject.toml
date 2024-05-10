@@ -131,7 +131,7 @@ exclude_also = [
 
 [tool.bumpver]
 current_version = "0.2.3"
-version_pattern = "MAJOR.MINOR.PATCH"
+version_pattern = "MAJOR.MINOR.PATCH[PYTAGNUM]"
 commit_message = "release: Bump version {old_version} -> {new_version}"
 commit = true
 

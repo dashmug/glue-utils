@@ -65,3 +65,33 @@ checks: format typecheck importcheck test
 .PHONY: clean
 clean: ## Delete generated artifacts
 	@rm -rf __pycache__ .coverage .mypy_cache .pytest_cache .ruff_cache dist htmlcov
+
+
+.PHONY: bumpver-patch-rc
+bumpver-patch-rc: ## Bump patch version to release candidate
+	@poetry run bumpver update --no-fetch --patch --tag=rc --tag-num
+
+
+.PHONY: bumpver-patch
+bumpver-patch: ## Bump patch version
+	@poetry run bumpver update --no-fetch --patch
+
+
+.PHONY: bumpver-minor-rc
+bumpver-minor-rc: ## Bump minor version to release candidate
+	@poetry run bumpver update --no-fetch --minor --tag=rc --tag-num
+
+
+.PHONY: bumpver-minor
+bumpver-minor: ## Bump minor version
+	@poetry run bumpver update --no-fetch --minor
+
+
+.PHONY: bumpver-major-rc
+bumpver-major-rc: ## Bump major version to release candidate
+	@poetry run bumpver update --no-fetch --major --tag=rc --tag-num
+
+
+.PHONY: bumpver-major
+bumpver-major: ## Bump major version
+	@poetry run bumpver update --no-fetch --major
