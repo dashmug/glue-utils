@@ -12,45 +12,15 @@ if TYPE_CHECKING:
 class JDBCConnectionOptions(TypedDict, total=False):
     """Connection options for JDBC connections.
 
-    Parameters
-    ----------
-    useConnectionProperties : Literal["true"], optional
-        Whether to use connection properties. Defaults to None.
-    connectionName : str, optional
-        The name of the connection. Defaults to None.
-    url : str, optional
-        The JDBC URL. Defaults to None.
-    dbtable : str, optional
-        The name of the table. Defaults to None.
-    user : str, optional
-        The username for the connection. Defaults to None.
-    password : str, optional
-        The password for the connection. Defaults to None.
-    customJdbcDriverS3Path : str, optional
-        The S3 path for the custom JDBC driver. Defaults to None.
-    customJdbcDriverClassName : str, optional
-        The class name for the custom JDBC driver. Defaults to None.
-    bulkSize : int, optional
-        The bulk size for the connection. Defaults to None.
-    hashfield : str, optional
-        The hash field for the connection. Defaults to None.
-    hashexpression : str, optional
-        The hash expression for the connection. Defaults to None.
-    hashpartitions : int, optional
-        The number of hash partitions for the connection. Defaults to None.
-    sampleQuery : str, optional
-        The sample query for the connection. Defaults to None.
-    enablePartitioningForSampleQuery : bool, optional
-        Whether to enable partitioning for the sample query. Defaults to None.
-    sampleSize : int, optional
-        The sample size for the connection. Defaults to None.
-
-    Reference: https://docs.aws.amazon.com/glue/latest/dg/aws-glue-programming-etl-connect-jdbc-home.html
+    Reference
+    ---------
+    - https://docs.aws.amazon.com/glue/latest/dg/aws-glue-programming-etl-connect-jdbc-home.html
 
     """
 
     useConnectionProperties: Literal["true"]
     connectionName: str
+    databaseName: str
     url: str
     dbtable: str
     user: str

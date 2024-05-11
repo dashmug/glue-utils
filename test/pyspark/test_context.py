@@ -154,7 +154,9 @@ class TestGluePySparkContextForS3:
             connection_options=S3SourceConnectionOptions(
                 paths=["s3://bucket/key/input-path"]
             ),
-            format_options=format_options_cls(**format_options),
+            format_options=format_options_cls(**format_options)
+            if format_options
+            else {},
             transformation_ctx="test",
         )
 
@@ -162,7 +164,7 @@ class TestGluePySparkContextForS3:
             connection_type="s3",
             connection_options={"paths": ["s3://bucket/key/input-path"]},
             format=format_name,
-            format_options=format_options,
+            format_options=format_options or {},
             transformation_ctx="test",
         )
         assert dynamic_frame == sentinel.dynamic_frame
@@ -210,7 +212,7 @@ class TestGluePySparkContextForS3:
             ),
             format_options=format_options_cls(**format_options)
             if format_options
-            else None,
+            else {},
             transformation_ctx="test",
         )
 
@@ -219,7 +221,7 @@ class TestGluePySparkContextForS3:
             connection_type="s3",
             connection_options={"path": "s3://bucket/key/output-path"},
             format=format_name,
-            format_options=format_options,
+            format_options=format_options or {},
             transformation_ctx="test",
         )
         assert dynamic_frame == sentinel.dynamic_frame
