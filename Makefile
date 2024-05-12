@@ -75,22 +75,18 @@ publish: ## Publish package to PyPI
 .PHONY: bumpver-rc
 bumpver-rc: ## Bump release candidate
 	@poetry run bumpver update --no-fetch --tag=rc --tag-num
-	@$(MAKE) publish
 
 
 .PHONY: bumpver-patch
 bumpver-patch: ## Bump patch version
-	@poetry run bumpver update --no-fetch --patch
-	@$(MAKE) publish
+	@poetry run bumpver update --no-fetch --patch --tag=final
 
 
 .PHONY: bumpver-minor
 bumpver-minor: ## Bump minor version
-	@poetry run bumpver update --no-fetch --minor
-	@$(MAKE) publish
+	@poetry run bumpver update --no-fetch --minor --tag=final
 
 
 .PHONY: bumpver-major
 bumpver-major: ## Bump major version
-	@poetry run bumpver update --no-fetch --major
-	@$(MAKE) publish
+	@poetry run bumpver update --no-fetch --major --tag=final
