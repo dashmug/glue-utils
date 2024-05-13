@@ -5,11 +5,11 @@ from __future__ import annotations
 import sys
 from contextlib import contextmanager
 from dataclasses import fields
-from typing import TYPE_CHECKING, Generic, cast, overload
+from typing import TYPE_CHECKING, Generic, TypedDict, cast, overload
 
 from awsglue.job import Job
 from awsglue.utils import getResolvedOptions
-from pyspark import SparkContext
+from pyspark import SparkConf, SparkContext
 from typing_extensions import TypeVar
 
 from glue_utils import BaseOptions
@@ -21,6 +21,13 @@ if TYPE_CHECKING:
     from pyspark.sql import SparkSession
 
 T = TypeVar("T", bound=BaseOptions, default=BaseOptions)
+
+
+class GlueContextOptions(TypedDict, total=False):
+    """Options to be passed as kwargs when instantiating a GlueContext object."""
+
+    minPartitions: int
+    targetPartitions: int
 
 
 class GluePySparkJob(Generic[T]):
@@ -43,17 +50,37 @@ class GluePySparkJob(Generic[T]):
         options_cls: type[T],
     ) -> None: ...
 
+    @overload
+    def __init__(
+        self: GluePySparkJob[T | BaseOptions],
+        *,
+        spark_conf: SparkConf,
+    ) -> None: ...
+
+    @overload
+    def __init__(
+        self: GluePySparkJob[T | BaseOptions],
+        *,
+        glue_context_options: GlueContextOptions,
+    ) -> None: ...
+
     def __init__(
         self,
         *,
         options_cls: type[T | BaseOptions] = BaseOptions,
+        spark_conf: SparkConf | None = None,
+        glue_context_options: GlueContextOptions | None = None,
     ) -> None:
-        """Initialize the GlueETLJob.
+        """Initialize a Job object.
 
         Parameters
         ----------
-        options_cls, optional
-            Has to be a subclass of BaseOptions, by default BaseOptions
+        options_cls : type[T | BaseOptions], optional
+            The class representing the options for the job. Defaults to BaseOptions.
+        spark_conf : SparkConf | None, optional
+            The Spark configuration. Defaults to None.
+        glue_context_options : GlueContextOptions | None, optional
+            The Glue context options. Defaults to None.
 
         """
         if not issubclass(options_cls, BaseOptions):
@@ -67,16 +94,53 @@ class GluePySparkJob(Generic[T]):
             params.append("JOB_NAME")
         params.extend(field_names)
 
-        _options = getResolvedOptions(sys.argv, params)
+        glue_args = getResolvedOptions(sys.argv, params)
 
-        self.options = cast(T, options_cls.from_options(_options))
+        self.options = cast(T, options_cls.from_options(glue_args))
 
-        self.sc = SparkContext.getOrCreate()
-        self.glue_context = GluePySparkContext(self.sc)
+        self.sc = self.create_spark_context(spark_conf)
+        self.glue_context = self.create_glue_context(glue_context_options)
         self.spark = self.glue_context.spark_session
 
         self._job = Job(self.glue_context)
-        self._job.init(_options.get("JOB_NAME", ""), _options)
+        self._job.init(glue_args.get("JOB_NAME", ""), glue_args)
+
+    def create_spark_context(self, conf: SparkConf | None = None) -> SparkContext:
+        """Create a SparkContext.
+
+        Parameters
+        ----------
+        conf, optional
+            The SparkConf to use, by default None
+
+        Returns
+        -------
+        SparkContext
+            The SparkContext created.
+
+        """
+        if conf:
+            if isinstance(conf, SparkConf):
+                return SparkContext.getOrCreate(conf=conf)
+            msg = "conf must be an instance of SparkConf."
+            raise TypeError(msg)
+        return SparkContext.getOrCreate()
+
+    def create_glue_context(
+        self,
+        glue_context_options: GlueContextOptions | None = None,
+    ) -> GluePySparkContext:
+        """Create a GluePySparkContext object using the provided SparkContext and PartitionOptions.
+
+        Parameters
+        ----------
+        glue_context_options : GlueContextOptions | None, optional
+            Optional PartitionOptions object containing additional options for configuring the GlueContext.
+
+        """
+        if glue_context_options:
+            return GluePySparkContext(self.sc, **glue_context_options)
+        return GluePySparkContext(self.sc)
 
     @contextmanager
     def managed_glue_context(

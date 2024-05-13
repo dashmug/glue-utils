@@ -1,13 +1,17 @@
 from dataclasses import dataclass, fields
-from unittest.mock import patch
+from typing import TYPE_CHECKING
+from unittest.mock import ANY, patch
 
 import pytest
 from awsglue.context import GlueContext
 from glue_utils import BaseOptions
 from glue_utils.pyspark import GluePySparkJob
-from pyspark import SparkContext
+from pyspark import SparkConf, SparkContext
 from pyspark.sql import SparkSession
 from typing_extensions import TypeVar
+
+if TYPE_CHECKING:
+    from glue_utils.pyspark.job import GlueContextOptions
 
 
 @dataclass
@@ -16,12 +20,18 @@ class MockOptions(BaseOptions):
     OPTION_FROM_CLASS_B: str = "default-value"
 
 
-class NotBaseOptions: ...
+class Dummy: ...
 
 
 @pytest.fixture
 def mock_get_resolved_options():
     with patch("glue_utils.pyspark.job.getResolvedOptions") as patched:
+        yield patched
+
+
+@pytest.fixture
+def mock_glue_pyspark_context_cls():
+    with patch("glue_utils.pyspark.job.GluePySparkContext") as patched:
         yield patched
 
 
@@ -53,13 +63,10 @@ T = TypeVar("T", bound=BaseOptions, default=BaseOptions)
 
 def assert_job_attributes(job: GluePySparkJob[T]):
     sc = job.sc
-
-    assert isinstance(sc, SparkContext)
-
     glue_context = job.glue_context
 
+    assert isinstance(sc, SparkContext)
     assert_glue_context_attributes(glue_context)
-
     assert job.sc == glue_context.spark_session.sparkContext
 
 
@@ -91,6 +98,8 @@ class TestGluePySparkJob:
                 resolved_options,
             )
 
+            job.sc.stop()
+
     def test_init_options_cls(self, mock_get_resolved_options, mock_job):
         mock_get_resolved_options.return_value = {
             "JOB_NAME": "test-job",
@@ -115,15 +124,70 @@ class TestGluePySparkJob:
             },
         )
 
+        job.sc.stop()
+
     def test_init_with_invalid_options_cls(self, mock_get_resolved_options):
         mock_get_resolved_options.return_value = {
             "JOB_NAME": "test-job",
             "OPTION_FROM_CLASS_A": "mock-option",
         }
 
-        with pytest.raises(TypeError):
-            GluePySparkJob(options_cls=NotBaseOptions)  # type: ignore[type-var]
+        with pytest.raises(
+            TypeError,
+            match="options_cls must be a subclass of BaseOptions",
+        ):
+            GluePySparkJob(options_cls=Dummy)  # type: ignore[type-var]
 
+    def test_init_with_invalid_spark_conf(self, mock_get_resolved_options):
+        mock_get_resolved_options.return_value = {
+            "JOB_NAME": "test-job",
+        }
+
+        with pytest.raises(TypeError, match="conf must be an instance of SparkConf"):
+            GluePySparkJob(spark_conf=Dummy())  # type: ignore[call-overload]
+
+    def test_init_with_spark_conf(self, mock_get_resolved_options):
+        mock_get_resolved_options.return_value = {
+            "JOB_NAME": "test-job",
+        }
+
+        spark_conf = SparkConf()
+        spark_conf.set("test.key", "test.value")
+
+        job = GluePySparkJob(spark_conf=spark_conf)
+
+        assert_job_attributes(job)
+        assert job.sc.getConf().get("test.key") == "test.value"
+
+        job.sc.stop()
+
+    def test_init_with_partition_options(
+        self,
+        mock_get_resolved_options,
+        mock_glue_pyspark_context_cls,
+    ):
+        mock_get_resolved_options.return_value = {
+            "JOB_NAME": "test-job",
+        }
+
+        glue_context_options: GlueContextOptions = {
+            "minPartitions": 2,
+            "targetPartitions": 2,
+        }
+
+        job = GluePySparkJob(glue_context_options=glue_context_options)
+
+        mock_glue_pyspark_context_cls.assert_called_once_with(
+            ANY,
+            minPartitions=2,
+            targetPartitions=2,
+        )
+        assert isinstance(job.sc, SparkContext)
+
+        job.sc.stop()
+
+
+class TestGluePySparkJobMethods:
     def test_managed_glue_context(self, mock_job, glue_pyspark_job):
         with glue_pyspark_job.managed_glue_context() as glue_context:
             assert_glue_context_attributes(glue_context)
