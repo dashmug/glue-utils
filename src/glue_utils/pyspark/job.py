@@ -13,7 +13,8 @@ from pyspark import SparkConf, SparkContext
 from typing_extensions import TypeVar
 
 from glue_utils import BaseOptions
-from glue_utils.pyspark.context import GluePySparkContext
+
+from .context import GluePySparkContext
 
 if TYPE_CHECKING:
     from collections.abc import Generator

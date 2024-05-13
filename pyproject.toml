@@ -76,7 +76,9 @@ ignore = [
     # missing-type-cls
     "ANN102",
     # line-too-long
-    "E501"
+    "E501",
+    # Ignore camelCase attributes since Glue uses a lot of them
+    "N815"
 ]
 # # Allow unused variables when underscore-prefixed.
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"

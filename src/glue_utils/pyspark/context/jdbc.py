@@ -1,41 +1,17 @@
 from __future__ import annotations  # noqa: D100
 
-from typing import TYPE_CHECKING, Literal, TypedDict
+from typing import TYPE_CHECKING
 
-from .connection_types import ConnectionType
+from glue_utils.pyspark.connection_types import ConnectionType
 
 if TYPE_CHECKING:
     from awsglue.context import GlueContext
     from awsglue.dynamicframe import DynamicFrame
 
-
-class JDBCConnectionOptions(TypedDict, total=False):
-    """Connection options for JDBC connections.
-
-    Reference
-    ---------
-    - https://docs.aws.amazon.com/glue/latest/dg/aws-glue-programming-etl-connect-jdbc-home.html
-
-    """
-
-    useConnectionProperties: Literal["true"]
-    connectionName: str
-    databaseName: str
-    url: str
-    dbtable: str
-    user: str
-    password: str
-    customJdbcDriverS3Path: str
-    customJdbcDriverClassName: str
-    bulkSize: int
-    hashfield: str
-    hashexpression: str
-    hashpartitions: int
-    sampleQuery: str
-    enablePartitioningForSampleQuery: bool
-    sampleSize: int
-    jobBookmarkKeys: list[str]
-    jobBookmarkKeysSortOrder: Literal["asc", "desc"]
+    from glue_utils.pyspark.connection_options import (
+        JDBCConnectionOptions,
+        RedshiftJDBCConnectionOptions,
+    )
 
 
 class SQLServerMixin:
@@ -278,5 +254,71 @@ class PostgreSQLMixin:
         )
 
 
-class JDBCMixin(MySQLMixin, OracleMixin, PostgreSQLMixin, SQLServerMixin):
+class RedshiftSQLMixin:
+    """Mixin for working with Redshift connections."""
+
+    def create_dynamic_frame_from_redshift(
+        self: GlueContext,
+        connection_options: RedshiftJDBCConnectionOptions,
+        transformation_ctx: str = "",
+    ) -> DynamicFrame:
+        """Create a DynamicFrame from a Redshift database connection.
+
+        Parameters
+        ----------
+        connection_options : RedshiftJDBCConnectionOptions
+            The connection options for the Redshift database.
+        transformation_ctx : str, optional
+            The transformation context for the DynamicFrame. Defaults to "".
+
+        Returns
+        -------
+        DynamicFrame
+            The DynamicFrame created from the Redshift database.
+
+        """
+        return self.create_dynamic_frame_from_options(
+            connection_type=ConnectionType.REDSHIFT.value,
+            connection_options=connection_options,
+            transformation_ctx=transformation_ctx,
+        )
+
+    def write_dynamic_frame_to_redshift(
+        self: GlueContext,
+        frame: DynamicFrame,
+        connection_options: RedshiftJDBCConnectionOptions,
+        transformation_ctx: str = "",
+    ) -> DynamicFrame:
+        """Write a DynamicFrame to a Redshift database.
+
+        Parameters
+        ----------
+        frame : DynamicFrame
+            The DynamicFrame to write to the database.
+        connection_options : RedshiftJDBCConnectionOptions
+            The JDBC connection options for the database.
+        transformation_ctx : str, optional
+            The transformation context. Defaults to "".
+
+        Returns
+        -------
+        DynamicFrame
+            The DynamicFrame that was written to the database.
+
+        """
+        return self.write_dynamic_frame_from_options(
+            frame=frame,
+            connection_type=ConnectionType.REDSHIFT.value,
+            connection_options=connection_options,
+            transformation_ctx=transformation_ctx,
+        )
+
+
+class JDBCMixin(
+    MySQLMixin,
+    OracleMixin,
+    PostgreSQLMixin,
+    RedshiftSQLMixin,
+    SQLServerMixin,
+):
     """Mixin for working with JDBC connections."""

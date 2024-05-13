@@ -4,14 +4,24 @@ from __future__ import annotations
 
 from awsglue.context import GlueContext
 
-from .mixins.jdbc import JDBCMixin
-from .mixins.s3 import S3Mixin
+from .documentdb import DocumentDBMixin
+from .dynamodb import DynamoDBMixin
+from .jdbc import JDBCMixin
+from .kinesis import KinesisMixin
+from .mongodb import MongoDBMixin
+from .opensearch import OpenSearchMixin
+from .s3 import S3Mixin
 
 
 class GluePySparkContext(
+    DocumentDBMixin,
+    DynamoDBMixin,
     JDBCMixin,
+    KinesisMixin,
+    MongoDBMixin,
+    OpenSearchMixin,
     S3Mixin,
-    # error: Class cannot subclass "AWSGlueContext" (has type "Any")  [misc]
+    # awsglue has no typings yet
     GlueContext,  # type: ignore[misc]
 ):
     """A custom PySpark context that extends the functionality of the AWS GlueContext.

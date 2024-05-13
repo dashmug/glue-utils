@@ -1,85 +1,24 @@
 from __future__ import annotations  # noqa: D100
 
-from enum import Enum
-from typing import TYPE_CHECKING, Literal, TypedDict
+from typing import TYPE_CHECKING
 
-from .connection_types import ConnectionType
+from glue_utils.pyspark.connection_types import ConnectionType
+from glue_utils.pyspark.formats import Format
 
 if TYPE_CHECKING:
     from awsglue.context import GlueContext
     from awsglue.dynamicframe import DynamicFrame
 
-
-class Format(Enum):
-    """Enum representing different file formats."""
-
-    AVRO = "avro"
-    CSV = "csv"
-    JSON = "json"
-    PARQUET = "parquet"
-    ORC = "orc"
-    XML = "xml"
-    GROKLOG = "grokLog"
-    ION = "ion"
-
-
-class S3SourceConnectionOptions(TypedDict, total=False):
-    """Connection options for S3 connections.
-
-    References
-    ----------
-    - AWS Glue Programming ETL Connect to S3:
-      https://docs.aws.amazon.com/glue/latest/dg/aws-glue-programming-etl-connect-s3-home.html
-
-    """
-
-    paths: list[str]
-    exclusions: str
-    compressionType: Literal["gzip", "bzip2"]
-    groupFiles: Literal["inPartition", "none"]
-    groupSize: str
-    recurse: bool
-    maxBand: int
-    maxFilesInBand: int
-    isFailFast: bool
-    catalogPartitionPredicate: str
-    excludeStorageClasses: list[str]
-
-
-class S3SinkConnectionOptions(TypedDict, total=False):
-    """Connection options for writing data to an S3 sink."""
-
-    path: str
-    compression: Literal["gzip", "bzip2"]
-    partitionKeys: list[str]
-
-
-class S3FormatOptions(TypedDict, total=False):
-    """Common format options for S3."""
-
-    attachFilename: str
-    attachTimestamp: str
-
-
-class CSVFormatOptions(S3FormatOptions, total=False):
-    """Format options for CSV files.
-
-    Reference
-    ---------
-    - AWS Glue Programming ETL Connect to CSV:
-      https://docs.aws.amazon.com/glue/latest/dg/aws-glue-programming-etl-connect-csv-home.html
-
-    """
-
-    separator: str
-    escaper: str
-    quoteChar: str
-    multiLine: bool
-    withHeader: bool
-    writeHeader: bool
-    skipFirst: bool
-    optimizePerformance: bool
-    strictCheckForQuoting: bool
+    from glue_utils.pyspark.connection_options import (
+        S3SinkConnectionOptions,
+        S3SourceConnectionOptions,
+    )
+    from glue_utils.pyspark.format_options import (
+        CSVFormatOptions,
+        JSONFormatOptions,
+        ParquetFormatOptions,
+        XMLFormatOptions,
+    )
 
 
 class S3CSVMixin:
@@ -152,27 +91,6 @@ class S3CSVMixin:
         )
 
 
-class ParquetFormatOptions(S3FormatOptions, total=False):
-    """Format options for Parquet files.
-
-    Reference
-    ---------
-    - AWS Glue Programming ETL Connect to Parquet:
-      https://docs.aws.amazon.com/glue/latest/dg/aws-glue-programming-etl-connect-parquet-home.html
-
-    """
-
-    useGlueParquetWriter: bool
-    compression: Literal[
-        "uncompressed",
-        "snappy",
-        "gzip",
-        "lzo",
-    ]
-    blockSize: int
-    pageSize: int
-
-
 class S3ParquetMixin:
     """Mixin for working with Parquet files in S3."""
 
@@ -243,22 +161,6 @@ class S3ParquetMixin:
         )
 
 
-class JSONFormatOptions(S3FormatOptions, total=False):
-    """Format options for JSON files.
-
-    Reference
-    ---------
-    - AWS Glue Programming ETL Connect to JSON:
-      https://docs.aws.amazon.com/glue/latest/dg/aws-glue-programming-etl-connect-json-home.html
-
-    """
-
-    jsonPath: str
-    multiline: bool
-    optimizePerformance: bool
-    withSchema: str
-
-
 class S3JSONMixin:
     """Mixin for working with JSON files in S3."""
 
@@ -327,26 +229,6 @@ class S3JSONMixin:
             format_options=format_options or {},
             transformation_ctx=transformation_ctx,
         )
-
-
-class XMLFormatOptions(S3FormatOptions, total=False):
-    """Format options for XML files.
-
-    Reference
-    ---------
-    - AWS Glue Programming ETL Connect to XML:
-      https://docs.aws.amazon.com/glue/latest/dg/aws-glue-programming-etl-format-xml-home.html#aws-glue-programming-etl-format-xml-reference
-
-    """
-
-    rowTag: str
-    encoding: str
-    excludeAttribute: bool
-    treatEmptyValueAsNull: bool
-    attributePrefix: str
-    valueTag: str
-    ignoreSurroundingSpaces: bool
-    withSchema: str
 
 
 class S3XMLMixin:

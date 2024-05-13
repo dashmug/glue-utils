@@ -1,10 +1,9 @@
-from unittest.mock import patch, sentinel
+from unittest.mock import sentinel
 
 import pytest
 from glue_utils.pyspark import (
     CSVFormatOptions,
     GluePySparkContext,
-    JDBCConnectionOptions,
     JSONFormatOptions,
     ParquetFormatOptions,
     S3FormatOptions,
@@ -12,108 +11,6 @@ from glue_utils.pyspark import (
     S3SourceConnectionOptions,
     XMLFormatOptions,
 )
-from pyspark import SparkContext
-
-
-@pytest.fixture(scope="session")
-def glue_pyspark_context():
-    sc = SparkContext.getOrCreate()
-    yield GluePySparkContext(sc)
-    sc.stop()
-
-
-@pytest.fixture
-def mock_create_dynamic_frame_from_options(glue_pyspark_context):
-    with patch.object(
-        glue_pyspark_context,
-        "create_dynamic_frame_from_options",
-        wraps=glue_pyspark_context.create_dynamic_frame_from_options,
-        return_value=sentinel.dynamic_frame,
-    ) as patched:
-        yield patched
-
-
-@pytest.fixture
-def mock_write_dynamic_frame_from_options(glue_pyspark_context):
-    with patch.object(
-        glue_pyspark_context,
-        "write_dynamic_frame_from_options",
-        wraps=glue_pyspark_context.write_dynamic_frame_from_options,
-        return_value=sentinel.dynamic_frame,
-    ) as patched:
-        yield patched
-
-
-CONNECTION_TYPES = ["sqlserver", "mysql", "postgresql", "oracle"]
-
-
-@pytest.mark.parametrize("connection_type", CONNECTION_TYPES)
-class TestGluePySparkContextForJDBC:
-    def test_create_dynamic_frame(
-        self,
-        connection_type: str,
-        glue_pyspark_context: GluePySparkContext,
-        mock_create_dynamic_frame_from_options,
-    ):
-        create_dynamic_frame = getattr(
-            glue_pyspark_context,
-            f"create_dynamic_frame_from_{connection_type}",
-        )
-        dynamic_frame = create_dynamic_frame(
-            connection_options=JDBCConnectionOptions(
-                url="something",
-                user="user",
-                dbtable="dbtable",
-                password="password",  # noqa: S106
-            ),
-            transformation_ctx="test",
-        )
-
-        mock_create_dynamic_frame_from_options.assert_called_once_with(
-            connection_type=connection_type,
-            connection_options={
-                "url": "something",
-                "user": "user",
-                "dbtable": "dbtable",
-                "password": "password",
-            },
-            transformation_ctx="test",
-        )
-        assert dynamic_frame == sentinel.dynamic_frame
-
-    def test_write_dynamic_frame(
-        self,
-        connection_type: str,
-        glue_pyspark_context: GluePySparkContext,
-        mock_write_dynamic_frame_from_options,
-    ):
-        write_dynamic_frame = getattr(
-            glue_pyspark_context,
-            f"write_dynamic_frame_to_{connection_type}",
-        )
-        dynamic_frame = write_dynamic_frame(
-            frame=sentinel.dynamic_frame,
-            connection_options=JDBCConnectionOptions(
-                url="something",
-                user="user",
-                dbtable="dbtable",
-                password="password",  # noqa: S106
-            ),
-            transformation_ctx="test",
-        )
-
-        mock_write_dynamic_frame_from_options.assert_called_once_with(
-            frame=sentinel.dynamic_frame,
-            connection_type=connection_type,
-            connection_options={
-                "url": "something",
-                "user": "user",
-                "dbtable": "dbtable",
-                "password": "password",
-            },
-            transformation_ctx="test",
-        )
-        assert dynamic_frame == sentinel.dynamic_frame
 
 
 class TestGluePySparkContextForS3:

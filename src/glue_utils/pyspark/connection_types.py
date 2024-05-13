@@ -1,4 +1,6 @@
-from enum import Enum  # noqa: D100
+"""Module containing classes and types for handling different connection types."""
+
+from enum import Enum
 
 
 class ConnectionType(Enum):
