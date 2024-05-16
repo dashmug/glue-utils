@@ -143,6 +143,9 @@ commit = true
 "src/glue_utils/__init__.py" = [
     '^__version__ = "{version}"$',
 ]
+"sonar-project.properties" = [
+    '^sonar.projectVersion={version}$',
+]
 
 [tool.importlinter]
 root_package = "glue_utils"

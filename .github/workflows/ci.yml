@@ -50,7 +50,7 @@ jobs:
       - name: Build python packages
         run: poetry build
   tests:
-    name: Run tests in container
+    name: Run tests in Glue container
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4.1.5

@@ -10,5 +10,5 @@ services:
       - ..:/home/glue_user/workspace
     tty: true
     environment:
-      - AWS_REGION=ap-southeast-2
+      - AWS_REGION=${AWS_REGION:-us-east-1}
       - DISABLE_SSL=true

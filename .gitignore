@@ -9,5 +9,7 @@ wheels/
 # venv
 .venv
 
+# coverage
 .coverage
+coverage
 htmlcov
