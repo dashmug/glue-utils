@@ -1,3 +1,5 @@
+DOCKER_COMPOSE_RUN = USER_ID=$$(id -u) docker compose --file docker/docker-compose.yml run --rm --build glue-utils
+
 .PHONY: all
 all: ## Show help (default)
 	@echo "=== Glue Utils ==="
@@ -45,17 +47,12 @@ importcheck: ## Check import rules
 
 .PHONY: test
 test: docker/requirements.txt ## Run automated tests
-	@docker compose --file docker/docker-compose.yml run --rm --build glue-utils -c pytest
-
-
-.PHONY: coverage
-coverage: docker/requirements.txt ## Generate test coverage HTML report
-	@docker compose --file docker/docker-compose.yml run --rm --build glue-utils -c "pytest --cov=glue_utils --cov-branch --cov-report=term --cov-report=html"
+	@$(DOCKER_COMPOSE_RUN) -c pytest
 
 
 .PHONY: shell
 shell: docker/requirements.txt ## Enter a shell in the container
-	@docker compose --file docker/docker-compose.yml run --rm --build glue-utils -c bash
+	@$(DOCKER_COMPOSE_RUN) -c bash
 
 
 .PHONY: checks

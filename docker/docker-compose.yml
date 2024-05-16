@@ -6,6 +6,8 @@ services:
     build:
       context: ../
       dockerfile: docker/Dockerfile
+      args:
+        - USER_ID=${USER_ID:-}
     volumes:
       - ..:/home/glue_user/workspace
     tty: true
