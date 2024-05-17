@@ -109,6 +109,7 @@ filterwarnings = [
 ]
 
 [tool.coverage.run]
+source = ["src/glue_utils"]
 relative_files = true
 branch = true
 omit = ["**/test_*.py"]
