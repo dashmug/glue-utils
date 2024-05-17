@@ -151,6 +151,9 @@ class TestGluePySparkJob:
             "JOB_NAME": "test-job",
         }
 
+        # Make sure existing context is stopped.
+        SparkContext.getOrCreate().stop()
+
         spark_conf = SparkConf()
         spark_conf.set("test.key", "test.value")
 
