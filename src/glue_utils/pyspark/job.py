@@ -5,7 +5,7 @@ from __future__ import annotations
 import sys
 from contextlib import contextmanager
 from dataclasses import fields
-from typing import TYPE_CHECKING, Generic, TypedDict, cast, overload
+from typing import TYPE_CHECKING, Generic, Literal, TypedDict, cast, overload
 
 from awsglue.job import Job
 from awsglue.utils import getResolvedOptions
@@ -65,12 +65,38 @@ class GluePySparkJob(Generic[T]):
         glue_context_options: GlueContextOptions,
     ) -> None: ...
 
+    @overload
+    def __init__(
+        self: GluePySparkJob[T | BaseOptions],
+        *,
+        log_level: Literal[
+            "ALL",
+            "DEBUG",
+            "ERROR",
+            "FATAL",
+            "INFO",
+            "OFF",
+            "TRACE",
+            "WARN",
+        ],
+    ) -> None: ...
+
     def __init__(
         self,
         *,
         options_cls: type[T | BaseOptions] = BaseOptions,
         spark_conf: SparkConf | None = None,
         glue_context_options: GlueContextOptions | None = None,
+        log_level: Literal[
+            "ALL",
+            "DEBUG",
+            "ERROR",
+            "FATAL",
+            "INFO",
+            "OFF",
+            "TRACE",
+            "WARN",
+        ] = "WARN",
     ) -> None:
         """Initialize a Job object.
 
@@ -82,6 +108,8 @@ class GluePySparkJob(Generic[T]):
             The Spark configuration. Defaults to None.
         glue_context_options : GlueContextOptions | None, optional
             The Glue context options. Defaults to None.
+        log_level : Literal["ALL", "DEBUG", "ERROR", "FATAL", "INFO", "OFF", "TRACE", "WARN"], optional
+            The log level for the job. Defaults to "WARN".
 
         """
         if not issubclass(options_cls, BaseOptions):
@@ -100,6 +128,8 @@ class GluePySparkJob(Generic[T]):
         self.options = cast(T, options_cls.from_options(glue_args))
 
         self.sc = self.create_spark_context(spark_conf)
+        self.set_log_level(log_level)
+
         self.glue_context = self.create_glue_context(glue_context_options)
         self.spark = self.glue_context.spark_session
 
@@ -164,3 +194,34 @@ class GluePySparkJob(Generic[T]):
     def commit(self) -> None:
         """Commit the Glue ETL job."""
         self._job.commit()
+
+    def set_log_level(
+        self,
+        level: Literal[
+            "ALL",
+            "DEBUG",
+            "ERROR",
+            "FATAL",
+            "INFO",
+            "OFF",
+            "TRACE",
+            "WARN",
+        ],
+    ) -> None:
+        """Set the log level for the SparkContext.
+
+        Parameters
+        ----------
+        level : str
+            The log level to be set. Must be one of the following:
+            - "ALL"
+            - "DEBUG"
+            - "ERROR"
+            - "FATAL"
+            - "INFO"
+            - "OFF"
+            - "TRACE"
+            - "WARN"
+
+        """
+        self.sc.setLogLevel(level)
