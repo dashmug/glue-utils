@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "glue-utils"
-version = "0.4.0"
+version = "0.5.0"
 package-mode = true
 description = "Reusable utilities for working with Glue PySpark jobs"
 authors = ["Noel Llevares <dashmug@gmail.com>"]
@@ -138,7 +138,7 @@ exclude_also = [
 output = "coverage/results.xml"
 
 [tool.bumpver]
-current_version = "0.4.0"
+current_version = "0.5.0"
 version_pattern = "MAJOR.MINOR.PATCH[PYTAGNUM]"
 commit_message = "release: Bump version {old_version} -> {new_version}"
 commit = true
