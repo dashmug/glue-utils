@@ -1,4 +1,6 @@
-from typing import Literal, TypedDict  # noqa: D100
+"""Module containing dictionary structures for handling different connection types."""
+
+from typing import Literal, TypedDict
 
 
 class BookmarkConnectionOptions(TypedDict, total=False):
@@ -304,3 +306,46 @@ OpenSearchSinkConnectionOptions = TypedDict(
     },
     total=False,
 )
+
+# https://docs.aws.amazon.com/glue/latest/dg/aws-glue-programming-etl-connect-kafka-home.html
+KafkaSourceConnectionOptions = TypedDict(
+    "KafkaSourceConnectionOptions",
+    {
+        "connectionName": str,
+        "bootstrap.servers": str,
+        "security.protocol": str,
+        "topicName": str,
+        "assign": str,
+        "subscribePattern": str,
+        "classification": str,
+        "delimiter": str,
+        "startingOffsets": str,
+        "startingTimestamp": str,
+        "endingOffsets": str,
+        "pollTimeoutMs": int,
+        "numRetries": int,
+        "retryIntervalMs": int,
+        "maxOffsetsPerTrigger": int,
+        "minPartitions": int,
+        "includeHeaders": bool,
+        "schema": str,
+        "inferSchema": bool,
+        "addRecordTimestamp": bool,
+        "emitConsumerLagMetrics": bool,
+    },
+    total=False,
+)
+
+
+class KafkaSinkConnectionOptions(TypedDict, total=False):
+    """Connection options for writing to Kafka.
+
+    Reference:
+    - https://docs.aws.amazon.com/glue/latest/dg/aws-glue-programming-etl-connect-kafka-home.html
+    """
+
+    connectionName: str
+    topic: str
+    partition: str
+    key: str
+    classification: str

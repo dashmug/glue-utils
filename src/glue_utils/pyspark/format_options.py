@@ -1,4 +1,6 @@
-from typing import Literal, TypedDict  # noqa: D100
+"""Module containing dictionary structures for handling different format options."""
+
+from typing import Literal, TypedDict
 
 
 class S3FormatOptions(TypedDict, total=False):

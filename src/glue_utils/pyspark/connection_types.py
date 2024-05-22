@@ -1,4 +1,4 @@
-"""Module containing classes and types for handling different connection types."""
+"""Module containing types for handling different connection types."""
 
 from enum import Enum
 

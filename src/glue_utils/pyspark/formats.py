@@ -1,4 +1,6 @@
-from enum import Enum  # noqa: D100
+"""Module containing the Format enum."""
+
+from enum import Enum
 
 
 class Format(Enum):

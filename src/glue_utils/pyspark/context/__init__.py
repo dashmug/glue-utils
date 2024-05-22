@@ -7,6 +7,7 @@ from awsglue.context import GlueContext
 from .documentdb import DocumentDBMixin
 from .dynamodb import DynamoDBMixin
 from .jdbc import JDBCMixin
+from .kafka import KafkaMixin
 from .kinesis import KinesisMixin
 from .mongodb import MongoDBMixin
 from .opensearch import OpenSearchMixin
@@ -17,6 +18,7 @@ class GluePySparkContext(
     DocumentDBMixin,
     DynamoDBMixin,
     JDBCMixin,
+    KafkaMixin,
     KinesisMixin,
     MongoDBMixin,
     OpenSearchMixin,
