@@ -8,6 +8,7 @@ services:
       dockerfile: docker/Dockerfile
       args:
         - USER_ID=${USER_ID:-}
+      target: ${TARGET:-test}
     volumes:
       - ..:/home/glue_user/workspace
     tty: true

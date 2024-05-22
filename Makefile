@@ -47,7 +47,12 @@ importcheck: ## Check import rules
 
 .PHONY: test
 test: docker/requirements.txt ## Run automated tests
-	@$(DOCKER_COMPOSE_RUN) -c pytest
+	@TARGET=test $(DOCKER_COMPOSE_RUN) -c pytest
+
+
+.PHONY: coverage
+coverage: docker/requirements.txt ## Run tests and measure code coverage
+	@TARGET=coverage $(DOCKER_COMPOSE_RUN) -c "pytest --cov-report=html --cov-report=xml"
 
 
 .PHONY: shell

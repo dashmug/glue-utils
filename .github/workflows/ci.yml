@@ -57,7 +57,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Build container and run tests
-        run: USER_ID=$(id -u) docker compose --file docker/docker-compose.yml run --rm --remove-orphans --build glue-utils -c pytest
+        run: USER_ID=$(id -u) TARGET=coverage docker compose --file docker/docker-compose.yml run --rm --build glue-utils -c "pytest --cov-report=html --cov-report=xml"
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:

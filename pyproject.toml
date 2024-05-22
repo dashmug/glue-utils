@@ -105,7 +105,7 @@ disallow_incomplete_defs = false
 disallow_untyped_defs = false
 
 [tool.pytest.ini_options]
-addopts = "--cov=glue_utils --cov-report=term --cov-report=html --cov-report=xml"
+addopts = "-p no:cacheprovider --cov=glue_utils --cov-report=term"
 filterwarnings = [
     "ignore::FutureWarning:pyspark.sql.context",
 ]
@@ -120,6 +120,7 @@ source = ["src/glue_utils", "*/site-packages/glue_utils"]
 
 [tool.coverage.report]
 skip_empty = true
+show_missing = true
 exclude_also = [
     "def __repr__",
     "if self.debug:",
