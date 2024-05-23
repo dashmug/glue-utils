@@ -16,7 +16,7 @@ class TestGluePySparkContextForMongoDB:
             connection_options={
                 "connectionName": "connectionName",
                 "opensearch.resource": "aosIndex",
-                "pushdown": True,
+                "pushdown": "true",
             },
             transformation_ctx="test",
         )
@@ -26,7 +26,7 @@ class TestGluePySparkContextForMongoDB:
             connection_options={
                 "connectionName": "connectionName",
                 "opensearch.resource": "aosIndex",
-                "pushdown": True,
+                "pushdown": "true",
             },
             transformation_ctx="test",
         )

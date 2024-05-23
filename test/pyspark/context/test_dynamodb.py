@@ -15,8 +15,8 @@ class TestGluePySparkContextForDynamoDB:
         dynamic_frame = glue_pyspark_context.create_dynamic_frame_from_dynamodb(
             connection_options={
                 "dynamodb.input.tableName": "test_source",
-                "dynamodb.throughput.read.percent": 1.0,
-                "dynamodb.splits": 100,
+                "dynamodb.throughput.read.percent": "1.0",
+                "dynamodb.splits": "100",
             },
             transformation_ctx="test",
         )
@@ -25,8 +25,8 @@ class TestGluePySparkContextForDynamoDB:
             connection_type=ConnectionType.DYNAMODB.value,
             connection_options={
                 "dynamodb.input.tableName": "test_source",
-                "dynamodb.throughput.read.percent": 1.0,
-                "dynamodb.splits": 100,
+                "dynamodb.throughput.read.percent": "1.0",
+                "dynamodb.splits": "100",
             },
             transformation_ctx="test",
         )
@@ -41,7 +41,7 @@ class TestGluePySparkContextForDynamoDB:
             frame=sentinel.dynamic_frame,
             connection_options={
                 "dynamodb.output.tableName": "test_sink",
-                "dynamodb.throughput.write.percent": 1.0,
+                "dynamodb.throughput.write.percent": "1.0",
             },
             transformation_ctx="test",
         )
@@ -51,7 +51,7 @@ class TestGluePySparkContextForDynamoDB:
             connection_type=ConnectionType.DYNAMODB.value,
             connection_options={
                 "dynamodb.output.tableName": "test_sink",
-                "dynamodb.throughput.write.percent": 1.0,
+                "dynamodb.throughput.write.percent": "1.0",
             },
             transformation_ctx="test",
         )

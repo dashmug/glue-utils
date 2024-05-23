@@ -20,7 +20,7 @@ class TestGluePySparkContextForKinesis:
             connection_options=KinesisSourceConnectionOptions(
                 streamARN="arn:aws:kinesis:us-east-2:777788889999:stream/fromOptionsStream",
                 startingPosition="TRIM_HORIZON",
-                inferSchema=True,
+                inferSchema="true",
                 classification="json",
             ),
             transformation_ctx="test",
@@ -31,7 +31,7 @@ class TestGluePySparkContextForKinesis:
             connection_options={
                 "streamARN": "arn:aws:kinesis:us-east-2:777788889999:stream/fromOptionsStream",
                 "startingPosition": "TRIM_HORIZON",
-                "inferSchema": True,
+                "inferSchema": "true",
                 "classification": "json",
             },
             transformation_ctx="test",

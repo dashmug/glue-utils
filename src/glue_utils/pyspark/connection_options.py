@@ -34,13 +34,13 @@ class JDBCConnectionOptions(BookmarkConnectionOptions, total=False):
     password: str
     customJdbcDriverS3Path: str
     customJdbcDriverClassName: str
-    bulkSize: int
+    bulkSize: str
     hashfield: str
     hashexpression: str
-    hashpartitions: int
+    hashpartitions: str
     sampleQuery: str
-    enablePartitioningForSampleQuery: bool
-    sampleSize: int
+    enablePartitioningForSampleQuery: Literal["true", "false"]
+    sampleSize: str
 
 
 # Redshift has a connection option with a dot in it, so we need to use
@@ -48,8 +48,8 @@ class JDBCConnectionOptions(BookmarkConnectionOptions, total=False):
 RedshiftOptions = TypedDict(
     "RedshiftOptions",
     {
-        "autopushdown": bool,
-        "autopushdown.s3_result_cache": bool,
+        "autopushdown": Literal["true", "false"],
+        "autopushdown.s3_result_cache": Literal["true", "false"],
         "aws_iam_role": str,
         "csvnullstring": str,
         "DbUser": str,
@@ -89,13 +89,13 @@ class S3SourceConnectionOptions(BookmarkConnectionOptions, total=False):
     compressionType: Literal["gzip", "bzip2"]
     groupFiles: Literal["inPartition", "none"]
     groupSize: str
-    recurse: bool
-    maxBand: int
-    maxFilesInBand: int
-    isFailFast: bool
+    recurse: Literal["true", "false"]
+    maxBand: str
+    maxFilesInBand: str
+    isFailFast: Literal["true", "false"]
     catalogPartitionPredicate: str
     excludeStorageClasses: list[str]
-    useS3ListImplementation: bool
+    useS3ListImplementation: Literal["true", "false"]
 
 
 class S3SinkConnectionOptions(BookmarkConnectionOptions, total=False):
@@ -111,8 +111,8 @@ DynamoDBSourceConnectionOptions = TypedDict(
     "DynamoDBSourceConnectionOptions",
     {
         "dynamodb.input.tableName": str,
-        "dynamodb.throughput.read.percent": float,
-        "dynamodb.splits": int,
+        "dynamodb.throughput.read.percent": str,
+        "dynamodb.splits": str,
         "dynamodb.sts.roleArn": str,
         "dynamodb.sts.roleSessionName": str,
         "dynamodb.sts.region": str,
@@ -121,7 +121,7 @@ DynamoDBSourceConnectionOptions = TypedDict(
         "dynamodb.s3.bucket": str,
         "dynamodb.s3.prefix": str,
         "dynamodb.s3.bucketOwner": str,
-        "dynamodb.simplifyDDBJson": bool,
+        "dynamodb.simplifyDDBJson": Literal["true", "false"],
         "dynamodb.exportTime": str,
     },
     total=False,
@@ -132,9 +132,9 @@ DynamoDBSinkConnectionOptions = TypedDict(
     "DynamoDBSinkConnectionOptions",
     {
         "dynamodb.output.tableName": str,
-        "dynamodb.throughput.write.percent": float,
-        "dynamodb.output.numParallelTasks": int,
-        "dynamodb.output.retry": int,
+        "dynamodb.throughput.write.percent": str,
+        "dynamodb.output.numParallelTasks": str,
+        "dynamodb.output.retry": str,
         "dynamodb.sts.roleArn": str,
         "dynamodb.sts.roleSessionName": str,
     },
@@ -152,10 +152,10 @@ class KinesisConnectionOptions(TypedDict, total=False):
     """
 
     streamARN: str
-    failOnDataLoss: bool
+    failOnDataLoss: Literal["true", "false"]
     awsSTSRoleArn: str
     awsSTSSessionName: str
-    awsSTSEndpoint: str
+    awsSTSEndpostr: str
 
 
 class KinesisSourceConnectionOptions(KinesisConnectionOptions, total=False):
@@ -163,23 +163,23 @@ class KinesisSourceConnectionOptions(KinesisConnectionOptions, total=False):
 
     classification: str
     streamName: str
-    endpointUrl: str
+    endpostrUrl: str
     delimiter: str
     startingPosition: str
-    maxFetchTimeInMs: int
-    maxFetchRecordsPerShard: int
-    maxRecordPerRead: int
-    addIdleTimeBetweenReads: bool
-    idleTimeBetweenReadsInMs: int
-    describeShardInterval: str
-    numRetries: int
-    retryIntervalMs: int
-    maxRetryIntervalMs: int
-    avoidEmptyBatches: bool
+    maxFetchTimeInMs: str
+    maxFetchRecordsPerShard: str
+    maxRecordPerRead: str
+    addIdleTimeBetweenReads: Literal["true", "false"]
+    idleTimeBetweenReadsInMs: str
+    describeShardStrerval: str
+    numRetries: str
+    retryStrervalMs: str
+    maxRetryStrervalMs: str
+    avoidEmptyBatches: Literal["true", "false"]
     schema: str
-    inferSchema: bool
-    addRecordTimestamp: bool
-    emitConsumerLagMetrics: bool
+    inferSchema: Literal["true", "false"]
+    addRecordTimestamp: Literal["true", "false"]
+    emitConsumerLagMetrics: Literal["true", "false"]
     fanoutConsumerARN: str
 
 
@@ -187,13 +187,13 @@ class KinesisSinkConnectionOptions(KinesisConnectionOptions, total=False):
     """Connection options for writing to Kinesis."""
 
     partitionKey: str
-    recordMaxBufferedTime: int
-    aggregationEnabled: bool
-    aggregationMaxSize: int
-    aggregationMaxCount: int
-    producerRateLimit: int
-    collectionMaxCount: int
-    collectionMaxSize: int
+    recordMaxBufferedTime: str
+    aggregationEnabled: Literal["true", "false"]
+    aggregationMaxSize: str
+    aggregationMaxCount: str
+    producerRateLimit: str
+    collectionMaxCount: str
+    collectionMaxSize: str
 
 
 # https://docs.aws.amazon.com/glue/latest/dg/aws-glue-programming-etl-connect-documentdb-home.html
@@ -205,9 +205,9 @@ DocumentDBSourceConnectionOptions = TypedDict(
         "collection": str,
         "username": str,
         "password": str,
-        "ssl": bool,
-        "ssl.domain_match": bool,
-        "batchSize": int,
+        "ssl": str,
+        "ssl.domain_match": str,
+        "batchSize": str,
         "partitioner": str,
         "partitionerOptions.partitionKey": str,
         "partitionerOptions.partitionSizeMB": str,
@@ -231,10 +231,10 @@ class DocumentDBSinkConnectionOptions(TypedDict, total=False):
     collection: str
     username: str
     password: str
-    extendedBSONTypes: bool
-    replaceDocument: bool
-    maxBatchSize: int
-    retryWrites: bool
+    extendedBSONTypes: str
+    replaceDocument: str
+    maxBatchSize: str
+    retryWrites: str
 
 
 # https://docs.aws.amazon.com/glue/latest/dg/aws-glue-programming-etl-connect-mongodb-home.html
@@ -248,10 +248,10 @@ MongoDBSourceConnectionOptions = TypedDict(
         "password": str,
         "database": str,
         "collection": str,
-        "ssl": bool,
-        "ssl.domain_match": bool,
-        "disableUpdateUri": bool,
-        "batchSize": int,
+        "ssl": Literal["true", "false"],
+        "ssl.domain_match": Literal["true", "false"],
+        "disableUpdateUri": Literal["true", "false"],
+        "batchSize": str,
         "partitioner": str,
         "partitionerOptions.partitionKey": str,
         "partitionerOptions.partitionSizeMB": str,
@@ -273,13 +273,13 @@ MongoDBSinkConnectionOptions = TypedDict(
         "password": str,
         "database": str,
         "collection": str,
-        "ssl": bool,
-        "ssl.domain_match": bool,
-        "disableUpdateUri": bool,
-        "extendedBSONTypes": bool,
-        "replaceDocument": bool,
-        "maxBatchSize": int,
-        "retryWrites": bool,
+        "ssl": Literal["true", "false"],
+        "ssl.domain_match": Literal["true", "false"],
+        "disableUpdateUri": Literal["true", "false"],
+        "extendedBSONTypes": Literal["true", "false"],
+        "replaceDocument": Literal["true", "false"],
+        "maxBatchSize": str,
+        "retryWrites": Literal["true", "false"],
     },
     total=False,
 )
@@ -291,7 +291,7 @@ OpenSearchSourceConnectionOptions = TypedDict(
         "connectionName": str,
         "opensearch.resource": str,
         "opensearch.query": str,
-        "pushdown": bool,
+        "pushdown": Literal["true", "false"],
         "opensearch.read.field.as.array.include": str,
     },
     total=False,
@@ -313,25 +313,25 @@ KafkaSourceConnectionOptions = TypedDict(
     {
         "connectionName": str,
         "bootstrap.servers": str,
-        "security.protocol": str,
+        "security.protocol": Literal["SSL", "PLAINTEXT"],
         "topicName": str,
         "assign": str,
         "subscribePattern": str,
         "classification": str,
         "delimiter": str,
-        "startingOffsets": str,
+        "startingOffsets": Literal["earliest", "latest"],
         "startingTimestamp": str,
         "endingOffsets": str,
-        "pollTimeoutMs": int,
-        "numRetries": int,
-        "retryIntervalMs": int,
-        "maxOffsetsPerTrigger": int,
-        "minPartitions": int,
-        "includeHeaders": bool,
+        "pollTimeoutMs": str,
+        "numRetries": str,
+        "retryStrervalMs": str,
+        "maxOffsetsPerTrigger": str,
+        "minPartitions": str,
+        "includeHeaders": Literal["true", "false"],
         "schema": str,
-        "inferSchema": bool,
-        "addRecordTimestamp": bool,
-        "emitConsumerLagMetrics": bool,
+        "inferSchema": Literal["true", "false"],
+        "addRecordTimestamp": Literal["true", "false"],
+        "emitConsumerLagMetrics": Literal["true", "false"],
     },
     total=False,
 )
@@ -345,7 +345,7 @@ class KafkaSinkConnectionOptions(TypedDict, total=False):
     """
 
     connectionName: str
-    topic: str
+    topicName: str
     partition: str
     key: str
     classification: str

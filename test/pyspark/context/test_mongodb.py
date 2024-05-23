@@ -20,7 +20,7 @@ class TestGluePySparkContextForMongoDB:
                 "partitioner": "com.mongodb.spark.sql.connector.read.partitioner.SinglePartitionPartitioner",
                 "partitionerOptions.partitionSizeMB": "10",
                 "partitionerOptions.partitionKey": "_id",
-                "disableUpdateUri": False,
+                "disableUpdateUri": "false",
             },
             transformation_ctx="test",
         )
@@ -34,7 +34,7 @@ class TestGluePySparkContextForMongoDB:
                 "partitioner": "com.mongodb.spark.sql.connector.read.partitioner.SinglePartitionPartitioner",
                 "partitionerOptions.partitionSizeMB": "10",
                 "partitionerOptions.partitionKey": "_id",
-                "disableUpdateUri": False,
+                "disableUpdateUri": "false",
             },
             transformation_ctx="test",
         )
@@ -51,8 +51,8 @@ class TestGluePySparkContextForMongoDB:
                 "connectionName": "connectionName",
                 "database": "mongodbName",
                 "collection": "mongodbCollection",
-                "disableUpdateUri": False,
-                "retryWrites": False,
+                "disableUpdateUri": "false",
+                "retryWrites": "false",
             },
             transformation_ctx="test",
         )
@@ -64,8 +64,8 @@ class TestGluePySparkContextForMongoDB:
                 "connectionName": "connectionName",
                 "database": "mongodbName",
                 "collection": "mongodbCollection",
-                "disableUpdateUri": False,
-                "retryWrites": False,
+                "disableUpdateUri": "false",
+                "retryWrites": "false",
             },
             transformation_ctx="test",
         )

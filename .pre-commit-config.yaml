@@ -42,6 +42,12 @@ repos:
         types: [python]
         entry: poetry run ruff check
         args: [--fix]
+      - id: check-python-type-annotations
+        name: Check Python Type Annotations
+        language: system
+        types: [python]
+        entry: env MYPYPATH=src poetry run mypy .
+        pass_filenames: false
       - id: check-python-imports
         name: Check Python Imports
         language: system
