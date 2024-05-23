@@ -99,3 +99,9 @@ githooks: ## Install/update project git hooks
 	@poetry run pre-commit install --install-hooks
 	@poetry run pre-commit autoupdate
 	@poetry run pre-commit run --all-files
+
+
+.PHONY: release
+release: publish ## Publish and tag a new release
+	@eval $$(bumpver show -n --environ) && git tag v$$CURRENT_VERSION
+	@git push --follow-tags
