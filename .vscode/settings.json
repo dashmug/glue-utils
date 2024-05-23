@@ -19,4 +19,3 @@
     "python.testing.pytestEnabled": true,
     "autoDocstring.docstringFormat": "numpy-notypes"
   }
-  

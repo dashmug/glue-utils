@@ -61,7 +61,7 @@ shell: docker/requirements.txt ## Enter a shell in the container
 
 
 .PHONY: checks
-checks: format typecheck importcheck test 
+checks: format typecheck importcheck test
 
 
 .PHONY: clean
@@ -92,3 +92,10 @@ bumpver-minor: ## Bump minor version
 .PHONY: bumpver-major
 bumpver-major: ## Bump major version
 	@poetry run bumpver update --no-fetch --major --tag=final
+
+
+.PHONY: githooks
+githooks: ## Install/update project git hooks
+	@poetry run pre-commit install --install-hooks
+	@poetry run pre-commit autoupdate
+	@poetry run pre-commit run --all-files

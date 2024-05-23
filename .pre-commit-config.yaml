@@ -1,0 +1,56 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: check-case-conflict
+      - id: check-executables-have-shebangs
+      - id: check-merge-conflict
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+      - id: trailing-whitespace
+  - repo: local
+    hooks:
+      - id: poetry-check
+        name: Validate poetry config
+        entry: poetry check
+        language: python
+        pass_filenames: false
+        files: ^(.*/)?pyproject\.toml$
+      - id: poetry-lock
+        name: Update poetry lock file
+        entry: poetry lock
+        language: python
+        pass_filenames: false
+        files: ^(.*/)?(poetry\.lock|pyproject\.toml)$
+      - id: poetry-install
+        name: Install dependencies from the poetry lock file
+        entry: poetry install --sync
+        language: python
+        pass_filenames: false
+        stages: [post-checkout, post-merge]
+        always_run: true
+      - id: format-python
+        name: Format Python code
+        language: system
+        types: [python]
+        entry: poetry run ruff format
+      - id: lint-python
+        name: Lint Python code
+        language: system
+        types: [python]
+        entry: poetry run ruff check
+        args: [--fix]
+      - id: check-python-imports
+        name: Check Python Imports
+        language: system
+        types: [python]
+        entry: poetry run lint-imports
+        pass_filenames: false
+      - id: update-requirements
+        name: Update requirements.txt
+        language: system
+        files: poetry.lock
+        entry: poetry export --with=dev --output docker/requirements.txt
+        pass_filenames: false
