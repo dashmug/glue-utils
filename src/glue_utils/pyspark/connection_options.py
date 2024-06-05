@@ -89,13 +89,13 @@ class S3SourceConnectionOptions(BookmarkConnectionOptions, total=False):
     compressionType: Literal["gzip", "bzip2"]
     groupFiles: Literal["inPartition", "none"]
     groupSize: str
-    recurse: Literal["true", "false"]
+    recurse: bool
     maxBand: str
     maxFilesInBand: str
-    isFailFast: Literal["true", "false"]
+    isFailFast: bool
     catalogPartitionPredicate: str
     excludeStorageClasses: list[str]
-    useS3ListImplementation: Literal["true", "false"]
+    useS3ListImplementation: bool
 
 
 class S3SinkConnectionOptions(BookmarkConnectionOptions, total=False):
