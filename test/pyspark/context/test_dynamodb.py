@@ -62,7 +62,7 @@ class TestGluePySparkContextForDynamoDB:
         glue_pyspark_context: GluePySparkContext,
         mock_create_dynamic_frame_from_options,
     ):
-        dynamic_frame = glue_pyspark_context.create_dynamic_frame_from_dynamodb(
+        dynamic_frame = glue_pyspark_context.create_dynamic_frame_from_dynamodb_export(
             connection_options={
                 "dynamodb.export": "ddb",
                 "dynamodb.tableArn": "test_source",

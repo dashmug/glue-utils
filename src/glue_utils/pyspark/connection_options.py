@@ -115,7 +115,14 @@ DynamoDBSourceConnectionOptions = TypedDict(
         "dynamodb.splits": str,
         "dynamodb.sts.roleArn": str,
         "dynamodb.sts.roleSessionName": str,
-        "dynamodb.sts.region": str,
+    },
+    total=False,
+)
+
+# https://docs.aws.amazon.com/glue/latest/dg/aws-glue-programming-etl-connect-dynamodb-home.html
+DynamoDBExportSourceConnectionOptions = TypedDict(
+    "DynamoDBExportSourceConnectionOptions",
+    {
         "dynamodb.export": Literal["ddb", "s3"],
         "dynamodb.tableArn": str,
         "dynamodb.s3.bucket": str,
@@ -123,6 +130,7 @@ DynamoDBSourceConnectionOptions = TypedDict(
         "dynamodb.s3.bucketOwner": str,
         "dynamodb.simplifyDDBJson": Literal["true", "false"],
         "dynamodb.exportTime": str,
+        "dynamodb.sts.region": str,
     },
     total=False,
 )
