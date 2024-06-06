@@ -5,9 +5,9 @@ from glue_utils.pyspark import (
     GluePySparkContext,
     JSONFormatOptions,
     ParquetFormatOptions,
+    S3ParquetSourceConnectionOptions,
     S3SinkConnectionOptions,
     S3SourceConnectionOptions,
-    S3SourceParquetConnectionOptions,
     XMLFormatOptions,
 )
 
@@ -44,7 +44,7 @@ class TestGluePySparkContextForS3:
         mock_create_dynamic_frame_from_options,
     ):
         dynamic_frame = glue_pyspark_context.create_dynamic_frame_from_s3_parquet(
-            connection_options=S3SourceParquetConnectionOptions(
+            connection_options=S3ParquetSourceConnectionOptions(
                 paths=["s3://bucket/key/input-path"],
                 mergeSchema=True,
             ),

@@ -10,9 +10,9 @@ if TYPE_CHECKING:
     from awsglue.dynamicframe import DynamicFrame
 
     from glue_utils.pyspark.connection_options import (
+        S3ParquetSourceConnectionOptions,
         S3SinkConnectionOptions,
         S3SourceConnectionOptions,
-        S3SourceParquetConnectionOptions,
     )
     from glue_utils.pyspark.format_options import (
         CSVFormatOptions,
@@ -97,7 +97,7 @@ class S3ParquetMixin:
 
     def create_dynamic_frame_from_s3_parquet(
         self: GlueContext,
-        connection_options: S3SourceParquetConnectionOptions,
+        connection_options: S3ParquetSourceConnectionOptions,
         format_options: ParquetFormatOptions | None = None,
         transformation_ctx: str = "",
     ) -> DynamicFrame:

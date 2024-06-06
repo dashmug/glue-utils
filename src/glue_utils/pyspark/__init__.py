@@ -1,6 +1,7 @@
 from .connection_options import (
     DocumentDBSinkConnectionOptions,
     DocumentDBSourceConnectionOptions,
+    DynamoDBExportSourceConnectionOptions,
     DynamoDBSinkConnectionOptions,
     DynamoDBSourceConnectionOptions,
     JDBCConnectionOptions,
@@ -13,9 +14,9 @@ from .connection_options import (
     OpenSearchSinkConnectionOptions,
     OpenSearchSourceConnectionOptions,
     RedshiftJDBCConnectionOptions,
+    S3ParquetSourceConnectionOptions,
     S3SinkConnectionOptions,
     S3SourceConnectionOptions,
-    S3SourceParquetConnectionOptions,
 )
 from .connection_types import ConnectionType
 from .context import GluePySparkContext
@@ -36,6 +37,7 @@ __all__ = [
     "DocumentDBSourceConnectionOptions",
     "DynamoDBSinkConnectionOptions",
     "DynamoDBSourceConnectionOptions",
+    "DynamoDBExportSourceConnectionOptions",
     "Format",
     "GluePySparkContext",
     "GluePySparkJob",
@@ -54,6 +56,6 @@ __all__ = [
     "S3FormatOptions",
     "S3SinkConnectionOptions",
     "S3SourceConnectionOptions",
-    "S3SourceParquetConnectionOptions",
+    "S3ParquetSourceConnectionOptions",
     "XMLFormatOptions",
 ]

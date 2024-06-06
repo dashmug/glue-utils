@@ -98,7 +98,7 @@ class S3SourceConnectionOptions(BookmarkConnectionOptions, total=False):
     useS3ListImplementation: bool
 
 
-class S3SourceParquetConnectionOptions(S3SourceConnectionOptions, total=False):
+class S3ParquetSourceConnectionOptions(S3SourceConnectionOptions, total=False):
     """Additional connection options when using Parquet files in S3.
 
     Reference
