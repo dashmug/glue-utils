@@ -98,6 +98,19 @@ class S3SourceConnectionOptions(BookmarkConnectionOptions, total=False):
     useS3ListImplementation: bool
 
 
+class S3SourceParquetConnectionOptions(S3SourceConnectionOptions, total=False):
+    """Additional connection options when using Parquet files in S3.
+
+    Reference
+    ---------
+    - Using the Parquet format in AWS Glue:
+      https://docs.aws.amazon.com/glue/latest/dg/aws-glue-programming-etl-format-parquet-home.html
+
+    """
+
+    mergeSchema: bool
+
+
 class S3SinkConnectionOptions(BookmarkConnectionOptions, total=False):
     """Connection options for writing data to an S3 sink."""
 

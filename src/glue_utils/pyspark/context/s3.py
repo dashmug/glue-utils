@@ -12,6 +12,7 @@ if TYPE_CHECKING:
     from glue_utils.pyspark.connection_options import (
         S3SinkConnectionOptions,
         S3SourceConnectionOptions,
+        S3SourceParquetConnectionOptions,
     )
     from glue_utils.pyspark.format_options import (
         CSVFormatOptions,
@@ -58,7 +59,7 @@ class S3CSVMixin:
     def write_dynamic_frame_to_s3_csv(
         self: GlueContext,
         frame: DynamicFrame,
-        connection_options: S3SourceConnectionOptions,
+        connection_options: S3SinkConnectionOptions,
         format_options: CSVFormatOptions | None = None,
         transformation_ctx: str = "",
     ) -> DynamicFrame:
@@ -68,8 +69,8 @@ class S3CSVMixin:
         ----------
         frame : DynamicFrame
             The DynamicFrame to write.
-        connection_options : S3SourceConnectionOptions
-            The connection options for the S3 source.
+        connection_options : S3SinkConnectionOptions
+            The connection options for the S3 sink.
         format_options : CSVFormatOptions | None, optional
             The format options for the CSV file. Defaults to None.
         transformation_ctx : str, optional
@@ -96,7 +97,7 @@ class S3ParquetMixin:
 
     def create_dynamic_frame_from_s3_parquet(
         self: GlueContext,
-        connection_options: S3SourceConnectionOptions,
+        connection_options: S3SourceParquetConnectionOptions,
         format_options: ParquetFormatOptions | None = None,
         transformation_ctx: str = "",
     ) -> DynamicFrame:

@@ -3,8 +3,6 @@ from unittest.mock import sentinel
 from glue_utils.pyspark import (
     ConnectionType,
     GluePySparkContext,
-)
-from glue_utils.pyspark.connection_options import (
     KinesisSinkConnectionOptions,
     KinesisSourceConnectionOptions,
 )

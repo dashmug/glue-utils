@@ -1,115 +1,134 @@
 from unittest.mock import sentinel
 
-import pytest
 from glue_utils.pyspark import (
     CSVFormatOptions,
     GluePySparkContext,
     JSONFormatOptions,
     ParquetFormatOptions,
-    S3FormatOptions,
     S3SinkConnectionOptions,
     S3SourceConnectionOptions,
+    S3SourceParquetConnectionOptions,
     XMLFormatOptions,
 )
 
 
 class TestGluePySparkContextForS3:
-    @pytest.mark.parametrize(
-        ["format_name", "format_options_cls", "format_options"],
-        [
-            (
-                "json",
-                JSONFormatOptions,
-                {"jsonPath": "something", "optimizePerformance": True},
-            ),
-            ("parquet", ParquetFormatOptions, {"compression": "gzip"}),
-            (
-                "csv",
-                CSVFormatOptions,
-                {"withHeader": True, "optimizePerformance": True},
-            ),
-            (
-                "xml",
-                XMLFormatOptions,
-                {"rowTag": "xmlTag", "ignoreSurroundingSpaces": True},
-            ),
-        ],
-    )
-    def test_create_dynamic_frame_from_s3(
+    def test_create_dynamic_frame_from_s3_json(
         self,
-        format_name: str,
-        format_options_cls: type[S3FormatOptions],
-        format_options: dict[str, str],
         glue_pyspark_context: GluePySparkContext,
         mock_create_dynamic_frame_from_options,
     ):
-        create_dynamic_frame = getattr(
-            glue_pyspark_context,
-            f"create_dynamic_frame_from_s3_{format_name}",
-        )
-        dynamic_frame = create_dynamic_frame(
+        dynamic_frame = glue_pyspark_context.create_dynamic_frame_from_s3_json(
             connection_options=S3SourceConnectionOptions(
                 paths=["s3://bucket/key/input-path"]
             ),
-            format_options=format_options_cls(**format_options)
-            if format_options
-            else {},
+            format_options=JSONFormatOptions(
+                jsonPath="something",
+                optimizePerformance=True,
+            ),
             transformation_ctx="test",
         )
 
         mock_create_dynamic_frame_from_options.assert_called_once_with(
             connection_type="s3",
             connection_options={"paths": ["s3://bucket/key/input-path"]},
-            format=format_name,
-            format_options=format_options or {},
+            format="json",
+            format_options={"jsonPath": "something", "optimizePerformance": True},
             transformation_ctx="test",
         )
         assert dynamic_frame == sentinel.dynamic_frame
 
-    @pytest.mark.parametrize(
-        ["format_name", "format_options_cls", "format_options"],
-        [
-            (
-                "json",
-                JSONFormatOptions,
-                None,
-            ),
-            (
-                "parquet",
-                ParquetFormatOptions,
-                {"useGlueParquetWriter": True, "compression": "gzip"},
-            ),
-            (
-                "csv",
-                CSVFormatOptions,
-                {"writeHeader": True, "strictCheckForQuoting": True},
-            ),
-            (
-                "xml",
-                XMLFormatOptions,
-                None,
-            ),
-        ],
-    )
-    def test_write_dynamic_frame_to_s3(
+    def test_create_dynamic_frame_from_s3_parquet(
         self,
-        format_name: str,
-        format_options_cls: type[S3FormatOptions],
-        format_options: dict[str, str],
+        glue_pyspark_context: GluePySparkContext,
+        mock_create_dynamic_frame_from_options,
+    ):
+        dynamic_frame = glue_pyspark_context.create_dynamic_frame_from_s3_parquet(
+            connection_options=S3SourceParquetConnectionOptions(
+                paths=["s3://bucket/key/input-path"],
+                mergeSchema=True,
+            ),
+            format_options=ParquetFormatOptions(compression="gzip"),
+            transformation_ctx="test",
+        )
+
+        mock_create_dynamic_frame_from_options.assert_called_once_with(
+            connection_type="s3",
+            connection_options={
+                "paths": ["s3://bucket/key/input-path"],
+                "mergeSchema": True,
+            },
+            format="parquet",
+            format_options={"compression": "gzip"},
+            transformation_ctx="test",
+        )
+        assert dynamic_frame == sentinel.dynamic_frame
+
+    def test_create_dynamic_frame_from_s3_csv(
+        self,
+        glue_pyspark_context: GluePySparkContext,
+        mock_create_dynamic_frame_from_options,
+    ):
+        dynamic_frame = glue_pyspark_context.create_dynamic_frame_from_s3_csv(
+            connection_options=S3SourceConnectionOptions(
+                paths=["s3://bucket/key/input-path"]
+            ),
+            format_options=CSVFormatOptions(
+                withHeader=True,
+                optimizePerformance=True,
+                quoteChar=-1,
+            ),
+            transformation_ctx="test",
+        )
+
+        mock_create_dynamic_frame_from_options.assert_called_once_with(
+            connection_type="s3",
+            connection_options={"paths": ["s3://bucket/key/input-path"]},
+            format="csv",
+            format_options={
+                "withHeader": True,
+                "optimizePerformance": True,
+                "quoteChar": -1,
+            },
+            transformation_ctx="test",
+        )
+        assert dynamic_frame == sentinel.dynamic_frame
+
+    def test_create_dynamic_frame_from_s3_xml(
+        self,
+        glue_pyspark_context: GluePySparkContext,
+        mock_create_dynamic_frame_from_options,
+    ):
+        dynamic_frame = glue_pyspark_context.create_dynamic_frame_from_s3_xml(
+            connection_options=S3SourceConnectionOptions(
+                paths=["s3://bucket/key/input-path"]
+            ),
+            format_options=XMLFormatOptions(
+                rowTag="xmlTag",
+                ignoreSurroundingSpaces=True,
+            ),
+            transformation_ctx="test",
+        )
+
+        mock_create_dynamic_frame_from_options.assert_called_once_with(
+            connection_type="s3",
+            connection_options={"paths": ["s3://bucket/key/input-path"]},
+            format="xml",
+            format_options={"rowTag": "xmlTag", "ignoreSurroundingSpaces": True},
+            transformation_ctx="test",
+        )
+        assert dynamic_frame == sentinel.dynamic_frame
+
+    def test_write_dynamic_frame_to_s3_json(
+        self,
         glue_pyspark_context: GluePySparkContext,
         mock_write_dynamic_frame_from_options,
     ):
-        write_dynamic_frame = getattr(
-            glue_pyspark_context, f"write_dynamic_frame_to_s3_{format_name}"
-        )
-        dynamic_frame = write_dynamic_frame(
+        dynamic_frame = glue_pyspark_context.write_dynamic_frame_to_s3_json(
             frame=sentinel.dynamic_frame,
             connection_options=S3SinkConnectionOptions(
                 path="s3://bucket/key/output-path"
             ),
-            format_options=format_options_cls(**format_options)
-            if format_options
-            else {},
             transformation_ctx="test",
         )
 
@@ -117,8 +136,85 @@ class TestGluePySparkContextForS3:
             frame=sentinel.dynamic_frame,
             connection_type="s3",
             connection_options={"path": "s3://bucket/key/output-path"},
-            format=format_name,
-            format_options=format_options or {},
+            format="json",
+            format_options={},
+            transformation_ctx="test",
+        )
+        assert dynamic_frame == sentinel.dynamic_frame
+
+    def test_write_dynamic_frame_to_s3_parquet(
+        self,
+        glue_pyspark_context: GluePySparkContext,
+        mock_write_dynamic_frame_from_options,
+    ):
+        dynamic_frame = glue_pyspark_context.write_dynamic_frame_to_s3_parquet(
+            frame=sentinel.dynamic_frame,
+            connection_options=S3SinkConnectionOptions(
+                path="s3://bucket/key/output-path"
+            ),
+            format_options=ParquetFormatOptions(
+                useGlueParquetWriter=True,
+                compression="gzip",
+            ),
+            transformation_ctx="test",
+        )
+
+        mock_write_dynamic_frame_from_options.assert_called_once_with(
+            frame=sentinel.dynamic_frame,
+            connection_type="s3",
+            connection_options={"path": "s3://bucket/key/output-path"},
+            format="parquet",
+            format_options={"useGlueParquetWriter": True, "compression": "gzip"},
+            transformation_ctx="test",
+        )
+        assert dynamic_frame == sentinel.dynamic_frame
+
+    def test_write_dynamic_frame_to_s3_csv(
+        self,
+        glue_pyspark_context: GluePySparkContext,
+        mock_write_dynamic_frame_from_options,
+    ):
+        dynamic_frame = glue_pyspark_context.write_dynamic_frame_to_s3_csv(
+            frame=sentinel.dynamic_frame,
+            connection_options=S3SinkConnectionOptions(
+                path="s3://bucket/key/output-path"
+            ),
+            format_options=CSVFormatOptions(
+                writeHeader=True,
+                strictCheckForQuoting=True,
+            ),
+            transformation_ctx="test",
+        )
+
+        mock_write_dynamic_frame_from_options.assert_called_once_with(
+            frame=sentinel.dynamic_frame,
+            connection_type="s3",
+            connection_options={"path": "s3://bucket/key/output-path"},
+            format="csv",
+            format_options={"writeHeader": True, "strictCheckForQuoting": True},
+            transformation_ctx="test",
+        )
+        assert dynamic_frame == sentinel.dynamic_frame
+
+    def test_write_dynamic_frame_to_s3_xml(
+        self,
+        glue_pyspark_context: GluePySparkContext,
+        mock_write_dynamic_frame_from_options,
+    ):
+        dynamic_frame = glue_pyspark_context.write_dynamic_frame_to_s3_xml(
+            frame=sentinel.dynamic_frame,
+            connection_options=S3SinkConnectionOptions(
+                path="s3://bucket/key/output-path"
+            ),
+            transformation_ctx="test",
+        )
+
+        mock_write_dynamic_frame_from_options.assert_called_once_with(
+            frame=sentinel.dynamic_frame,
+            connection_type="s3",
+            connection_options={"path": "s3://bucket/key/output-path"},
+            format="xml",
+            format_options={},
             transformation_ctx="test",
         )
         assert dynamic_frame == sentinel.dynamic_frame

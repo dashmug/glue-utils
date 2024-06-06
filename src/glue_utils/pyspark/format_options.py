@@ -1,5 +1,7 @@
 """Module containing dictionary structures for handling different format options."""
 
+from __future__ import annotations
+
 from typing import Literal, TypedDict
 
 
@@ -15,14 +17,14 @@ class CSVFormatOptions(S3FormatOptions, total=False):
 
     Reference
     ---------
-    - AWS Glue Programming ETL Connect to CSV:
-      https://docs.aws.amazon.com/glue/latest/dg/aws-glue-programming-etl-connect-csv-home.html
+    - Using the CSV format in AWS Glue:
+      https://docs.aws.amazon.com/glue/latest/dg/aws-glue-programming-etl-format-csv-home.html
 
     """
 
     separator: str
     escaper: str
-    quoteChar: str
+    quoteChar: str | Literal[-1]
     multiLine: bool
     withHeader: bool
     writeHeader: bool
@@ -36,8 +38,8 @@ class ParquetFormatOptions(S3FormatOptions, total=False):
 
     Reference
     ---------
-    - AWS Glue Programming ETL Connect to Parquet:
-      https://docs.aws.amazon.com/glue/latest/dg/aws-glue-programming-etl-connect-parquet-home.html
+    - Using the Parquet format in AWS Glue:
+      https://docs.aws.amazon.com/glue/latest/dg/aws-glue-programming-etl-format-parquet-home.html
 
     """
 
@@ -57,8 +59,8 @@ class JSONFormatOptions(S3FormatOptions, total=False):
 
     Reference
     ---------
-    - AWS Glue Programming ETL Connect to JSON:
-      https://docs.aws.amazon.com/glue/latest/dg/aws-glue-programming-etl-connect-json-home.html
+    - Using the JSON format in AWS Glue:
+      https://docs.aws.amazon.com/glue/latest/dg/aws-glue-programming-etl-format-json-home.html
 
     """
 
@@ -73,8 +75,8 @@ class XMLFormatOptions(S3FormatOptions, total=False):
 
     Reference
     ---------
-    - AWS Glue Programming ETL Connect to XML:
-      https://docs.aws.amazon.com/glue/latest/dg/aws-glue-programming-etl-format-xml-home.html#aws-glue-programming-etl-format-xml-reference
+    - Using the XML format in AWS Glue:
+      https://docs.aws.amazon.com/glue/latest/dg/aws-glue-programming-etl-format-xml-home.html
 
     """
 
