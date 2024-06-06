@@ -4,15 +4,32 @@ from __future__ import annotations
 
 import sys
 from dataclasses import dataclass, fields
-from typing import Any
+from typing import Any, get_type_hints
+from warnings import warn
 
 from awsglue.utils import getResolvedOptions
 from typing_extensions import Self
 
 
+class UnsupportedTypeWarning(UserWarning):
+    """Warning for unsupported field types."""
+
+
 @dataclass
 class BaseOptions:
     """Dataclass for storing resolved options."""
+
+    @classmethod
+    def __init_subclass__(cls) -> None:
+        """Warn if fields are not strings."""
+        for name, type_hint in get_type_hints(cls).items():
+            if type_hint is not str:
+                warn(
+                    f'"{name}" value is a string at runtime even if annotated to be "{type_hint}".',
+                    UnsupportedTypeWarning,
+                    stacklevel=2,
+                )
+        super().__init_subclass__()
 
     @classmethod
     def from_sys_argv(cls) -> Self:

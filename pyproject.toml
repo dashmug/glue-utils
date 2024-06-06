@@ -79,7 +79,9 @@ ignore = [
     # line-too-long
     "E501",
     # Ignore camelCase attributes since Glue uses a lot of them
-    "N815"
+    "N815",
+    # X | Y syntax does not play well with get_type_hints in Python 3.9
+    "UP007"
 ]
 # # Allow unused variables when underscore-prefixed.
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
@@ -106,9 +108,10 @@ disallow_incomplete_defs = false
 disallow_untyped_defs = false
 
 [tool.pytest.ini_options]
-addopts = "-p no:cacheprovider --cov=glue_utils --cov-report=term"
+addopts = "-p no:cacheprovider"
 filterwarnings = [
     "ignore::FutureWarning:pyspark.sql.context",
+    "ignore::UserWarning:test.test_options",
 ]
 
 [tool.coverage.run]

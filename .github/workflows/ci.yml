@@ -47,6 +47,8 @@ jobs:
         run: poetry run lint-imports
       - name: Check if requirements.txt is up-to-date
         run: poetry export --with=dev --output docker/requirements.txt && git diff --exit-code
+      - name: Run tests that does not need the Glue container
+        run: poetry run pytest test/test_options.py
       - name: Build python packages
         run: poetry build
   tests:
@@ -57,7 +59,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Build container and run tests
-        run: USER_ID=$(id -u) TARGET=coverage docker compose --file docker/docker-compose.yml run --rm --build glue-utils -c "pytest --cov-report=html --cov-report=xml"
+        run: USER_ID=$(id -u) TARGET=coverage docker compose --file docker/docker-compose.yml run --rm --build glue-utils -c "pytest --cov=glue_utils --cov-report=term --cov-report=xml"
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:

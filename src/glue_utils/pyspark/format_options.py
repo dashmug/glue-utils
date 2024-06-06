@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Literal, TypedDict
+from typing import Literal, TypedDict, Union
 
 
 class S3FormatOptions(TypedDict, total=False):
@@ -24,7 +24,7 @@ class CSVFormatOptions(S3FormatOptions, total=False):
 
     separator: str
     escaper: str
-    quoteChar: str | Literal[-1]
+    quoteChar: Union[str, Literal[-1]]
     multiLine: bool
     withHeader: bool
     writeHeader: bool

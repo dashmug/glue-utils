@@ -52,7 +52,7 @@ test: docker/requirements.txt ## Run automated tests
 
 .PHONY: coverage
 coverage: docker/requirements.txt ## Run tests and measure code coverage
-	@TARGET=coverage $(DOCKER_COMPOSE_RUN) -c "pytest --cov-report=html --cov-report=xml"
+	@TARGET=coverage $(DOCKER_COMPOSE_RUN) -c "pytest --cov=glue_utils --cov-report=term --cov-report=html"
 
 
 .PHONY: shell
