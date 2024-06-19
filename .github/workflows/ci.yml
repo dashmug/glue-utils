@@ -31,8 +31,8 @@ jobs:
         uses: actions/cache@v4.0.2
         with:
           path: .venv
-          key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
-          restore-keys: ${{ runner.os }}-poetry-
+          key: ${{ runner.os }}-python${{ matrix.python-version }}-${{ hashFiles('poetry.lock') }}
+          restore-keys: ${{ runner.os }}-python${{ matrix.python-version }}-
       - name: Install Python Dependencies
         run: |
           poetry check --lock
