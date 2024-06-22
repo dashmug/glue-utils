@@ -103,7 +103,8 @@ class GluePySparkJob(Generic[T]):
         Parameters
         ----------
         options_cls : type[T | BaseOptions], optional
-            The class representing the options for the job. Defaults to BaseOptions.
+            The class representing the options for the job. Defaults to
+            BaseOptions.
         spark_conf : SparkConf | None, optional
             The Spark configuration. Defaults to None.
         glue_context_options : GlueContextOptions | None, optional
@@ -166,7 +167,8 @@ class GluePySparkJob(Generic[T]):
         Parameters
         ----------
         glue_context_options : GlueContextOptions | None, optional
-            Optional PartitionOptions object containing additional options for configuring the GlueContext.
+            Optional PartitionOptions object containing additional
+            options for configuring the GlueContext.
 
         """
         if glue_context_options:

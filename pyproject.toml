@@ -38,7 +38,7 @@ bumpver = "^2023.1129"
 import-linter = "^2.0"
 pre-commit = "^3.7.1"
 pytest = "^8.2.2"
-ruff = "^0.4.9"
+ruff = "^0.4.10"
 
 [tool.poetry.group.local.dependencies]
 # The "local" dependency group refers to dependencies that already

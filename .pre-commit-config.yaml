@@ -18,10 +18,6 @@ repos:
         language: python
         pass_filenames: false
         files: ^(.*/)?pyproject\.toml$
-      - id: poetry-lock
-        name: Update poetry lock file
-        entry: poetry lock
-        language: python
         pass_filenames: false
         files: ^(.*/)?(poetry\.lock|pyproject\.toml)$
       - id: poetry-install
