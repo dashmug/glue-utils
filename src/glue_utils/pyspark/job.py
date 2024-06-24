@@ -5,7 +5,8 @@ from __future__ import annotations
 import sys
 from contextlib import contextmanager
 from dataclasses import fields
-from typing import TYPE_CHECKING, Generic, Literal, TypedDict, cast, overload
+from enum import Enum
+from typing import TYPE_CHECKING, Generic, TypedDict, cast, overload
 
 from awsglue.job import Job
 from awsglue.utils import getResolvedOptions
@@ -33,6 +34,31 @@ class GlueContextOptions(TypedDict, total=False):
 
 class GluePySparkJob(Generic[T]):
     """Class that handles the boilerplate setup for Glue ETL jobs."""
+
+    class LogLevel(Enum):
+        """Enum class representing different log levels.
+
+        Attributes
+        ----------
+            ALL (str): The lowest log level, includes all log messages.
+            DEBUG (str): Log level for debugging information.
+            ERROR (str): Log level for error messages.
+            FATAL (str): Log level for fatal error messages.
+            INFO (str): Log level for informational messages.
+            OFF (str): The highest log level, turns off all log messages.
+            TRACE (str): Log level for detailed trace messages.
+            WARN (str): Log level for warning messages.
+
+        """
+
+        ALL = "ALL"
+        DEBUG = "DEBUG"
+        ERROR = "ERROR"
+        FATAL = "FATAL"
+        INFO = "INFO"
+        OFF = "OFF"
+        TRACE = "TRACE"
+        WARN = "WARN"
 
     options: T
     sc: SparkContext
@@ -69,16 +95,7 @@ class GluePySparkJob(Generic[T]):
     def __init__(
         self: GluePySparkJob[T | BaseOptions],
         *,
-        log_level: Literal[
-            "ALL",
-            "DEBUG",
-            "ERROR",
-            "FATAL",
-            "INFO",
-            "OFF",
-            "TRACE",
-            "WARN",
-        ],
+        log_level: LogLevel,
     ) -> None: ...
 
     def __init__(
@@ -87,16 +104,7 @@ class GluePySparkJob(Generic[T]):
         options_cls: type[T | BaseOptions] = BaseOptions,
         spark_conf: SparkConf | None = None,
         glue_context_options: GlueContextOptions | None = None,
-        log_level: Literal[
-            "ALL",
-            "DEBUG",
-            "ERROR",
-            "FATAL",
-            "INFO",
-            "OFF",
-            "TRACE",
-            "WARN",
-        ] = "WARN",
+        log_level: LogLevel = LogLevel.WARN,
     ) -> None:
         """Initialize a Job object.
 
@@ -109,8 +117,8 @@ class GluePySparkJob(Generic[T]):
             The Spark configuration. Defaults to None.
         glue_context_options : GlueContextOptions | None, optional
             The Glue context options. Defaults to None.
-        log_level : Literal["ALL", "DEBUG", "ERROR", "FATAL", "INFO", "OFF", "TRACE", "WARN"], optional
-            The log level for the job. Defaults to "WARN".
+        log_level : LogLevel, optional
+            The log level for the job. Defaults to LogLevel.WARN.
 
         """
         if not issubclass(options_cls, BaseOptions):
@@ -152,10 +160,10 @@ class GluePySparkJob(Generic[T]):
 
         """
         if conf:
-            if isinstance(conf, SparkConf):
-                return SparkContext.getOrCreate(conf=conf)
-            msg = "conf must be an instance of SparkConf."
-            raise TypeError(msg)
+            if not isinstance(conf, SparkConf):
+                msg = "conf must be an instance of SparkConf."
+                raise TypeError(msg)
+            return SparkContext.getOrCreate(conf=conf)
         return SparkContext.getOrCreate()
 
     def create_glue_context(
@@ -199,31 +207,14 @@ class GluePySparkJob(Generic[T]):
 
     def set_log_level(
         self,
-        level: Literal[
-            "ALL",
-            "DEBUG",
-            "ERROR",
-            "FATAL",
-            "INFO",
-            "OFF",
-            "TRACE",
-            "WARN",
-        ],
+        level: LogLevel,
     ) -> None:
         """Set the log level for the SparkContext.
 
         Parameters
         ----------
-        level : str
-            The log level to be set. Must be one of the following:
-            - "ALL"
-            - "DEBUG"
-            - "ERROR"
-            - "FATAL"
-            - "INFO"
-            - "OFF"
-            - "TRACE"
-            - "WARN"
+        level : LogLevel
+            The log level to be set.
 
         """
-        self.sc.setLogLevel(level)
+        self.sc.setLogLevel(level.value)

@@ -151,9 +151,6 @@ class TestGluePySparkJob:
             "JOB_NAME": "test-job",
         }
 
-        # Make sure existing context is stopped.
-        SparkContext.getOrCreate().stop()
-
         spark_conf = SparkConf()
         spark_conf.set("test.key", "test.value")
 
@@ -188,6 +185,47 @@ class TestGluePySparkJob:
         assert isinstance(job.sc, SparkContext)
 
         job.sc.stop()
+
+    @pytest.mark.parametrize(
+        ("level", "value"), [(level, level.value) for level in GluePySparkJob.LogLevel]
+    )
+    @patch("glue_utils.pyspark.job.SparkContext")
+    def test_init_with_log_level(
+        self,
+        mock_spark_context_cls,
+        level,
+        value,
+        mock_get_resolved_options,
+        mock_glue_pyspark_context_cls,
+    ):
+        mock_get_resolved_options.return_value = {
+            "JOB_NAME": "test-job",
+        }
+
+        GluePySparkJob(log_level=level)
+
+        mock_glue_pyspark_context_cls.assert_called_once_with(ANY)
+        mock_spark_context_cls.getOrCreate.return_value.setLogLevel.assert_called_once_with(
+            value
+        )
+
+    @patch("glue_utils.pyspark.job.SparkContext")
+    def test_init_with_default_log_level(
+        self,
+        mock_spark_context_cls,
+        mock_get_resolved_options,
+        mock_glue_pyspark_context_cls,
+    ):
+        mock_get_resolved_options.return_value = {
+            "JOB_NAME": "test-job",
+        }
+
+        GluePySparkJob()
+
+        mock_glue_pyspark_context_cls.assert_called_once_with(ANY)
+        mock_spark_context_cls.getOrCreate.return_value.setLogLevel.assert_called_once_with(
+            GluePySparkJob.LogLevel.WARN.value
+        )
 
 
 class TestGluePySparkJobMethods:

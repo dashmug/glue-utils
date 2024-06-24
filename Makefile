@@ -50,6 +50,11 @@ test: docker/requirements.txt ## Run automated tests
 	@TARGET=test $(DOCKER_COMPOSE_RUN) -c pytest
 
 
+.PHONY: test-verbose
+test-verbose: docker/requirements.txt ## Run automated tests in verbose mode
+	@TARGET=test $(DOCKER_COMPOSE_RUN) -c "pytest -vv"
+
+
 .PHONY: coverage
 coverage: docker/requirements.txt ## Run tests and measure code coverage
 	@TARGET=coverage $(DOCKER_COMPOSE_RUN) -c "pytest --cov=glue_utils --cov-report=term --cov-report=html"
