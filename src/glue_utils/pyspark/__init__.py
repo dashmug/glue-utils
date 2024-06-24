@@ -1,12 +1,3 @@
-from importlib.util import find_spec
-
-if not find_spec("awsglue.context"):
-    msg = (
-        "GlueContext is required to use this module. "
-        "Make sure you are running within a Glue PySpark environment."
-    )
-    raise ModuleNotFoundError(msg)
-
 from .connection_options import (
     DocumentDBSinkConnectionOptions,
     DocumentDBSourceConnectionOptions,
