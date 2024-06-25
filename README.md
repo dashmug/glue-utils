@@ -4,12 +4,12 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 
-[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=dashmug_glue-utils&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=dashmug_glue-utils)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=dashmug_glue-utils&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=dashmug_glue-utils)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=dashmug_glue-utils&metric=coverage)](https://sonarcloud.io/summary/new_code?id=dashmug_glue-utils)
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=dashmug_glue-utils&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=dashmug_glue-utils)
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=dashmug_glue-utils&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=dashmug_glue-utils)
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=dashmug_glue-utils&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=dashmug_glue-utils)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=dashmug_glue-utils&metric=ncloc)](https://sonarcloud.io/summary/overall?id=dashmug_glue-utils)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=dashmug_glue-utils&metric=alert_status)](https://sonarcloud.io/summary/overall?id=dashmug_glue-utils)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=dashmug_glue-utils&metric=coverage)](https://sonarcloud.io/summary/overall?id=dashmug_glue-utils)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=dashmug_glue-utils&metric=reliability_rating)](https://sonarcloud.io/summary/overall?id=dashmug_glue-utils)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=dashmug_glue-utils&metric=security_rating)](https://sonarcloud.io/summary/overall?id=dashmug_glue-utils)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=dashmug_glue-utils&metric=sqale_rating)](https://sonarcloud.io/summary/overall?id=dashmug_glue-utils)
 
 
 
