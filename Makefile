@@ -11,7 +11,7 @@ all: ## Show help (default)
 
 .PHONY: install
 install: clean ## Create virtualenv and install dependencies
-	@poetry install --sync --update
+	@poetry install --sync
 
 
 .PHONY: outdated
