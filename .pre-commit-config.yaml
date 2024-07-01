@@ -17,8 +17,6 @@ repos:
         entry: poetry check
         language: python
         pass_filenames: false
-        files: ^(.*/)?pyproject\.toml$
-        pass_filenames: false
         files: ^(.*/)?(poetry\.lock|pyproject\.toml)$
       - id: poetry-install
         name: Install dependencies from the poetry lock file

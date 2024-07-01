@@ -1,21 +1,21 @@
 {
-    "files.exclude": {
-      ".idea": true,
-      "**/__pycache__": true,
-      "**/.import_linter_cache": true,
-      "**/.mypy_cache": true,
-      "**/.pytest_cache": true,
-      "**/.ruff_cache": true,
-    },
-    "[python]": {
-      "editor.defaultFormatter": "charliermarsh.ruff",
-      "editor.formatOnSave": true,
-      "editor.codeActionsOnSave": {
-        "source.fixAll": "explicit"
-      }
-    },
-    "python.defaultInterpreterPath": "./.venv/bin/python",
-    "python.analysis.typeCheckingMode": "off",
-    "python.testing.pytestEnabled": true,
-    "autoDocstring.docstringFormat": "numpy-notypes"
-  }
+  "files.exclude": {
+    ".idea": true,
+    "**/__pycache__": true,
+    "**/.import_linter_cache": true,
+    "**/.mypy_cache": true,
+    "**/.pytest_cache": true,
+    "**/.ruff_cache": true
+  },
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit"
+    }
+  },
+  "python.defaultInterpreterPath": "./.venv/bin/python",
+  "python.analysis.typeCheckingMode": "off",
+  "python.testing.pytestEnabled": true,
+  "autoDocstring.docstringFormat": "numpy-notypes"
+}

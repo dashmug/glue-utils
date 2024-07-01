@@ -108,5 +108,5 @@ githooks: ## Install/update project git hooks
 
 .PHONY: release
 release: publish ## Publish and tag a new release
-	@eval $$(bumpver show -n --environ) && git tag v$$CURRENT_VERSION
+	@eval $$(bumpver show -n --environ) && git tag $$CURRENT_VERSION
 	@git push --follow-tags
