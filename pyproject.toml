@@ -153,6 +153,9 @@ commit = true
     'current_version = "{version}"',
     'version = "{version}"',
 ]
+"README.md" = [
+    'glue_utils=={version}',
+]
 "src/glue_utils/__init__.py" = [
     '^__version__ = "{version}"$',
 ]

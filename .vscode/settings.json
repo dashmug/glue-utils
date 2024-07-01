@@ -17,5 +17,5 @@
   "python.defaultInterpreterPath": "./.venv/bin/python",
   "python.analysis.typeCheckingMode": "off",
   "python.testing.pytestEnabled": true,
-  "autoDocstring.docstringFormat": "numpy-notypes"
+  "autoDocstring.docstringFormat": "numpy"
 }
