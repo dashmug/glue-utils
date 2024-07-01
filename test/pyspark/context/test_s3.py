@@ -1,13 +1,15 @@
 from unittest.mock import sentinel
 
-from glue_utils.pyspark import (
-    CSVFormatOptions,
-    GluePySparkContext,
-    JSONFormatOptions,
-    ParquetFormatOptions,
+from glue_utils.pyspark import GluePySparkContext
+from glue_utils.pyspark.connection_options import (
     S3ParquetSourceConnectionOptions,
     S3SinkConnectionOptions,
     S3SourceConnectionOptions,
+)
+from glue_utils.pyspark.format_options import (
+    CSVFormatOptions,
+    JSONFormatOptions,
+    ParquetFormatOptions,
     XMLFormatOptions,
 )
 

@@ -6,7 +6,7 @@ import sys
 from contextlib import contextmanager
 from dataclasses import fields
 from enum import Enum
-from typing import TYPE_CHECKING, Generic, TypedDict, cast, overload
+from typing import TYPE_CHECKING, Generic, cast, overload
 
 from awsglue.job import Job
 from awsglue.utils import getResolvedOptions
@@ -15,7 +15,7 @@ from typing_extensions import TypeVar
 
 from glue_utils import BaseOptions
 
-from .context import GluePySparkContext
+from .context import GlueContextOptions, GluePySparkContext
 
 if TYPE_CHECKING:
     from collections.abc import Generator
@@ -23,13 +23,6 @@ if TYPE_CHECKING:
     from pyspark.sql import SparkSession
 
 T = TypeVar("T", bound=BaseOptions, default=BaseOptions)
-
-
-class GlueContextOptions(TypedDict, total=False):
-    """Options to be passed as kwargs when instantiating a GlueContext object."""
-
-    minPartitions: int
-    targetPartitions: int
 
 
 class GluePySparkJob(Generic[T]):

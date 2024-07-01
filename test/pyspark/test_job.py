@@ -11,7 +11,7 @@ from pyspark.sql import SparkSession
 from typing_extensions import TypeVar
 
 if TYPE_CHECKING:
-    from glue_utils.pyspark.job import GlueContextOptions
+    from glue_utils.pyspark import GlueContextOptions
 
 
 @dataclass
@@ -186,15 +186,12 @@ class TestGluePySparkJob:
 
         job.sc.stop()
 
-    @pytest.mark.parametrize(
-        ("level", "value"), [(level, level.value) for level in GluePySparkJob.LogLevel]
-    )
+    @pytest.mark.parametrize("level", list(GluePySparkJob.LogLevel))
     @patch("glue_utils.pyspark.job.SparkContext")
     def test_init_with_log_level(
         self,
         mock_spark_context_cls,
         level,
-        value,
         mock_get_resolved_options,
         mock_glue_pyspark_context_cls,
     ):
@@ -206,7 +203,7 @@ class TestGluePySparkJob:
 
         mock_glue_pyspark_context_cls.assert_called_once_with(ANY)
         mock_spark_context_cls.getOrCreate.return_value.setLogLevel.assert_called_once_with(
-            value
+            level.value
         )
 
     @patch("glue_utils.pyspark.job.SparkContext")

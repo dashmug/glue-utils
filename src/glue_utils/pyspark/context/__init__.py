@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import TypedDict
+
 from awsglue.context import GlueContext
 
 from .documentdb import DocumentDBMixin
@@ -12,6 +14,13 @@ from .kinesis import KinesisMixin
 from .mongodb import MongoDBMixin
 from .opensearch import OpenSearchMixin
 from .s3 import S3Mixin
+
+
+class GlueContextOptions(TypedDict, total=False):
+    """Options to be passed as kwargs when instantiating a GlueContext object."""
+
+    minPartitions: int
+    targetPartitions: int
 
 
 class GluePySparkContext(
