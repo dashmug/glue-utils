@@ -90,6 +90,9 @@ pip install glue-utils
       arguments
 * `GluePySparkContext`
     * a subclass of `awsglue.context.GlueContext` that adds convenient
+      type-safe methods (methods that ensure the correct data types are used)
+      for the most common source and sink types.
+    * a subclass of `awsglue.context.GlueContext` that adds convenient
       type-safe methods for the most common source and sink types.
 * `GluePySparkJob`
     * a convenient class that simplifies and reduces the boilerplate
