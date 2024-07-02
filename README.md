@@ -58,7 +58,7 @@ job.commit()
 
 ## Usage in AWS Glue
 
-To use it this library in AWS Glue, it needs to added as an
+To use `glue-utils` in AWS Glue, it needs to added as an
 [additional python module](https://docs.aws.amazon.com/glue/latest/dg/aws-glue-programming-python-libraries.html#addl-python-modules-support)
 in your Glue job.
 
@@ -66,7 +66,7 @@ You can do this by adding an `--additional-python-modules` job parameter
 with the value, `glue_utils==0.6.0`. For more information about setting
 job parameters, see [AWS Glue job parameters](https://docs.aws.amazon.com/glue/latest/dg/aws-glue-programming-etl-glue-arguments.html).
 
-## Installation for local testing
+## Usage when developing jobs locally
 
 This library does not include `pyspark` and `aws-glue-libs` as
 dependencies as they are already pre-installed in Glue's runtime
@@ -82,3 +82,18 @@ pip install pyspark==3.3.0
 pip install git+https://github.com/awslabs/aws-glue-libs.git@master
 pip install glue-utils
 ```
+
+## Main Features
+
+* `BaseOptions`
+    * a dataclass that parses the options supplied via command-line
+      arguments
+* `GluePySparkContext`
+    * a subclass of `awsglue.context.GlueContext` that adds convenient
+      type-safe methods (methods that ensure the correct data types are used)
+      for the most common source and sink types.
+    * a subclass of `awsglue.context.GlueContext` that adds convenient
+      type-safe methods for the most common source and sink types.
+* `GluePySparkJob`
+    * a convenient class that simplifies and reduces the boilerplate
+      code needed in Glue jobs.
