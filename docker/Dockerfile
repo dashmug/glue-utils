@@ -5,20 +5,21 @@ FROM amazon/aws-glue-libs:glue_libs_4.0.0_image_01 as base
 WORKDIR /home/glue_user/workspace
 
 # hadolint ignore=DL3013
-RUN pip3 install --no-cache-dir --no-warn-script-location --user --upgrade pip
+RUN pip3 install --disable-pip-version-check --no-compile --no-cache-dir --no-warn-script-location --user --upgrade pip \
+  && mkdir -p docker
 
 
 # ----------------------- Test -----------------------
 FROM base as test
 
-COPY docker/requirements.txt ./
+COPY docker/requirements.txt docker/requirements.txt
 
-RUN pip3 install --no-cache-dir --no-warn-script-location --user -r requirements.txt
+RUN pip3 install --disable-pip-version-check --no-compile --no-cache-dir --no-warn-script-location --user -r docker/requirements.txt
 
 COPY src pyproject.toml README.md ./
 
 # Install this package.
-RUN pip3 install --no-cache-dir --no-warn-script-location --user .
+RUN pip3 install --disable-pip-version-check --no-compile --no-cache-dir --no-warn-script-location --user .
 
 
 # --------------------- Coverage ---------------------
@@ -30,23 +31,23 @@ ARG USER_ID
 # Switch to root to be able to make changes in the container filesystem.
 USER root
 
-# Change UID of glue_user to be the same as host user. This allows
-# JupyterLab to write to the host system as glue_user.
-RUN usermod -u "$USER_ID" glue_user \
-  # Clean up /tmp which may already have glue_user-owned files with the
-  # old UID.
-  && rm -rf /tmp/*
+# Clean up /tmp which may already have glue_user-owned files with the
+# old UID.
+RUN rm -rf /tmp/* \
+  # Change UID of glue_user to be the same as host user. This allows
+  # JupyterLab to write to the host system as glue_user.
+  && usermod -u $USER_ID glue_user
 
 # Switch to glue_user to be able to make changes for the user itself.
 USER glue_user
 
-COPY docker/requirements.txt ./
+COPY docker/requirements.txt docker/requirements.txt
 
-RUN pip3 install --no-cache-dir --no-warn-script-location --user -r requirements.txt
+RUN pip3 install --disable-pip-version-check --no-compile --no-cache-dir --no-warn-script-location --user -r docker/requirements.txt
 
 COPY src pyproject.toml README.md ./
 
 # Install this package.
-RUN pip3 install --no-cache-dir --no-warn-script-location --user . \
+RUN pip3 install --disable-pip-version-check --no-compile --no-cache-dir --no-warn-script-location --user . \
   # Prepare a /tmp directory needed by Spark to start.
   && mkdir -p /tmp/spark-events

@@ -58,8 +58,12 @@ jobs:
       - uses: actions/checkout@v4.1.7
         with:
           fetch-depth: 0
-      - name: Build container and run tests
-        run: USER_ID=$(id -u) TARGET=coverage docker compose --file docker/docker-compose.yml run --rm --build glue-utils -c "pytest --cov=glue_utils --cov-report=term --cov-report=xml"
+      - name: Pull official glue image
+        run: docker pull amazon/aws-glue-libs:glue_libs_4.0.0_image_01
+      - name: Build container
+        run: USER_ID=$(id -u) TARGET=coverage docker compose --file docker/docker-compose.yml build glue-utils
+      - name: Run tests in container
+        run: USER_ID=$(id -u) TARGET=coverage docker compose --file docker/docker-compose.yml run --rm glue-utils -c "pytest --cov=glue_utils --cov-report=term --cov-report=xml"
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
