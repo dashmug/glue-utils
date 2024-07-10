@@ -176,7 +176,7 @@ class KinesisConnectionOptions(TypedDict, total=False):
     failOnDataLoss: Literal["true", "false"]
     awsSTSRoleArn: str
     awsSTSSessionName: str
-    awsSTSEndpostr: str
+    awsSTSEndpoint: str
 
 
 class KinesisSourceConnectionOptions(KinesisConnectionOptions, total=False):
@@ -184,7 +184,7 @@ class KinesisSourceConnectionOptions(KinesisConnectionOptions, total=False):
 
     classification: str
     streamName: str
-    endpostrUrl: str
+    endpointUrl: str
     delimiter: str
     startingPosition: str
     maxFetchTimeInMs: str
@@ -192,10 +192,10 @@ class KinesisSourceConnectionOptions(KinesisConnectionOptions, total=False):
     maxRecordPerRead: str
     addIdleTimeBetweenReads: Literal["true", "false"]
     idleTimeBetweenReadsInMs: str
-    describeShardStrerval: str
+    describeShardInterval: str
     numRetries: str
-    retryStrervalMs: str
-    maxRetryStrervalMs: str
+    retryIntervalMs: str
+    maxRetryIntervalMs: str
     avoidEmptyBatches: Literal["true", "false"]
     schema: str
     inferSchema: Literal["true", "false"]
@@ -345,7 +345,7 @@ KafkaSourceConnectionOptions = TypedDict(
         "endingOffsets": str,
         "pollTimeoutMs": str,
         "numRetries": str,
-        "retryStrervalMs": str,
+        "retryIntervalMs": str,
         "maxOffsetsPerTrigger": str,
         "minPartitions": str,
         "includeHeaders": Literal["true", "false"],
