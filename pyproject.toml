@@ -38,7 +38,7 @@ import-linter = "^2.0"
 pre-commit = "^3.7.1"
 pytest = "^8.2.2"
 mypy = "^1.10.1"
-ruff = "^0.5.1"
+ruff = "^0.5.2"
 
 [tool.poetry.group.local.dependencies]
 # The "local" dependency group refers to dependencies that already

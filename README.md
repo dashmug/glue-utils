@@ -5,7 +5,6 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/dashmug/glue-utils/ci.yml)
 
-
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=dashmug_glue-utils&metric=ncloc)](https://sonarcloud.io/summary/overall?id=dashmug_glue-utils)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=dashmug_glue-utils&metric=alert_status)](https://sonarcloud.io/summary/overall?id=dashmug_glue-utils)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=dashmug_glue-utils&metric=coverage)](https://sonarcloud.io/summary/overall?id=dashmug_glue-utils)
@@ -24,7 +23,6 @@
   - [`GluePySparkContext`](#gluepysparkcontext)
   - [`GluePySparkJob`](#gluepysparkjob)
 - [Other features](#other-features)
-
 
 ## Usage in AWS Glue
 

@@ -1,3 +1,4 @@
+#checkov:skip=CKV_DOCKER_2: HEALTHCHECK is not needed for this container
 # ----------------------- Base -----------------------
 FROM amazon/aws-glue-libs:glue_libs_4.0.0_image_01 as base
 
