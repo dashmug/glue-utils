@@ -1,12 +1,17 @@
 DOCKER_COMPOSE_RUN = USER_ID=$$(id -u) docker compose --file docker/docker-compose.yml run --rm --build glue-utils
 
-.PHONY: all
-all: ## Show help (default)
+
+.PHONY: help
+help: ## Show help (default)
 	@echo "=== Glue Utils ==="
 	@echo
 	@echo "Available commands:"
 	@grep --extended-regexp '^[ /.a-zA-Z0-9_-]+:.*?## .*$$' Makefile | \
 		awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
+
+
+.PHONY: all
+ all: help
 
 
 .PHONY: install
@@ -110,3 +115,13 @@ githooks: ## Install/update project git hooks
 release: publish ## Publish and tag a new release
 	@eval $$(bumpver show -n --environ) && git tag $$CURRENT_VERSION
 	@git push --follow-tags
+
+
+.PHONY: checkov
+checkov: ## Run Checkov security checks
+	@checkov -d .
+
+
+.PHONY: prettier
+prettier: clean  ## Run Prettier code formatter
+	@prettier --write .
