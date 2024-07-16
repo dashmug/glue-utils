@@ -92,8 +92,8 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.24.0
         with:
-          scan-type: 'fs'
-          output: 'trivy.txt'
+          scan-type: "fs"
+          output: "trivy.txt"
       - name: Publish Trivy output to Summary
         run: |
           {
@@ -104,7 +104,7 @@ jobs:
             cat trivy.txt
             echo '```'
             echo "</details>"
-          } >> $GITHUB_STEP_SUMMARY
+          } >> "$GITHUB_STEP_SUMMARY"
 
   dockerfile:
     name: Check Dockerfile
