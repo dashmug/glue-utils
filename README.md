@@ -3,7 +3,10 @@
 [![PyPI - Version](https://img.shields.io/pypi/v/glue-utils)](https://pypi.org/project/glue-utils/)
 [![PyPI - Downloads](https://img.shields.io/pypi/dw/glue-utils)](https://pypi.org/project/glue-utils/)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 [![Continuous Integration](https://github.com/dashmug/glue-utils/actions/workflows/ci.yml/badge.svg)](https://github.com/dashmug/glue-utils/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/dashmug/glue-utils/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/dashmug/glue-utils/actions/workflows/github-code-scanning/codeql)
+[![Dependabot Updates](https://github.com/dashmug/glue-utils/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/dashmug/glue-utils/actions/workflows/dependabot/dependabot-updates)
 
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=dashmug_glue-utils&metric=ncloc)](https://sonarcloud.io/summary/overall?id=dashmug_glue-utils)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=dashmug_glue-utils&metric=alert_status)](https://sonarcloud.io/summary/overall?id=dashmug_glue-utils)

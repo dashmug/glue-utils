@@ -76,7 +76,7 @@ checks: format typecheck importcheck test
 
 .PHONY: clean
 clean: ## Delete generated artifacts
-	@rm -rf __pycache__ .coverage .import_linter_cache .mypy_cache .pytest_cache .ruff_cache dist htmlcov
+	@rm -rfv __pycache__ .coverage .import_linter_cache .mypy_cache .pytest_cache .ruff_cache dist htmlcov
 
 
 .PHONY: publish
@@ -115,6 +115,7 @@ githooks: ## Install/update project git hooks
 release: publish ## Publish and tag a new release
 	@eval $$(bumpver show -n --environ) && git tag $$CURRENT_VERSION
 	@git push --follow-tags
+	@git push --tags
 
 
 .PHONY: checkov
