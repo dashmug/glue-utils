@@ -2,7 +2,6 @@
 # ----------------------- Base -----------------------
 FROM amazon/aws-glue-libs:glue_libs_4.0.0_image_01 as base
 
-# Copy requirements file that contains tooling.
 WORKDIR /home/glue_user/workspace
 
 # hadolint ignore=DL3013
