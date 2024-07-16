@@ -93,12 +93,18 @@ jobs:
         uses: aquasecurity/trivy-action@0.24.0
         with:
           scan-type: 'fs'
-          format: 'sarif'
-          output: 'trivy.sarif'
-      - name: Upload SARIF results
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: 'trivy.sarif'
+          output: 'trivy.txt'
+      - name: Publish Trivy output to Summary
+        run: |
+          {
+            echo "### Trivy"
+            echo "<details><summary>Click to expand</summary>"
+            echo ""
+            echo '```'
+            cat trivy.txt
+            echo '```'
+            echo "</details>"
+          } >> $GITHUB_STEP_SUMMARY
 
   dockerfile:
     name: Check Dockerfile
