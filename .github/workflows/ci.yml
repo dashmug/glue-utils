@@ -61,7 +61,7 @@ jobs:
           fetch-depth: 0
       - name: Diffset
         id: diffset
-        uses: softprops/diffset@v2.0.1
+        uses: softprops/diffset@v2.1.0
         with:
           base: main
           glue_files: |
