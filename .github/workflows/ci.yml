@@ -85,7 +85,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   trivy:
-    name: Check for vulnerabilities
+    name: Check dependencies for vulnerabilities
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4.1.7

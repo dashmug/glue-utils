@@ -1,6 +1,6 @@
 #checkov:skip=CKV_DOCKER_2: HEALTHCHECK is not needed for this container
 # ----------------------- Base -----------------------
-FROM amazon/aws-glue-libs:glue_libs_4.0.0_image_01 as base
+FROM amazon/aws-glue-libs:glue_libs_4.0.0_image_01 AS base
 
 WORKDIR /home/glue_user/workspace
 
@@ -10,7 +10,7 @@ RUN pip3 install --disable-pip-version-check --no-compile --no-cache-dir --no-wa
 
 
 # ----------------------- Test -----------------------
-FROM base as test
+FROM base AS test
 
 COPY docker/requirements.txt docker/requirements.txt
 
@@ -23,7 +23,7 @@ RUN pip3 install --disable-pip-version-check --no-compile --no-cache-dir --no-wa
 
 
 # --------------------- Coverage ---------------------
-FROM base as coverage
+FROM base AS coverage
 
 # Pass the host user to the container.
 ARG USER_ID
