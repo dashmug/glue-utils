@@ -112,7 +112,7 @@ disallow_incomplete_defs = false
 disallow_untyped_defs = false
 
 [tool.pytest.ini_options]
-addopts = "-p no:cacheprovider"
+addopts = "-p no:cacheprovider --junitxml=test-results/results.xml"
 filterwarnings = [
     "ignore::FutureWarning:pyspark.sql.context",
     "ignore::UserWarning:test.test_options",

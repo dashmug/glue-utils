@@ -76,7 +76,7 @@ checks: format typecheck importcheck test
 
 .PHONY: clean
 clean: ## Delete generated artifacts
-	@rm -rfv __pycache__ .coverage .import_linter_cache .mypy_cache .pytest_cache .ruff_cache dist htmlcov
+	@rm -rfv __pycache__ .coverage .import_linter_cache .mypy_cache .pytest_cache .ruff_cache coverage dist htmlcov test-results
 
 
 .PHONY: publish

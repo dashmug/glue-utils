@@ -22,7 +22,7 @@ class KafkaMixin:
         connection_options: KafkaSourceConnectionOptions,
         transformation_ctx: str = "",
     ) -> DynamicFrame:
-        """Create a dynamic frame from a Kafka data source.
+        """Create a DynamicFrame from a Kafka data source.
 
         Parameters
         ----------

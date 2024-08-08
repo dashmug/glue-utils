@@ -13,3 +13,4 @@ wheels/
 .coverage
 coverage
 htmlcov
+test-results

@@ -48,7 +48,7 @@ jobs:
       - name: Check if requirements.txt is up-to-date
         run: poetry export --with=dev --output docker/requirements.txt && git diff --exit-code
       - name: Run tests that do not need the Glue container
-        run: poetry run pytest test/test_options.py
+        run: poetry run pytest test/test_*.py
       - name: Build python packages
         run: poetry build
 

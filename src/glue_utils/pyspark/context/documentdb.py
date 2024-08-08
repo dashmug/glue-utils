@@ -22,7 +22,7 @@ class DocumentDBMixin:
         connection_options: DocumentDBSourceConnectionOptions,
         transformation_ctx: str = "",
     ) -> DynamicFrame:
-        """Create a dynamic frame from a DocumentDB data source.
+        """Create a DynamicFrame from a DocumentDB data source.
 
         Parameters
         ----------

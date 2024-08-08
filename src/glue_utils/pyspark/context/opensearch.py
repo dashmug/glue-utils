@@ -22,7 +22,7 @@ class OpenSearchMixin:
         connection_options: OpenSearchSourceConnectionOptions,
         transformation_ctx: str = "",
     ) -> DynamicFrame:
-        """Create a dynamic frame from a OpenSearch data source.
+        """Create a DynamicFrame from a OpenSearch data source.
 
         Parameters
         ----------

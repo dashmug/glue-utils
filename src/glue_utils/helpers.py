@@ -15,7 +15,23 @@ def generate_partitioned_path(
     partition_separator: str = "/",
     key_value_separator: str = "=",
 ) -> str:
-    """e.g. Given an ordered dictionary of strings, return a partitioned path."""
+    """Generate a partitioned path from a dictionary of partitions.
+
+    Parameters
+    ----------
+    partitions : dict[str, str]
+        A dictionary containing the partitions and their corresponding values.
+    partition_separator : str, optional
+        The separator to use between partitions in the generated path. Default is "/".
+    key_value_separator : str, optional
+        The separator to use between partition keys and values in the generated path. Default is "=".
+
+    Returns
+    -------
+    str
+        The generated partitioned path.
+
+    """
     if isinstance(partitions, dict) and not isinstance(partitions, OrderedDict):
         warn(
             "Regular dictionaries are unordered and may not produce the expected path. Use collections.OrderedDict instead.",

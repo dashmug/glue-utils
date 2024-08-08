@@ -23,7 +23,7 @@ class DynamoDBMixin:
         connection_options: DynamoDBSourceConnectionOptions,
         transformation_ctx: str = "",
     ) -> DynamicFrame:
-        """Create a dynamic frame from a DynamoDB data source.
+        """Create a DynamicFrame from a DynamoDB data source.
 
         This uses the AWS Glue DynamoDB ETL connector.
 
@@ -46,7 +46,7 @@ class DynamoDBMixin:
         connection_options: DynamoDBExportSourceConnectionOptions,
         transformation_ctx: str = "",
     ) -> DynamicFrame:
-        """Create a dynamic frame from a DynamoDB data source.
+        """Create a DynamicFrame from a DynamoDB data source.
 
         This uses the AWS Glue DynamoDB Export connector.
 

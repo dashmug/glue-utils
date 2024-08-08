@@ -22,7 +22,7 @@ class KinesisMixin:
         connection_options: KinesisSourceConnectionOptions,
         transformation_ctx: str = "",
     ) -> DynamicFrame:
-        """Create a dynamic frame from a Kinesis data source.
+        """Create a DynamicFrame from a Kinesis data source.
 
         Parameters
         ----------

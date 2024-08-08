@@ -22,7 +22,7 @@ class MongoDBMixin:
         connection_options: MongoDBSourceConnectionOptions,
         transformation_ctx: str = "",
     ) -> DynamicFrame:
-        """Create a dynamic frame from a Mongodb data source.
+        """Create a DynamicFrame from a Mongodb data source.
 
         Parameters
         ----------
