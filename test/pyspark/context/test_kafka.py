@@ -15,7 +15,7 @@ class TestGluePySparkContextForKafka:
         self,
         glue_pyspark_context: GluePySparkContext,
         mock_create_dynamic_frame_from_options,
-    ):
+    ) -> None:
         dynamic_frame = glue_pyspark_context.create_dynamic_frame_from_kafka(
             connection_options=KafkaSourceConnectionOptions(
                 connectionName="ConfluentKafka",
@@ -44,7 +44,7 @@ class TestGluePySparkContextForKafka:
         self,
         glue_pyspark_context: GluePySparkContext,
         mock_write_dynamic_frame_from_options,
-    ):
+    ) -> None:
         dynamic_frame = glue_pyspark_context.write_dynamic_frame_to_kafka(
             frame=sentinel.dynamic_frame,
             connection_options=KafkaSinkConnectionOptions(

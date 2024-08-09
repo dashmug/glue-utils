@@ -12,7 +12,7 @@ def glue_pyspark_context():
     sc.stop()
 
 
-@pytest.fixture
+@pytest.fixture()
 def mock_create_dynamic_frame_from_options(glue_pyspark_context):
     with patch.object(
         glue_pyspark_context,
@@ -23,7 +23,7 @@ def mock_create_dynamic_frame_from_options(glue_pyspark_context):
         yield patched
 
 
-@pytest.fixture
+@pytest.fixture()
 def mock_write_dynamic_frame_from_options(glue_pyspark_context):
     with patch.object(
         glue_pyspark_context,

@@ -15,7 +15,7 @@ class TestGluePySparkContextForKinesis:
         self,
         glue_pyspark_context: GluePySparkContext,
         mock_create_dynamic_frame_from_options,
-    ):
+    ) -> None:
         dynamic_frame = glue_pyspark_context.create_dynamic_frame_from_kinesis(
             connection_options=KinesisSourceConnectionOptions(
                 streamARN="arn:aws:kinesis:us-east-2:777788889999:stream/fromOptionsStream",
@@ -42,7 +42,7 @@ class TestGluePySparkContextForKinesis:
         self,
         glue_pyspark_context: GluePySparkContext,
         mock_write_dynamic_frame_from_options,
-    ):
+    ) -> None:
         dynamic_frame = glue_pyspark_context.write_dynamic_frame_to_kinesis(
             frame=sentinel.dynamic_frame,
             connection_options=KinesisSinkConnectionOptions(

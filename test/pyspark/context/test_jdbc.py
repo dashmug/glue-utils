@@ -25,7 +25,7 @@ class TestGluePySparkContextForJDBC:
         connection_type: str,
         glue_pyspark_context: GluePySparkContext,
         mock_create_dynamic_frame_from_options,
-    ):
+    ) -> None:
         create_dynamic_frame = getattr(
             glue_pyspark_context,
             f"create_dynamic_frame_from_{connection_type}",
@@ -57,7 +57,7 @@ class TestGluePySparkContextForJDBC:
         connection_type: str,
         glue_pyspark_context: GluePySparkContext,
         mock_write_dynamic_frame_from_options,
-    ):
+    ) -> None:
         write_dynamic_frame = getattr(
             glue_pyspark_context,
             f"write_dynamic_frame_to_{connection_type}",
@@ -92,7 +92,7 @@ class TestGluePySparkContextForJDBCRedshift:
         self,
         glue_pyspark_context: GluePySparkContext,
         mock_create_dynamic_frame_from_options,
-    ):
+    ) -> None:
         dynamic_frame = glue_pyspark_context.create_dynamic_frame_from_redshift(
             connection_options=RedshiftJDBCConnectionOptions(
                 url="something",
@@ -123,7 +123,7 @@ class TestGluePySparkContextForJDBCRedshift:
         self,
         glue_pyspark_context: GluePySparkContext,
         mock_write_dynamic_frame_from_options,
-    ):
+    ) -> None:
         dynamic_frame = glue_pyspark_context.write_dynamic_frame_to_redshift(
             frame=sentinel.dynamic_frame,
             connection_options=RedshiftJDBCConnectionOptions(

@@ -55,6 +55,10 @@ jobs:
   tests:
     name: Run tests in Glue container
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+      checks: write
     steps:
       - uses: actions/checkout@v4.1.7
         with:
@@ -77,6 +81,13 @@ jobs:
       - name: Run tests in container
         if: steps.diffset.outputs.glue_files
         run: USER_ID=$(id -u) TARGET=coverage docker compose --file docker/docker-compose.yml run --rm glue-utils -c "pytest --cov=glue_utils --cov-report=term --cov-report=xml"
+      - name: Generate test report
+        uses: dorny/test-reporter@v1.9.1
+        if: steps.diffset.outputs.glue_files
+        with:
+          name: Test Report
+          path: test-results/results.xml
+          reporter: java-junit
       - name: SonarCloud Scan
         if: steps.diffset.outputs.glue_files
         uses: SonarSource/sonarcloud-github-action@master

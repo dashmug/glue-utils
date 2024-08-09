@@ -23,25 +23,25 @@ class MockOptions(BaseOptions):
 class Dummy: ...
 
 
-@pytest.fixture
+@pytest.fixture()
 def mock_get_resolved_options():
     with patch("glue_utils.pyspark.job.getResolvedOptions") as patched:
         yield patched
 
 
-@pytest.fixture
+@pytest.fixture()
 def mock_glue_pyspark_context_cls():
     with patch("glue_utils.pyspark.job.GluePySparkContext") as patched:
         yield patched
 
 
-@pytest.fixture
+@pytest.fixture()
 def mock_job():
     with patch("glue_utils.pyspark.job.Job") as patched:
         yield patched.return_value
 
 
-@pytest.fixture
+@pytest.fixture()
 def glue_pyspark_job(mock_get_resolved_options):
     mock_get_resolved_options.return_value = {
         "JOB_NAME": "test-job",
@@ -52,7 +52,7 @@ def glue_pyspark_job(mock_get_resolved_options):
     job.sc.stop()
 
 
-def assert_glue_context_attributes(glue_context: GlueContext):
+def assert_glue_context_attributes(glue_context: GlueContext) -> None:
     assert isinstance(glue_context, GlueContext)
     assert isinstance(glue_context.spark_session, SparkSession)
     assert isinstance(glue_context.spark_session.sparkContext, SparkContext)
@@ -61,7 +61,7 @@ def assert_glue_context_attributes(glue_context: GlueContext):
 T = TypeVar("T", bound=BaseOptions, default=BaseOptions)
 
 
-def assert_job_attributes(job: GluePySparkJob[T]):
+def assert_job_attributes(job: GluePySparkJob[T]) -> None:
     sc = job.sc
     glue_context = job.glue_context
 
@@ -81,7 +81,9 @@ class TestGluePySparkJob:
             ([], {}),
         ],
     )
-    def test_init(self, args, resolved_options, mock_get_resolved_options, mock_job):
+    def test_init(
+        self, args, resolved_options, mock_get_resolved_options, mock_job
+    ) -> None:
         mock_get_resolved_options.return_value = resolved_options
 
         with patch("sys.argv", ["test.py", *args]):
@@ -100,7 +102,7 @@ class TestGluePySparkJob:
 
             job.sc.stop()
 
-    def test_init_options_cls(self, mock_get_resolved_options, mock_job):
+    def test_init_options_cls(self, mock_get_resolved_options, mock_job) -> None:
         mock_get_resolved_options.return_value = {
             "JOB_NAME": "test-job",
             "OPTION_FROM_CLASS_A": "mock-option",
@@ -126,7 +128,7 @@ class TestGluePySparkJob:
 
         job.sc.stop()
 
-    def test_init_with_invalid_options_cls(self, mock_get_resolved_options):
+    def test_init_with_invalid_options_cls(self, mock_get_resolved_options) -> None:
         mock_get_resolved_options.return_value = {
             "JOB_NAME": "test-job",
             "OPTION_FROM_CLASS_A": "mock-option",
@@ -138,7 +140,7 @@ class TestGluePySparkJob:
         ):
             GluePySparkJob(options_cls=Dummy)  # type: ignore[type-var]
 
-    def test_init_with_invalid_spark_conf(self, mock_get_resolved_options):
+    def test_init_with_invalid_spark_conf(self, mock_get_resolved_options) -> None:
         mock_get_resolved_options.return_value = {
             "JOB_NAME": "test-job",
         }
@@ -146,7 +148,7 @@ class TestGluePySparkJob:
         with pytest.raises(TypeError, match="conf must be an instance of SparkConf"):
             GluePySparkJob(spark_conf=Dummy())  # type: ignore[call-overload]
 
-    def test_init_with_spark_conf(self, mock_get_resolved_options):
+    def test_init_with_spark_conf(self, mock_get_resolved_options) -> None:
         mock_get_resolved_options.return_value = {
             "JOB_NAME": "test-job",
         }
@@ -165,7 +167,7 @@ class TestGluePySparkJob:
         self,
         mock_get_resolved_options,
         mock_glue_pyspark_context_cls,
-    ):
+    ) -> None:
         mock_get_resolved_options.return_value = {
             "JOB_NAME": "test-job",
         }
@@ -194,7 +196,7 @@ class TestGluePySparkJob:
         level,
         mock_get_resolved_options,
         mock_glue_pyspark_context_cls,
-    ):
+    ) -> None:
         mock_get_resolved_options.return_value = {
             "JOB_NAME": "test-job",
         }
@@ -212,7 +214,7 @@ class TestGluePySparkJob:
         mock_spark_context_cls,
         mock_get_resolved_options,
         mock_glue_pyspark_context_cls,
-    ):
+    ) -> None:
         mock_get_resolved_options.return_value = {
             "JOB_NAME": "test-job",
         }
@@ -226,19 +228,21 @@ class TestGluePySparkJob:
 
 
 class TestGluePySparkJobMethods:
-    def test_managed_glue_context(self, mock_job, glue_pyspark_job):
+    def test_managed_glue_context(self, mock_job, glue_pyspark_job) -> None:
         with glue_pyspark_job.managed_glue_context() as glue_context:
             assert_glue_context_attributes(glue_context)
 
         mock_job.commit.assert_called_once()
 
-    def test_managed_glue_context_without_commit(self, mock_job, glue_pyspark_job):
+    def test_managed_glue_context_without_commit(
+        self, mock_job, glue_pyspark_job
+    ) -> None:
         with glue_pyspark_job.managed_glue_context(commit=False) as glue_context:
             assert_glue_context_attributes(glue_context)
 
         mock_job.commit.assert_not_called()
 
-    def test_commit(self, mock_job, glue_pyspark_job):
+    def test_commit(self, mock_job, glue_pyspark_job) -> None:
         glue_pyspark_job.commit()
 
         mock_job.commit.assert_called_once()

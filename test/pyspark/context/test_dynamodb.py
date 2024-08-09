@@ -11,7 +11,7 @@ class TestGluePySparkContextForDynamoDB:
         self,
         glue_pyspark_context: GluePySparkContext,
         mock_create_dynamic_frame_from_options,
-    ):
+    ) -> None:
         dynamic_frame = glue_pyspark_context.create_dynamic_frame_from_dynamodb(
             connection_options={
                 "dynamodb.input.tableName": "test_source",
@@ -36,7 +36,7 @@ class TestGluePySparkContextForDynamoDB:
         self,
         glue_pyspark_context: GluePySparkContext,
         mock_write_dynamic_frame_from_options,
-    ):
+    ) -> None:
         dynamic_frame = glue_pyspark_context.write_dynamic_frame_to_dynamodb(
             frame=sentinel.dynamic_frame,
             connection_options={
@@ -61,7 +61,7 @@ class TestGluePySparkContextForDynamoDB:
         self,
         glue_pyspark_context: GluePySparkContext,
         mock_create_dynamic_frame_from_options,
-    ):
+    ) -> None:
         dynamic_frame = glue_pyspark_context.create_dynamic_frame_from_dynamodb_export(
             connection_options={
                 "dynamodb.export": "ddb",

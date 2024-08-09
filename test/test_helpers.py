@@ -24,7 +24,7 @@ class TestHelpers:
         self,
         partitions,
         expected_path,
-    ):
+    ) -> None:
         assert generate_partitioned_path(partitions) == expected_path
 
     @pytest.mark.parametrize(
@@ -44,6 +44,6 @@ class TestHelpers:
         self,
         partitions,
         expected_path,
-    ):
+    ) -> None:
         with pytest.warns(UnorderedDictWarning):
             assert generate_partitioned_path(partitions) == expected_path

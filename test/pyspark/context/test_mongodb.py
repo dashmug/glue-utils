@@ -11,7 +11,7 @@ class TestGluePySparkContextForMongoDB:
         self,
         glue_pyspark_context: GluePySparkContext,
         mock_create_dynamic_frame_from_options,
-    ):
+    ) -> None:
         dynamic_frame = glue_pyspark_context.create_dynamic_frame_from_mongodb(
             connection_options={
                 "connectionName": "connectionName",
@@ -44,7 +44,7 @@ class TestGluePySparkContextForMongoDB:
         self,
         glue_pyspark_context: GluePySparkContext,
         mock_write_dynamic_frame_from_options,
-    ):
+    ) -> None:
         dynamic_frame = glue_pyspark_context.write_dynamic_frame_to_mongodb(
             frame=sentinel.dynamic_frame,
             connection_options={

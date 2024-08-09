@@ -9,7 +9,7 @@ from glue_utils import BaseOptions
 from glue_utils.options import UnsupportedTypeWarning
 
 
-@pytest.fixture
+@pytest.fixture()
 def mock_get_resolved_options():
     with patch("glue_utils.options.getResolvedOptions") as patched:
         yield patched
@@ -31,7 +31,7 @@ class TestBaseOptions:
         args,
         resolved_options,
         mock_get_resolved_options,
-    ):
+    ) -> None:
         with patch("sys.argv", ["test.py", *args]):
             mock_get_resolved_options.return_value = resolved_options
             options = BaseOptions.from_sys_argv()
@@ -46,7 +46,7 @@ class Options(BaseOptions):
 
 
 class TestOptions:
-    def test_from_sys_argv(self, mock_get_resolved_options):
+    def test_from_sys_argv(self, mock_get_resolved_options) -> None:
         mock_get_resolved_options.return_value = {
             "JOB_NAME": "test-job",
             "connection_name": "test-connection",
@@ -59,7 +59,7 @@ class TestOptions:
         assert options.source_database == "test-source-database"
         assert len(fields(options)) == 2
 
-    def test_missing_options(self, mock_get_resolved_options):
+    def test_missing_options(self, mock_get_resolved_options) -> None:
         mock_get_resolved_options.return_value = {
             "connection_name": "test-connection",
         }
@@ -75,7 +75,7 @@ class NullableOptions(BaseOptions):
 
 
 class TestNullableOptions:
-    def test_from_sys_argv(self, mock_get_resolved_options):
+    def test_from_sys_argv(self, mock_get_resolved_options) -> None:
         mock_get_resolved_options.return_value = {
             "JOB_NAME": "test-job",
             "connection_name": "test-connection",
@@ -88,7 +88,7 @@ class TestNullableOptions:
         assert options.source_database == "test-source-database"
         assert len(fields(options)) == 2
 
-    def test_missing_options(self, mock_get_resolved_options):
+    def test_missing_options(self, mock_get_resolved_options) -> None:
         mock_get_resolved_options.return_value = {
             "connection_name": "test-connection",
         }
@@ -107,7 +107,7 @@ class NullableOptionsWithDefaults(BaseOptions):
 
 
 class TestNullableOptionsWithDefaults:
-    def test_from_sys_argv(self, mock_get_resolved_options):
+    def test_from_sys_argv(self, mock_get_resolved_options) -> None:
         mock_get_resolved_options.return_value = {
             "JOB_NAME": "test-job",
             "connection_name": "test-connection",
@@ -120,7 +120,7 @@ class TestNullableOptionsWithDefaults:
         assert options.source_database == "test-source-database"
         assert len(fields(options)) == 2
 
-    def test_missing_options(self, mock_get_resolved_options):
+    def test_missing_options(self, mock_get_resolved_options) -> None:
         mock_get_resolved_options.return_value = {
             "JOB_NAME": "test-job",
         }
@@ -133,7 +133,7 @@ class TestNullableOptionsWithDefaults:
 
 
 class TestOptionsWithNonString:
-    def test_warning_for_non_string_fields(self, mock_get_resolved_options):
+    def test_warning_for_non_string_fields(self, mock_get_resolved_options) -> None:
         mock_get_resolved_options.return_value = {
             "JOB_NAME": "test-job",
             "start_timestamp": "1632960000",

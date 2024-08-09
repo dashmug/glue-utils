@@ -19,7 +19,7 @@ class TestGluePySparkContextForS3:
         self,
         glue_pyspark_context: GluePySparkContext,
         mock_create_dynamic_frame_from_options,
-    ):
+    ) -> None:
         dynamic_frame = glue_pyspark_context.create_dynamic_frame_from_s3_json(
             connection_options=S3SourceConnectionOptions(
                 paths=["s3://bucket/key/input-path"]
@@ -44,7 +44,7 @@ class TestGluePySparkContextForS3:
         self,
         glue_pyspark_context: GluePySparkContext,
         mock_create_dynamic_frame_from_options,
-    ):
+    ) -> None:
         dynamic_frame = glue_pyspark_context.create_dynamic_frame_from_s3_parquet(
             connection_options=S3ParquetSourceConnectionOptions(
                 paths=["s3://bucket/key/input-path"],
@@ -70,7 +70,7 @@ class TestGluePySparkContextForS3:
         self,
         glue_pyspark_context: GluePySparkContext,
         mock_create_dynamic_frame_from_options,
-    ):
+    ) -> None:
         dynamic_frame = glue_pyspark_context.create_dynamic_frame_from_s3_csv(
             connection_options=S3SourceConnectionOptions(
                 paths=["s3://bucket/key/input-path"]
@@ -100,7 +100,7 @@ class TestGluePySparkContextForS3:
         self,
         glue_pyspark_context: GluePySparkContext,
         mock_create_dynamic_frame_from_options,
-    ):
+    ) -> None:
         dynamic_frame = glue_pyspark_context.create_dynamic_frame_from_s3_xml(
             connection_options=S3SourceConnectionOptions(
                 paths=["s3://bucket/key/input-path"]
@@ -125,7 +125,7 @@ class TestGluePySparkContextForS3:
         self,
         glue_pyspark_context: GluePySparkContext,
         mock_write_dynamic_frame_from_options,
-    ):
+    ) -> None:
         dynamic_frame = glue_pyspark_context.write_dynamic_frame_to_s3_json(
             frame=sentinel.dynamic_frame,
             connection_options=S3SinkConnectionOptions(
@@ -148,7 +148,7 @@ class TestGluePySparkContextForS3:
         self,
         glue_pyspark_context: GluePySparkContext,
         mock_write_dynamic_frame_from_options,
-    ):
+    ) -> None:
         dynamic_frame = glue_pyspark_context.write_dynamic_frame_to_s3_parquet(
             frame=sentinel.dynamic_frame,
             connection_options=S3SinkConnectionOptions(
@@ -175,7 +175,7 @@ class TestGluePySparkContextForS3:
         self,
         glue_pyspark_context: GluePySparkContext,
         mock_write_dynamic_frame_from_options,
-    ):
+    ) -> None:
         dynamic_frame = glue_pyspark_context.write_dynamic_frame_to_s3_csv(
             frame=sentinel.dynamic_frame,
             connection_options=S3SinkConnectionOptions(
@@ -202,7 +202,7 @@ class TestGluePySparkContextForS3:
         self,
         glue_pyspark_context: GluePySparkContext,
         mock_write_dynamic_frame_from_options,
-    ):
+    ) -> None:
         dynamic_frame = glue_pyspark_context.write_dynamic_frame_to_s3_xml(
             frame=sentinel.dynamic_frame,
             connection_options=S3SinkConnectionOptions(
