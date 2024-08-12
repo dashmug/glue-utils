@@ -52,5 +52,5 @@ repos:
         name: Update requirements.txt
         language: system
         files: poetry.lock
-        entry: poetry export --with=dev --output docker/requirements.txt
+        entry: poetry export --with=test --output docker/requirements.txt
         pass_filenames: false

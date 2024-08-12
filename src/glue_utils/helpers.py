@@ -2,43 +2,26 @@
 
 from __future__ import annotations
 
-from collections import OrderedDict
-from warnings import warn
+from typing import Any
 
 
-class UnorderedDictWarning(UserWarning):
-    """Warning when using a regular dict instead of OrderedDict."""
-
-
-def generate_partitioned_path(
-    partitions: dict[str, str],
-    partition_separator: str = "/",
-    key_value_separator: str = "=",
-) -> str:
-    """Generate a partitioned path from a dictionary of partitions.
+def generate_partitioned_path(**kwargs: Any) -> str:  # noqa: ANN401
+    """Generate a partitioned path by joining key-value pairs with separators.
 
     Parameters
     ----------
-    partitions : dict[str, str]
-        A dictionary containing the partitions and their corresponding values.
-    partition_separator : str, optional
-        The separator to use between partitions in the generated path. Default is "/".
-    key_value_separator : str, optional
-        The separator to use between partition keys and values in the generated path. Default is "=".
+    **kwargs : Any
+        Key-value pairs representing the partitions.
 
     Returns
     -------
     str
         The generated partitioned path.
 
-    """
-    if isinstance(partitions, dict) and not isinstance(partitions, OrderedDict):
-        warn(
-            "Regular dictionaries are unordered and may not produce the expected path. Use collections.OrderedDict instead.",
-            UnorderedDictWarning,
-            stacklevel=2,
-        )
+    Example
+    -------
+    >>> generate_partitioned_path(year=2022, month=10, day=15)
+    'year=2022/month=10/day=15'
 
-    return partition_separator.join(
-        key_value_separator.join([key, value]) for key, value in partitions.items()
-    )
+    """
+    return "/".join(f"{key}={value}" for key, value in kwargs.items())

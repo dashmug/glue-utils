@@ -25,7 +25,7 @@ outdated: ## Check for outdated dependencies
 
 
 docker/requirements.txt: poetry.lock
-	@poetry export --with=dev --output docker/requirements.txt
+	@poetry export --with=test --output docker/requirements.txt
 
 
 .PHONY: format
