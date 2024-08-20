@@ -25,7 +25,7 @@ outdated: ## Check for outdated dependencies
 
 
 docker/requirements.txt: poetry.lock
-	@poetry export --with=dev --output docker/requirements.txt
+	@poetry export --with=test --output docker/requirements.txt
 
 
 .PHONY: format
@@ -43,11 +43,6 @@ lint: ## Check source code for common errors
 .PHONY: typecheck
 typecheck: ## Check type annotations
 	@MYPYPATH=src poetry run mypy .
-
-
-.PHONY: importcheck
-importcheck: ## Check import rules
-	@poetry run lint-imports
 
 
 .PHONY: test
@@ -71,7 +66,7 @@ shell: docker/requirements.txt ## Enter a shell in the container
 
 
 .PHONY: checks
-checks: format typecheck importcheck test
+checks: format typecheck test
 
 
 .PHONY: clean

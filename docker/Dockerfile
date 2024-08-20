@@ -12,13 +12,12 @@ RUN pip3 install --disable-pip-version-check --no-compile --no-cache-dir --no-wa
 # ----------------------- Test -----------------------
 FROM base AS test
 
+# Install dependencies.
 COPY docker/requirements.txt docker/requirements.txt
-
 RUN pip3 install --disable-pip-version-check --no-compile --no-cache-dir --no-warn-script-location --user -r docker/requirements.txt
 
-COPY src pyproject.toml README.md ./
-
 # Install this package.
+COPY src pyproject.toml README.md ./
 RUN pip3 install --disable-pip-version-check --no-compile --no-cache-dir --no-warn-script-location --user .
 
 
@@ -41,13 +40,12 @@ RUN rm -rf /tmp/* \
 # Switch to glue_user to be able to make changes for the user itself.
 USER glue_user
 
+# Install dependencies.
 COPY docker/requirements.txt docker/requirements.txt
-
 RUN pip3 install --disable-pip-version-check --no-compile --no-cache-dir --no-warn-script-location --user -r docker/requirements.txt
 
-COPY src pyproject.toml README.md ./
-
 # Install this package.
+COPY src pyproject.toml README.md ./
 RUN pip3 install --disable-pip-version-check --no-compile --no-cache-dir --no-warn-script-location --user . \
   # Prepare a /tmp directory needed by Spark to start.
   && mkdir -p /tmp/spark-events

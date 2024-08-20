@@ -6,7 +6,7 @@ from pyspark import SparkContext
 from glue_utils.pyspark.context import GluePySparkContext
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="package")
 def glue_pyspark_context():
     sc = SparkContext.getOrCreate()
     yield GluePySparkContext(sc)

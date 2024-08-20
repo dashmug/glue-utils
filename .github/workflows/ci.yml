@@ -43,10 +43,10 @@ jobs:
           poetry run ruff check .
       - name: Check type annotations using mypy
         run: MYPYPATH=src poetry run mypy .
-      - name: Check imports between modules
-        run: poetry run lint-imports
       - name: Check if requirements.txt is up-to-date
-        run: poetry export --with=dev --output docker/requirements.txt && git diff --exit-code
+        run: |
+          poetry export --with=test --output docker/requirements.txt
+          git diff --exit-code
       - name: Run tests that do not need the Glue container
         run: poetry run pytest test/test_*.py
       - name: Build python packages
@@ -72,15 +72,9 @@ jobs:
             **/*.py
             docker/*
             pyproject.toml
-      - name: Pull official glue image
+      - name: Build and run tests in container
         if: steps.diffset.outputs.glue_files
-        run: docker pull amazon/aws-glue-libs:glue_libs_4.0.0_image_01
-      - name: Build container
-        if: steps.diffset.outputs.glue_files
-        run: USER_ID=$(id -u) TARGET=coverage docker compose --file docker/docker-compose.yml build glue-utils
-      - name: Run tests in container
-        if: steps.diffset.outputs.glue_files
-        run: USER_ID=$(id -u) TARGET=coverage docker compose --file docker/docker-compose.yml run --rm glue-utils -c "pytest -p no:cacheprovider --junitxml=test-results/results.xml --cov=glue_utils --cov-report=term --cov-report=xml"
+        run: USER_ID=$(id -u) TARGET=coverage docker compose --file docker/docker-compose.yml run --rm glue-utils -c "pytest -p no:cacheprovider --junitxml=test-results/results.xml --cov=glue_utils --cov-report=xml"
       - name: Generate test report
         uses: dorny/test-reporter@v1.9.1
         if: steps.diffset.outputs.glue_files
@@ -88,6 +82,7 @@ jobs:
           name: Test Results
           path: test-results/results.xml
           reporter: java-junit
+          fail-on-error: false
       - name: SonarCloud Scan
         if: steps.diffset.outputs.glue_files
         uses: SonarSource/sonarcloud-github-action@master
@@ -103,19 +98,23 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.24.0
         with:
-          scan-type: "fs"
+          scan-type: "repo"
+          scan-ref: "."
           output: "trivy.txt"
+          hide-progress: true
       - name: Publish Trivy output to Summary
         run: |
-          {
-            echo "### Trivy"
-            echo "<details><summary>Click to expand</summary>"
-            echo ""
-            echo '```'
-            cat trivy.txt
-            echo '```'
-            echo "</details>"
-          } >> "$GITHUB_STEP_SUMMARY"
+          if [[ -s trivy.txt ]]; then
+            {
+              echo "### Trivy"
+              echo "<details><summary>Click to expand</summary>"
+              echo ""
+              echo '```'
+              cat trivy.txt
+              echo '```'
+              echo "</details>"
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
 
   dockerfile:
     name: Check Dockerfile

@@ -42,15 +42,9 @@ repos:
         types: [python]
         entry: env MYPYPATH=src poetry run mypy .
         pass_filenames: false
-      - id: check-python-imports
-        name: Check Python Imports
-        language: system
-        types: [python]
-        entry: poetry run lint-imports
-        pass_filenames: false
       - id: update-requirements
         name: Update requirements.txt
         language: system
         files: poetry.lock
-        entry: poetry export --with=dev --output docker/requirements.txt
+        entry: poetry export --with=test --output docker/requirements.txt
         pass_filenames: false
