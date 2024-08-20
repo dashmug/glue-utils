@@ -46,7 +46,7 @@ jobs:
       - name: Check imports between modules
         run: poetry run lint-imports
       - name: Check if requirements.txt is up-to-date
-        run: poetry export --with=test --output docker/requirements.txt && git diff --exit-code
+        run: poetry export --with=dev --output docker/requirements.txt && git diff --exit-code
       - name: Run tests that do not need the Glue container
         run: poetry run pytest test/test_*.py
       - name: Build python packages

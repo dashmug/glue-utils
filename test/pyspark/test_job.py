@@ -4,11 +4,12 @@ from unittest.mock import ANY, patch
 
 import pytest
 from awsglue.context import GlueContext
-from glue_utils import BaseOptions
-from glue_utils.pyspark import GluePySparkJob
 from pyspark import SparkConf, SparkContext
 from pyspark.sql import SparkSession
 from typing_extensions import TypeVar
+
+from glue_utils import BaseOptions
+from glue_utils.pyspark import GluePySparkJob
 
 if TYPE_CHECKING:
     from glue_utils.pyspark import GlueContextOptions
@@ -23,25 +24,25 @@ class MockOptions(BaseOptions):
 class Dummy: ...
 
 
-@pytest.fixture()
+@pytest.fixture
 def mock_get_resolved_options():
     with patch("glue_utils.pyspark.job.getResolvedOptions") as patched:
         yield patched
 
 
-@pytest.fixture()
+@pytest.fixture
 def mock_glue_pyspark_context_cls():
     with patch("glue_utils.pyspark.job.GluePySparkContext") as patched:
         yield patched
 
 
-@pytest.fixture()
+@pytest.fixture
 def mock_job():
     with patch("glue_utils.pyspark.job.Job") as patched:
         yield patched.return_value
 
 
-@pytest.fixture()
+@pytest.fixture
 def glue_pyspark_job(mock_get_resolved_options):
     mock_get_resolved_options.return_value = {
         "JOB_NAME": "test-job",

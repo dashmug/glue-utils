@@ -1,8 +1,9 @@
 from unittest.mock import patch, sentinel
 
 import pytest
-from glue_utils.pyspark.context import GluePySparkContext
 from pyspark import SparkContext
+
+from glue_utils.pyspark.context import GluePySparkContext
 
 
 @pytest.fixture(scope="module")
@@ -12,7 +13,7 @@ def glue_pyspark_context():
     sc.stop()
 
 
-@pytest.fixture()
+@pytest.fixture
 def mock_create_dynamic_frame_from_options(glue_pyspark_context):
     with patch.object(
         glue_pyspark_context,
@@ -23,7 +24,7 @@ def mock_create_dynamic_frame_from_options(glue_pyspark_context):
         yield patched
 
 
-@pytest.fixture()
+@pytest.fixture
 def mock_write_dynamic_frame_from_options(glue_pyspark_context):
     with patch.object(
         glue_pyspark_context,

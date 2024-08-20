@@ -5,11 +5,12 @@ from typing import Optional, Union
 from unittest.mock import patch
 
 import pytest
+
 from glue_utils import BaseOptions
 from glue_utils.options import UnsupportedTypeWarning
 
 
-@pytest.fixture()
+@pytest.fixture
 def mock_get_resolved_options():
     with patch("glue_utils.options.getResolvedOptions") as patched:
         yield patched

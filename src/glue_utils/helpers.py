@@ -18,10 +18,12 @@ def generate_partitioned_path(**kwargs: Any) -> str:  # noqa: ANN401
     str
         The generated partitioned path.
 
-    Example
-    -------
+    Examples
+    --------
     >>> generate_partitioned_path(year=2022, month=10, day=15)
     'year=2022/month=10/day=15'
+    >>> generate_partitioned_path(category='electronics', brand='apple')
+    'category=electronics/brand=apple'
 
     """
     return "/".join(f"{key}={value}" for key, value in kwargs.items())

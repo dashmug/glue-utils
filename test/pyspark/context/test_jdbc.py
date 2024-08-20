@@ -1,6 +1,7 @@
 from unittest.mock import sentinel
 
 import pytest
+
 from glue_utils.pyspark import (
     ConnectionType,
     GluePySparkContext,

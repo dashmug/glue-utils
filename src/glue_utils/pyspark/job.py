@@ -65,6 +65,60 @@ class GluePySparkJob(Generic[T]):
 
     @overload
     def __init__(
+        self: GluePySparkJob[BaseOptions],
+        *,
+        spark_conf: SparkConf,
+    ) -> None: ...
+
+    @overload
+    def __init__(
+        self: GluePySparkJob[BaseOptions],
+        *,
+        glue_context_options: GlueContextOptions,
+    ) -> None: ...
+
+    @overload
+    def __init__(
+        self: GluePySparkJob[BaseOptions],
+        *,
+        log_level: LogLevel,
+    ) -> None: ...
+
+    @overload
+    def __init__(
+        self: GluePySparkJob[BaseOptions],
+        *,
+        spark_conf: SparkConf,
+        glue_context_options: GlueContextOptions,
+    ) -> None: ...
+
+    @overload
+    def __init__(
+        self: GluePySparkJob[BaseOptions],
+        *,
+        spark_conf: SparkConf,
+        log_level: LogLevel,
+    ) -> None: ...
+
+    @overload
+    def __init__(
+        self: GluePySparkJob[BaseOptions],
+        *,
+        glue_context_options: GlueContextOptions,
+        log_level: LogLevel,
+    ) -> None: ...
+
+    @overload
+    def __init__(
+        self: GluePySparkJob[BaseOptions],
+        *,
+        spark_conf: SparkConf,
+        glue_context_options: GlueContextOptions,
+        log_level: LogLevel,
+    ) -> None: ...
+
+    @overload
+    def __init__(
         self: GluePySparkJob[T],
         *,
         options_cls: type[T],
@@ -72,22 +126,62 @@ class GluePySparkJob(Generic[T]):
 
     @overload
     def __init__(
-        self: GluePySparkJob[T | BaseOptions],
+        self: GluePySparkJob[T],
         *,
+        options_cls: type[T],
         spark_conf: SparkConf,
     ) -> None: ...
 
     @overload
     def __init__(
-        self: GluePySparkJob[T | BaseOptions],
+        self: GluePySparkJob[T],
         *,
+        options_cls: type[T],
         glue_context_options: GlueContextOptions,
     ) -> None: ...
 
     @overload
     def __init__(
-        self: GluePySparkJob[T | BaseOptions],
+        self: GluePySparkJob[T],
         *,
+        options_cls: type[T],
+        log_level: LogLevel,
+    ) -> None: ...
+
+    @overload
+    def __init__(
+        self: GluePySparkJob[T],
+        *,
+        options_cls: type[T],
+        spark_conf: SparkConf,
+        glue_context_options: GlueContextOptions,
+    ) -> None: ...
+
+    @overload
+    def __init__(
+        self: GluePySparkJob[T],
+        *,
+        options_cls: type[T],
+        spark_conf: SparkConf,
+        log_level: LogLevel,
+    ) -> None: ...
+
+    @overload
+    def __init__(
+        self: GluePySparkJob[T],
+        *,
+        options_cls: type[T],
+        glue_context_options: GlueContextOptions,
+        log_level: LogLevel,
+    ) -> None: ...
+
+    @overload
+    def __init__(
+        self: GluePySparkJob[T],
+        *,
+        options_cls: type[T],
+        spark_conf: SparkConf,
+        glue_context_options: GlueContextOptions,
         log_level: LogLevel,
     ) -> None: ...
 

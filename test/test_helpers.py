@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import pytest
+
 from glue_utils.helpers import generate_partitioned_path
 
 
@@ -14,6 +15,10 @@ from glue_utils.helpers import generate_partitioned_path
         (
             {"category": "electronics", "brand": "apple"},
             "category=electronics/brand=apple",
+        ),
+        (
+            {"brand": "apple", "category": "electronics"},
+            "brand=apple/category=electronics",
         ),
     ],
 )
