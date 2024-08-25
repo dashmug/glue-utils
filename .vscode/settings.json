@@ -17,5 +17,6 @@
   "python.defaultInterpreterPath": "./.venv/bin/python",
   "python.analysis.typeCheckingMode": "off",
   "python.testing.pytestEnabled": true,
-  "autoDocstring.docstringFormat": "numpy"
+  "autoDocstring.docstringFormat": "numpy",
+  "makefile.configureOnOpen": false
 }

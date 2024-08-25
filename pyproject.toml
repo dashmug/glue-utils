@@ -36,9 +36,9 @@ python = "^3.9"
 
 [tool.poetry.group.dev.dependencies]
 bumpver = "^2023.1129"
-mypy = "^1.11.1"
+mypy = "^1.11.2"
 pre-commit = "^3.8.0"
-ruff = "^0.6.1"
+ruff = "^0.6.2"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^8.3.2"
