@@ -38,10 +38,10 @@ python = "^3.9"
 bumpver = "^2023.1129"
 mypy = "^1.11.2"
 pre-commit = "^3.8.0"
-ruff = "^0.6.4"
+ruff = "^0.6.6"
 
 [tool.poetry.group.test.dependencies]
-pytest = "^8.3.2"
+pytest = "^8.3.3"
 pytest-cov = "^5.0.0"
 pytest-randomly = "^3.15.0"
 

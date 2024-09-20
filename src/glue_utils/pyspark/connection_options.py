@@ -27,7 +27,6 @@ class JDBCConnectionOptions(BookmarkConnectionOptions, total=False):
 
     useConnectionProperties: Literal["true"]
     connectionName: str
-    databaseName: str
     url: str
     dbtable: str
     user: str
