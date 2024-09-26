@@ -20,7 +20,7 @@ jobs:
         # Glue ETL supports only Python 3.10.
         python-version: ["3.9", "3.10"]
     steps:
-      - uses: actions/checkout@v4.1.7
+      - uses: actions/checkout@v4.2.0
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5.2.0
         with:
@@ -60,7 +60,7 @@ jobs:
       actions: read
       checks: write
     steps:
-      - uses: actions/checkout@v4.1.7
+      - uses: actions/checkout@v4.2.0
         with:
           fetch-depth: 0
       - name: Diffset
@@ -94,7 +94,7 @@ jobs:
     name: Check dependencies for vulnerabilities
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.7
+      - uses: actions/checkout@v4.2.0
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.24.0
         with:
@@ -120,7 +120,7 @@ jobs:
     name: Check Dockerfile
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.7
+      - uses: actions/checkout@v4.2.0
       - name: Validate Dockerfile using hadolint
         uses: hadolint/hadolint-action@v3.1.0
         with:
@@ -130,7 +130,7 @@ jobs:
     name: Check Makefile
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.7
+      - uses: actions/checkout@v4.2.0
       - name: Check Makefile for errors
         uses: Uno-Takashi/checkmake-action@main
 
@@ -142,7 +142,7 @@ jobs:
       contents: read
       security-events: write
     steps:
-      - uses: actions/checkout@v4.1.7
+      - uses: actions/checkout@v4.2.0
       - name: Check code using Checkov
         uses: bridgecrewio/checkov-action@master
         with:
