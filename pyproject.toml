@@ -38,7 +38,7 @@ python = "^3.9"
 bumpver = "^2024.1130"
 mypy = "^1.13.0"
 pre-commit = "^4.0.1"
-ruff = "^0.7.4"
+ruff = "^0.8.0"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^8.3.3"
@@ -77,10 +77,6 @@ ignore = [
     # Conflicts with ruff format
     "COM812",
     "ISC001",
-    # missing-type-self
-    "ANN101",
-    # missing-type-cls
-    "ANN102",
     # line-too-long
     "E501",
     # Ignore camelCase attributes since Glue uses a lot of them
