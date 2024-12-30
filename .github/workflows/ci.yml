@@ -17,8 +17,9 @@ jobs:
     strategy:
       matrix:
         # Glue Pythonshell supports only Python 3.9.
-        # Glue ETL supports only Python 3.10.
-        python-version: ["3.9", "3.10"]
+        # Glue 4.0 uses Python 3.10.
+        # Glue 5.0 uses Python 3.11.
+        python-version: ["3.9", "3.10", "3.11"]
     steps:
       - uses: actions/checkout@v4.2.2
         with:
@@ -30,7 +31,7 @@ jobs:
       - name: Install Poetry Action
         uses: snok/install-poetry@v1.4.1
       - name: Set up Virtualenv Cache
-        uses: actions/cache@v4.1.2
+        uses: actions/cache@v4.2.0
         with:
           path: .venv
           key: ${{ runner.os }}-python${{ matrix.python-version }}-${{ hashFiles('poetry.lock') }}
