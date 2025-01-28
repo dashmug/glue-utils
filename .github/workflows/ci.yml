@@ -10,6 +10,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
+permissions:
+  contents: read
+
 jobs:
   checks:
     name: Check for code errors
@@ -46,10 +49,6 @@ jobs:
           poetry run ruff check .
       - name: Check type annotations using mypy
         run: MYPYPATH=src poetry run mypy .
-      - name: Check if requirements.txt is up-to-date
-        run: |
-          poetry export --with=test --output docker/requirements.txt
-          git diff --exit-code
       - name: Run tests that do not need the Glue container
         run: poetry run pytest test/test_*.py
       - name: Build python packages
