@@ -69,7 +69,7 @@ jobs:
           fetch-depth: 0
       - name: Diffset
         id: diffset
-        uses: softprops/diffset@v2.1.3
+        uses: softprops/diffset@v2.1.4
         with:
           base: main
           glue_files: |
@@ -182,7 +182,7 @@ jobs:
           persist-credentials: false
 
       - name: Install the latest version of uv
-        uses: astral-sh/setup-uv@v5.1.0
+        uses: astral-sh/setup-uv@v5.2.1
 
       - name: Run zizmor
         run: uvx zizmor --format sarif . > results.sarif
