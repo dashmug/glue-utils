@@ -28,7 +28,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5.3.0
+        uses: actions/setup-python@v5.4.0
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install Poetry Action
@@ -68,7 +68,7 @@ jobs:
           fetch-depth: 0
       - name: Diffset
         id: diffset
-        uses: softprops/diffset@v2.1.4
+        uses: softprops/diffset@v2.1.5
         with:
           base: main
           glue_files: |
@@ -181,7 +181,7 @@ jobs:
           persist-credentials: false
 
       - name: Install the latest version of uv
-        uses: astral-sh/setup-uv@v5.2.1
+        uses: astral-sh/setup-uv@v5.2.2
 
       - name: Run zizmor
         run: uvx zizmor --format sarif . > results.sarif
