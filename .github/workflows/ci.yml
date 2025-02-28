@@ -34,7 +34,7 @@ jobs:
       - name: Install Poetry Action
         uses: snok/install-poetry@v1.4.1
       - name: Set up Virtualenv Cache
-        uses: actions/cache@v4.2.1
+        uses: actions/cache@v4.2.2
         with:
           path: .venv
           key: ${{ runner.os }}-python${{ matrix.python-version }}-${{ hashFiles('poetry.lock') }}
@@ -181,7 +181,7 @@ jobs:
           persist-credentials: false
 
       - name: Install the latest version of uv
-        uses: astral-sh/setup-uv@v5.2.2
+        uses: astral-sh/setup-uv@v5.3.0
 
       - name: Run zizmor
         run: uvx zizmor --format sarif . > results.sarif
