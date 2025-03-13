@@ -34,7 +34,7 @@ jobs:
       - name: Install Poetry Action
         uses: snok/install-poetry@v1.4.1
       - name: Set up Virtualenv Cache
-        uses: actions/cache@v4.2.1
+        uses: actions/cache@v4.2.2
         with:
           path: .venv
           key: ${{ runner.os }}-python${{ matrix.python-version }}-${{ hashFiles('poetry.lock') }}
@@ -79,7 +79,7 @@ jobs:
         if: steps.diffset.outputs.glue_files
         run: USER_ID=$(id -u) TARGET=coverage docker compose --file docker/docker-compose.yml run --rm glue-utils -c "pytest -p no:cacheprovider --junitxml=test-results/results.xml --cov=glue_utils --cov-report=xml"
       - name: Generate test report
-        uses: dorny/test-reporter@v1.9.1
+        uses: dorny/test-reporter@v2.0.0
         if: steps.diffset.outputs.glue_files
         with:
           name: Test Results
@@ -181,7 +181,7 @@ jobs:
           persist-credentials: false
 
       - name: Install the latest version of uv
-        uses: astral-sh/setup-uv@v5.2.2
+        uses: astral-sh/setup-uv@v5.3.1
 
       - name: Run zizmor
         run: uvx zizmor --format sarif . > results.sarif
