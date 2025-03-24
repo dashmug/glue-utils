@@ -221,7 +221,7 @@ class GluePySparkJob(Generic[T]):
 
         glue_args = getResolvedOptions(sys.argv, params)
 
-        self.options = cast(T, options_cls.from_options(glue_args))
+        self.options = cast("T", options_cls.from_options(glue_args))
 
         self.sc = self.create_spark_context(spark_conf)
         self.set_log_level(log_level)
