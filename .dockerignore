@@ -9,7 +9,6 @@ coverage
 docker-compose.yml
 htmlcov
 mypy-results
-poetry.*
 test
 Dockerfile
 Makefile

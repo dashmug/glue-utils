@@ -16,33 +16,33 @@ help: ## Show help (default)
 
 .PHONY: install
 install: clean ## Create virtualenv and install dependencies
-	@poetry install --sync
+	@uv sync --all-groups
 
 
 .PHONY: outdated
 outdated: ## Check for outdated dependencies
-	@poetry show --latest --outdated
+	@uv pip list --outdated
 
 
-docker/requirements.txt: poetry.lock
-	@poetry export --with=test --output docker/requirements.txt
+docker/requirements.txt: uv.lock
+	@uv pip compile --group test pyproject.toml --output-file docker/requirements.txt --generate-hashes
 
 
 .PHONY: format
 format: ## Format project source code
-	@poetry run ruff check . --fix
-	@poetry run ruff format .
+	@uv run ruff check . --fix
+	@uv run ruff format .
 
 
 .PHONY: lint
 lint: ## Check source code for common errors
-	@poetry run ruff format . --check
-	@poetry run ruff check .
+	@uv run ruff format . --check
+	@uv run ruff check .
 
 
 .PHONY: typecheck
 typecheck: ## Check type annotations
-	@MYPYPATH=src poetry run mypy .
+	@MYPYPATH=src uv run mypy .
 
 
 .PHONY: test
@@ -74,36 +74,34 @@ clean: ## Delete generated artifacts
 	@rm -rfv __pycache__ .coverage .import_linter_cache .mypy_cache .pytest_cache .ruff_cache coverage dist htmlcov test-results
 
 
+.PHONY: build
+build: clean  ## Build package wheel
+	@uv build
+
+
 .PHONY: publish
 publish: ## Publish package to PyPI
-	@poetry publish --build
+	@uv publish
 
 
 .PHONY: bumpver-rc
 bumpver-rc: ## Bump release candidate
-	@poetry run bumpver update --no-fetch --tag=rc --tag-num
+	@uv run bumpver update --no-fetch --tag=rc --tag-num
 
 
 .PHONY: bumpver-patch
 bumpver-patch: ## Bump patch version
-	@poetry run bumpver update --no-fetch --patch --tag=final
+	@uv run bumpver update --no-fetch --patch --tag=final
 
 
 .PHONY: bumpver-minor
 bumpver-minor: ## Bump minor version
-	@poetry run bumpver update --no-fetch --minor --tag=final
+	@uv run bumpver update --no-fetch --minor --tag=final
 
 
 .PHONY: bumpver-major
 bumpver-major: ## Bump major version
-	@poetry run bumpver update --no-fetch --major --tag=final
-
-
-.PHONY: githooks
-githooks: ## Install/update project git hooks
-	@poetry run pre-commit install --install-hooks
-	@poetry run pre-commit autoupdate
-	@poetry run pre-commit run --all-files
+	@uv run bumpver update --no-fetch --major --tag=final
 
 
 .PHONY: release
