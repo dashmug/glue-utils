@@ -1,14 +1,10 @@
-[tool.poetry]
+[project]
 name = "glue-utils"
 version = "0.9.1"
-package-mode = true
 description = "Reusable utilities for working with Glue PySpark jobs"
-authors = ["Noel Llevares <dashmug@gmail.com>"]
-license = "MIT"
 readme = "README.md"
-homepage = "https://github.com/dashmug/glue-utils"
-repository = "https://github.com/dashmug/glue-utils/issues"
-documentation = "https://github.com/dashmug/glue-utils/wiki"
+authors = [{ name = "Noel Llevares", email = "dashmug@gmail.com" }]
+license = "MIT"
 classifiers = [
     "Operating System :: OS Independent",
     "Development Status :: 4 - Beta",
@@ -30,39 +26,25 @@ keywords = [
     "data",
     "data-engineering",
 ]
+requires-python = ">=3.9"
+dependencies = []
 
-[tool.poetry.dependencies]
-python = "^3.9"
-
-[tool.poetry.requires-plugins]
-poetry-plugin-export = ">=1.8"
-
-[tool.poetry.group.dev.dependencies]
-bumpver = "^2024.1130"
-mypy = "^1.15.0"
-pre-commit = "^4.2.0"
-ruff = "^0.11.5"
-
-[tool.poetry.group.test.dependencies]
-pytest = "^8.3.5"
-pytest-cov = "^6.1.1"
-pytest-randomly = "^3.16.0"
-
-[tool.poetry.group.local.dependencies]
-# The "local" dependency group refers to dependencies that already
-# exist in AWS Glue's runtime. We don't need to install these in the
-# container. We only need them for local (non-container) development to
-# aid the IDE in providing code completion and type checking.
-#
-# It is best to keep the dependencies here in sync with what's on Glue's
-# documentation.
-# https://docs.aws.amazon.com/glue/latest/dg/aws-glue-programming-python-libraries.html#glue-modules-provided
-aws-glue-libs = { git = "https://github.com/awslabs/aws-glue-libs.git", rev = "master" }
-pyspark = "3.3.4"
+[project.urls]
+homepage = "https://github.com/dashmug/glue-utils"
+repository = "https://github.com/dashmug/glue-utils/issues"
+documentation = "https://github.com/dashmug/glue-utils/wiki"
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = ["bumpver>=2024.1130", "mypy>=1.15.0", "ruff>=0.11.5"]
+local = ["aws-glue-libs", "pyspark==3.3.4"]
+test = ["pytest>=8.3.5", "pytest-cov>=6.1.1", "pytest-randomly>=3.16.0"]
+
+[tool.uv.sources]
+aws-glue-libs = { git = "https://github.com/awslabs/aws-glue-libs.git", branch = "master" }
 
 [tool.ruff]
 line-length = 88
@@ -85,7 +67,7 @@ ignore = [
     # Ignore camelCase attributes since Glue uses a lot of them
     "N815",
     # X | Y syntax does not play well with get_type_hints in Python 3.9
-    "UP007"
+    "UP007",
 ]
 # # Allow unused variables when underscore-prefixed.
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
@@ -94,7 +76,16 @@ dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 max-complexity = 5
 
 [tool.ruff.lint.per-file-ignores]
-"test/**" = ["S101", "ANN001", "ANN201", "ARG001", "ARG002", "PLR2004", "PLR0913", "D"]
+"test/**" = [
+    "S101",
+    "ANN001",
+    "ANN201",
+    "ARG001",
+    "ARG002",
+    "PLR2004",
+    "PLR0913",
+    "D",
+]
 
 [tool.mypy]
 files = "**/*.py"
@@ -110,6 +101,7 @@ explicit_package_bases = true
 module = "test.*"
 disallow_incomplete_defs = false
 disallow_untyped_defs = false
+disallow_untyped_decorators = false
 
 [tool.pytest.ini_options]
 testpaths = ["test"]
@@ -155,24 +147,7 @@ commit_message = "release: Bump version {old_version} -> {new_version}"
 commit = true
 
 [tool.bumpver.file_patterns]
-"pyproject.toml" = [
-    'current_version = "{version}"',
-    'version = "{version}"',
-]
-"README.md" = [
-    'glue_utils=={version}',
-]
-"src/glue_utils/__init__.py" = [
-    '^__version__ = "{version}"$',
-]
-"sonar-project.properties" = [
-    '^sonar.projectVersion={version}$',
-]
-
-[tool.importlinter]
-root_package = "glue_utils"
-
-[[tool.importlinter.contracts]]
-name = "Generic code should not import specific code"
-type = "layers"
-layers = ["glue_utils.pyspark", "glue_utils.options"]
+"pyproject.toml" = ['current_version = "{version}"', 'version = "{version}"']
+"README.md" = ['glue_utils=={version}']
+"src/glue_utils/__init__.py" = ['^__version__ = "{version}"$']
+"sonar-project.properties" = ['^sonar.projectVersion={version}$']
