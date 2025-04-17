@@ -28,7 +28,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Install uv and set the python version
-        uses: astral-sh/setup-uv@v5.4.1
+        uses: astral-sh/setup-uv@v5.4.2
         with:
           python-version: ${{ matrix.python-version }}
           enable-cache: true
@@ -170,7 +170,7 @@ jobs:
           persist-credentials: false
 
       - name: Install the latest version of uv
-        uses: astral-sh/setup-uv@v5.4.1
+        uses: astral-sh/setup-uv@v5.4.2
 
       - name: Run zizmor
         run: uvx zizmor --format sarif . > results.sarif
