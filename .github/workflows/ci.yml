@@ -68,7 +68,7 @@ jobs:
         if: steps.diffset.outputs.glue_files
         run: USER_ID=$(id -u) TARGET=coverage docker compose --file docker/docker-compose.yml run --rm glue-utils -c "pytest -p no:cacheprovider --junitxml=test-results/results.xml --cov=glue_utils --cov-report=xml"
       - name: Generate test report
-        uses: dorny/test-reporter@6e6a65b7a0bd2c9197df7d0ae36ac5cee784230c # v2.0.0
+        uses: dorny/test-reporter@890a17cecf52a379fc869ab770a71657660be727 # v2.1.0
         if: steps.diffset.outputs.glue_files
         with:
           name: Test Results
@@ -145,7 +145,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Check code using Checkov
-        uses: bridgecrewio/checkov-action@360818f2ad44468d3294cfddae854a8c9036dfee
+        uses: bridgecrewio/checkov-action@90a94cb91460d57668d646fb84594a23b9edc9b6
         with:
           directory: .
           quiet: true
