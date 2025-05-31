@@ -159,7 +159,7 @@ wheels = [
 
 [[package]]
 name = "glue-utils"
-version = "0.10.1"
+version = "0.10.2"
 source = { editable = "." }
 
 [package.dev-dependencies]

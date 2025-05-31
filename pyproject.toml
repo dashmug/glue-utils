@@ -1,6 +1,6 @@
 [project]
 name = "glue-utils"
-version = "0.10.1"
+version = "0.10.2"
 description = "Reusable utilities for working with Glue PySpark jobs"
 readme = "README.md"
 authors = [{ name = "Noel Llevares", email = "dashmug@gmail.com" }]
@@ -145,7 +145,7 @@ exclude_also = [
 output = "coverage/results.xml"
 
 [tool.bumpver]
-current_version = "0.10.1"
+current_version = "0.10.2"
 version_pattern = "MAJOR.MINOR.PATCH[PYTAGNUM]"
 commit_message = "release: Bump version {old_version} -> {new_version}"
 commit = true
