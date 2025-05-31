@@ -28,7 +28,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Install uv and set the python version
-        uses: astral-sh/setup-uv@6b9c6063abd6010835644d4c2e1bef4cf5cd0fca # v6.0.1
+        uses: astral-sh/setup-uv@f0ec1fc3b38f5e7cd731bb6ce540c5af426746bb # v6.1.0
         with:
           python-version: ${{ matrix.python-version }}
           enable-cache: true
@@ -68,7 +68,7 @@ jobs:
         if: steps.diffset.outputs.glue_files
         run: USER_ID=$(id -u) TARGET=coverage docker compose --file docker/docker-compose.yml run --rm glue-utils -c "pytest -p no:cacheprovider --junitxml=test-results/results.xml --cov=glue_utils --cov-report=xml"
       - name: Generate test report
-        uses: dorny/test-reporter@6e6a65b7a0bd2c9197df7d0ae36ac5cee784230c # v2.0.0
+        uses: dorny/test-reporter@890a17cecf52a379fc869ab770a71657660be727 # v2.1.0
         if: steps.diffset.outputs.glue_files
         with:
           name: Test Results
@@ -145,7 +145,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Check code using Checkov
-        uses: bridgecrewio/checkov-action@360818f2ad44468d3294cfddae854a8c9036dfee
+        uses: bridgecrewio/checkov-action@ff7aee4d041716dcce856c7bd319cb7048cb37e7
         with:
           directory: .
           quiet: true
@@ -170,7 +170,7 @@ jobs:
           persist-credentials: false
 
       - name: Install the latest version of uv
-        uses: astral-sh/setup-uv@6b9c6063abd6010835644d4c2e1bef4cf5cd0fca # v6.0.1
+        uses: astral-sh/setup-uv@f0ec1fc3b38f5e7cd731bb6ce540c5af426746bb # v6.1.0
 
       - name: Run zizmor
         run: uvx zizmor --format sarif . > results.sarif
