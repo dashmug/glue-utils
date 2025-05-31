@@ -34,7 +34,7 @@ To use `glue-utils` in AWS Glue, it needs to be added as an
 in your Glue job.
 
 You can do this by adding an `--additional-python-modules` job parameter
-with the value, `glue_utils==0.9.2`. For more information about setting
+with the value, `glue_utils==0.10.0`. For more information about setting
 job parameters, see [AWS Glue job parameters](https://docs.aws.amazon.com/glue/latest/dg/aws-glue-programming-etl-glue-arguments.html).
 
 ## Usage when developing jobs locally
