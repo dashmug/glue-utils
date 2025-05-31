@@ -1,4 +1,4 @@
-DOCKER_COMPOSE_RUN = USER_ID=$$(id -u) docker compose --file docker/docker-compose.yml run --rm --build glue-utils
+DOCKER_COMPOSE_RUN = USER_ID=$$(id -u) COMPOSE_BAKE=true docker compose --file docker/docker-compose.yml run --rm --build glue-utils
 
 
 .PHONY: help
