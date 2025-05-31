@@ -1,4 +1,7 @@
-"""Module for conveniently parsing options resolved from command-line arguments."""
+"""Module for conveniently parsing options resolved from command-line arguments.
+
+This is limited to python 3.9 since Glue PythonShell jobs only supports 3.9.
+"""
 
 from __future__ import annotations
 
@@ -17,7 +20,7 @@ class UnsupportedTypeWarning(UserWarning):
 
 @dataclass
 class BaseOptions:
-    """Dataclass for storing resolved options."""
+    """Dataclass for storing resolved options for Glue Pythonshell jobs."""
 
     @classmethod
     def __init_subclass__(cls) -> None:

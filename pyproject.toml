@@ -109,6 +109,7 @@ python_files = ["test_*.py"]
 filterwarnings = [
     "ignore::FutureWarning:pyspark.sql.context",
     "ignore::UserWarning:test.test_options",
+    "ignore::UserWarning:test.pyspark.test_options",
 ]
 junit_suite_name = "glue_utils"
 
