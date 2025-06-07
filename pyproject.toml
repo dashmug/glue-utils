@@ -13,6 +13,7 @@ classifiers = [
     "Natural Language :: English",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
     "Topic :: Software Development :: Libraries",
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Typing :: Typed",
@@ -42,8 +43,8 @@ build-backend = "hatchling.build"
 include = ["src/**/*.py", "tests", "README.md", "pyproject.toml", "LICENSE"]
 
 [dependency-groups]
-dev = ["bumpver>=2024.1130", "mypy>=1.16.0", "ruff>=0.11.12"]
-local = ["aws-glue-libs", "pyspark==3.3.4"]
+dev = ["bumpver>=2024.1130", "mypy>=1.16.0", "ruff>=0.11.13"]
+local = ["aws-glue-libs", "pyspark==3.5.4"]
 test = ["pytest>=8.3.5", "pytest-cov>=6.1.1", "pytest-randomly>=3.16.0"]
 
 [tool.uv.sources]

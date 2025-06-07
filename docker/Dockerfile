@@ -1,8 +1,8 @@
 #checkov:skip=CKV_DOCKER_2: HEALTHCHECK is not needed for this container
 # ----------------------- Base -----------------------
-FROM amazon/aws-glue-libs:glue_libs_4.0.0_image_01 AS base
+FROM public.ecr.aws/glue/aws-glue-libs:5 AS base
 
-WORKDIR /home/glue_user/workspace
+WORKDIR /home/hadoop/workspace
 
 # hadolint ignore=DL3013
 RUN pip3 install --disable-pip-version-check --no-compile --no-cache-dir --no-warn-script-location --user --upgrade pip \
@@ -30,15 +30,15 @@ ARG USER_ID
 # Switch to root to be able to make changes in the container filesystem.
 USER root
 
-# Clean up /tmp which may already have glue_user-owned files with the
+# Clean up /tmp which may already have hadoop-owned files with the
 # old UID.
 RUN rm -rf /tmp/* \
-  # Change UID of glue_user to be the same as host user. This allows
-  # JupyterLab to write to the host system as glue_user.
-  && usermod -u $USER_ID glue_user
+  # Change UID of hadoop to be the same as host user. This allows
+  # JupyterLab to write to the host system as hadoop.
+  && usermod -u $USER_ID hadoop
 
-# Switch to glue_user to be able to make changes for the user itself.
-USER glue_user
+# Switch to hadoop to be able to make changes for the user itself.
+USER hadoop
 
 # Install dependencies.
 COPY docker/requirements.txt docker/requirements.txt

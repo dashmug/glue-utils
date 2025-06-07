@@ -25,6 +25,7 @@ outdated: ## Check for outdated dependencies
 
 
 docker/requirements.txt: uv.lock
+	@rm -f docker/requirements.txt
 	@uv pip compile --group test pyproject.toml --output-file docker/requirements.txt --generate-hashes
 
 
