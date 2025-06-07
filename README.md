@@ -49,8 +49,8 @@ is not available through PyPI so we can only install it from its git
 repository.
 
 ```sh
-# Glue 4.0 uses PySpark 3.3.0
-pip install pyspark==3.3.0
+# Glue 5.0 uses PySpark 3.5.4
+pip install pyspark==3.5.4
 pip install git+https://github.com/awslabs/aws-glue-libs.git@master
 pip install glue-utils
 ```

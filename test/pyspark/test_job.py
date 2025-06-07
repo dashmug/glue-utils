@@ -164,8 +164,10 @@ class TestGluePySparkJob:
 
         job.sc.stop()
 
+    @patch("glue_utils.pyspark.job.Job")
     def test_init_with_partition_options(
         self,
+        mock_job_cls,
         mock_get_resolved_options,
         mock_glue_pyspark_context_cls,
     ) -> None:
@@ -188,12 +190,15 @@ class TestGluePySparkJob:
         assert isinstance(job.sc, SparkContext)
 
         job.sc.stop()
+        mock_job_cls.assert_called_once_with(mock_glue_pyspark_context_cls.return_value)
 
     @pytest.mark.parametrize("level", list(GluePySparkJob.LogLevel))
+    @patch("glue_utils.pyspark.job.Job")
     @patch("glue_utils.pyspark.job.SparkContext")
     def test_init_with_log_level(
         self,
         mock_spark_context_cls,
+        mock_job_cls,
         level,
         mock_get_resolved_options,
         mock_glue_pyspark_context_cls,
@@ -208,11 +213,16 @@ class TestGluePySparkJob:
         mock_spark_context_cls.getOrCreate.return_value.setLogLevel.assert_called_once_with(
             level.value
         )
+        mock_job_cls.assert_called_once_with(
+            mock_glue_pyspark_context_cls.return_value,
+        )
 
+    @patch("glue_utils.pyspark.job.Job")
     @patch("glue_utils.pyspark.job.SparkContext")
     def test_init_with_default_log_level(
         self,
         mock_spark_context_cls,
+        mock_job_cls,
         mock_get_resolved_options,
         mock_glue_pyspark_context_cls,
     ) -> None:
@@ -225,6 +235,9 @@ class TestGluePySparkJob:
         mock_glue_pyspark_context_cls.assert_called_once_with(ANY)
         mock_spark_context_cls.getOrCreate.return_value.setLogLevel.assert_called_once_with(
             GluePySparkJob.LogLevel.WARN.value
+        )
+        mock_job_cls.assert_called_once_with(
+            mock_glue_pyspark_context_cls.return_value,
         )
 
 
