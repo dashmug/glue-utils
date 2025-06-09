@@ -145,7 +145,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Check code using Checkov
-        uses: bridgecrewio/checkov-action@84bb9993ad52a967bfc75a42c7a8ea0b8996286a
+        uses: bridgecrewio/checkov-action@4f966d0f4ad18f9d1c8fa484530d67d1ada2931a
         with:
           directory: .
           quiet: true

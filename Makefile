@@ -88,25 +88,25 @@ publish: build ## Publish package to PyPI
 .PHONY: bumpver-rc
 bumpver-rc: ## Bump release candidate
 	@uv run bumpver update --no-fetch --tag=rc --tag-num
-	@uv sync
+	@uv sync --upgrade --all-groups
 
 
 .PHONY: bumpver-patch
 bumpver-patch: ## Bump patch version
 	@uv run bumpver update --no-fetch --patch --tag=final
-	@uv sync
+	@uv sync --upgrade --all-groups
 
 
 .PHONY: bumpver-minor
 bumpver-minor: ## Bump minor version
 	@uv run bumpver update --no-fetch --minor --tag=final
-	@uv sync
+	@uv sync --upgrade --all-groups
 
 
 .PHONY: bumpver-major
 bumpver-major: ## Bump major version
 	@uv run bumpver update --no-fetch --major --tag=final
-	@uv sync
+	@uv sync --upgrade --all-groups
 
 
 .PHONY: release
