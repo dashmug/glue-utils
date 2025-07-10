@@ -1,9 +1,10 @@
+# ruff: noqa: UP045
 from __future__ import annotations
 
 import json
 from dataclasses import dataclass, fields
 from datetime import datetime, timezone
-from typing import Any, ClassVar, cast
+from typing import Any, ClassVar, Optional, cast
 from unittest.mock import patch
 from uuid import UUID
 
@@ -74,7 +75,7 @@ class TestOptions:
 @dataclass
 class NullableOptions(BaseOptions):
     connection_name: str
-    source_database: str | None = None
+    source_database: Optional[str] = None
 
 
 class TestNullableOptions:
@@ -106,7 +107,7 @@ class TestNullableOptions:
 @dataclass
 class NullableOptionsWithDefaults(BaseOptions):
     connection_name: str = "my connection"
-    source_database: str | None = "my source"
+    source_database: Optional[str] = "my source"
 
 
 class TestNullableOptionsWithDefaults:
@@ -293,8 +294,8 @@ class TestMixedOptionsWithDefaults:
 @dataclass
 class OptionalPrimitiveOptions(BaseOptions):
     connection_name: str
-    port: int | None = None
-    debug: bool | None = None
+    port: Optional[int] = None
+    debug: Optional[bool] = None
 
 
 class TestOptionalPrimitiveOptions:

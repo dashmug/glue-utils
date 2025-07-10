@@ -68,6 +68,7 @@ shell: docker/requirements.txt ## Enter a shell in the container
 
 .PHONY: checks
 checks: format typecheck test
+	@uv run pytest test/test_*.py
 
 
 .PHONY: clean
