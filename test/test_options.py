@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass, fields
 from datetime import datetime, timezone
-from typing import Any, ClassVar, Optional, cast
+from typing import Any, ClassVar, cast
 from unittest.mock import patch
 from uuid import UUID
 
@@ -74,7 +74,7 @@ class TestOptions:
 @dataclass
 class NullableOptions(BaseOptions):
     connection_name: str
-    source_database: Optional[str] = None
+    source_database: str | None = None
 
 
 class TestNullableOptions:
@@ -106,7 +106,7 @@ class TestNullableOptions:
 @dataclass
 class NullableOptionsWithDefaults(BaseOptions):
     connection_name: str = "my connection"
-    source_database: Optional[str] = "my source"
+    source_database: str | None = "my source"
 
 
 class TestNullableOptionsWithDefaults:
@@ -293,8 +293,8 @@ class TestMixedOptionsWithDefaults:
 @dataclass
 class OptionalPrimitiveOptions(BaseOptions):
     connection_name: str
-    port: Optional[int] = None
-    debug: Optional[bool] = None
+    port: int | None = None
+    debug: bool | None = None
 
 
 class TestOptionalPrimitiveOptions:
