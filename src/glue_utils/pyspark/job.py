@@ -6,12 +6,11 @@ import sys
 from contextlib import contextmanager
 from dataclasses import fields
 from enum import Enum
-from typing import TYPE_CHECKING, Generic, cast, overload
+from typing import TYPE_CHECKING, Generic, TypeVar, cast, overload
 
 from awsglue.job import Job
 from awsglue.utils import getResolvedOptions
 from pyspark import SparkConf, SparkContext
-from typing_extensions import TypeVar
 
 from glue_utils import BaseOptions
 
@@ -22,7 +21,7 @@ if TYPE_CHECKING:
 
     from pyspark.sql import SparkSession
 
-T = TypeVar("T", bound=BaseOptions, default=BaseOptions)
+T = TypeVar("T", bound=BaseOptions)
 
 
 class GluePySparkJob(Generic[T]):

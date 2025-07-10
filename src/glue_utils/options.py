@@ -4,10 +4,19 @@ from __future__ import annotations
 
 import sys
 from dataclasses import dataclass, fields
-from typing import Any, ClassVar, get_args, get_origin, get_type_hints
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    ClassVar,
+    get_args,
+    get_origin,
+    get_type_hints,
+)
 
 from awsglue.utils import getResolvedOptions
-from typing_extensions import Self
+
+if TYPE_CHECKING:
+    from typing_extensions import Self
 
 
 class UnsupportedTypeError(TypeError):
