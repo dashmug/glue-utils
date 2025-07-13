@@ -32,25 +32,38 @@
 - **Python version compatibility:**
   - All modules in `glue_utils.pyspark.*` must be Python 3.10+ compatible (Glue PySpark jobs run on 3.10+).
   - `glue_utils.helpers` and `glue_utils.options` must remain Python 3.9 compatible (Glue PythonShell scripts run on 3.9).
-- Type safety is enforced via dataclasses and TypedDicts; avoid untyped dicts for options.
-- Use the provided helpers for all Glue context/data source operations; do not reimplement connection logic.
-- Prefer subclassing `BaseOptions` for job argument parsing.
-- All arguments are parsed as strings; type conversion is handled in `BaseOptions`.
-- Linting and formatting use Ruff; mypy is strict except for test code.
-- Tests for each data source/context are in `test/pyspark/context/`.
-- Use the Makefile for all build/test/lint/versioning tasks; do not run commands manually unless debugging.
+- **Type safety** is enforced via dataclasses and TypedDicts; avoid untyped dicts for options.
+- **Connection patterns:** Use TypedDicts from `connection_options.py` and `format_options.py` for type-safe option passing.
+- **BaseOptions usage:** Subclass `BaseOptions` for job argument parsing; all arguments start as strings with automatic type conversion in `__post_init__`.
+- **Testing patterns:**
+  - Mock `getResolvedOptions` for unit tests of option parsing.
+  - Use `conftest.py` fixtures for shared test resources (e.g., `glue_pyspark_context`).
+  - Test data source operations by mocking `create_dynamic_frame_from_options` and verifying call arguments.
+- **Docker-based testing:** Tests run in AWS Glue 5.0 container (`public.ecr.aws/glue/aws-glue-libs:5`) for environment parity.
+- **Linting:** Ruff with strict settings; mypy strict mode except for test code.
+- **Versioning:** Use `make bumpver-*` commands; version is managed across multiple files via `bumpver`.
+
+## Architecture & Key Patterns
+
+- **Modular design:** Context helpers are organized by data source in `src/glue_utils/pyspark/context/` (s3.py, dynamodb.py, etc).
+- **TypedDict system:** Connection and format options use inheritance hierarchies (e.g., `S3SourceConnectionOptions` extends `BookmarkConnectionOptions`).
+- **Generic job wrapper:** `GluePySparkJob[T]` is generic over `BaseOptions` subclasses for type-safe option access via `job.options`.
+- **Automatic type conversion:** `BaseOptions` converts string arguments to annotated types in `__post_init__` with support for custom converters.
+- **Method naming convention:** Context methods follow pattern `create_dynamic_frame_from_{source}_{format}` and `write_dynamic_frame_to_{sink}_{format}`.
 
 ## Integration Points
 
-- Integrates with AWS Glue runtime (PySpark, Python Shell jobs).
-- Expects `pyspark` and `aws-glue-libs` to be preinstalled in Glue, but provides a `local` dependency group for local dev.
-- Docker Compose is used for local test/dev parity.
-- CI/CD is configured via GitHub Actions (see `.github/workflows/`).
+- **AWS Glue runtime:** Integrates with PySpark 3.5.4 and aws-glue-libs; expects these preinstalled in Glue environment.
+- **Local development:** `local` dependency group provides aws-glue-libs from git and PySpark for IDE support.
+- **Docker testing:** Uses official AWS Glue container for test environment parity.
+- **CI/CD:** GitHub Actions for continuous integration (see `.github/workflows/`).
+- **Package distribution:** Published to PyPI with version sync across pyproject.toml, README.md, and source files.
 
 ## Examples
 
 - See `README.md` for usage patterns and code examples.
 - See `test/` for test structure and coverage.
+- Key test files: `test/test_options.py` for BaseOptions patterns, `test/pyspark/context/test_*.py` for data source examples.
 
 ---
 
