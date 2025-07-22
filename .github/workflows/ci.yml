@@ -28,7 +28,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Install uv and set the python version
-        uses: astral-sh/setup-uv@05273c154d09957eb9a2377d9c988fbda431d1c5 # v6.4.0
+        uses: astral-sh/setup-uv@7edac99f961f18b581bbd960d59d049f04c0002f # v6.4.1
         with:
           python-version: ${{ matrix.python-version }}
           enable-cache: true
@@ -77,7 +77,7 @@ jobs:
           fail-on-error: false
       - name: SonarCloud Scan
         if: steps.diffset.outputs.glue_files
-        uses: SonarSource/sonarqube-scan-action@2500896589ef8f7247069a56136f8dc177c27ccf # v5.2.0
+        uses: SonarSource/sonarqube-scan-action@8c71dc039c2dd71d3821e89a2b58ecc7fee6ced9 # v5.3.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -153,7 +153,7 @@ jobs:
           output_file_path: console,checkov.sarif
       - name: Upload SARIF results
         if: success() || failure()
-        uses: github/codeql-action/upload-sarif@181d5eefc20863364f96762470ba6f862bdef56b # v3.29.2
+        uses: github/codeql-action/upload-sarif@d6bbdef45e766d081b84a2def353b0055f728d3e # v3.29.3
         with:
           sarif_file: checkov.sarif
 
@@ -170,7 +170,7 @@ jobs:
           persist-credentials: false
 
       - name: Install the latest version of uv
-        uses: astral-sh/setup-uv@05273c154d09957eb9a2377d9c988fbda431d1c5 # v6.4.0
+        uses: astral-sh/setup-uv@7edac99f961f18b581bbd960d59d049f04c0002f # v6.4.1
 
       - name: Run zizmor
         run: uvx zizmor --format sarif . > results.sarif
@@ -178,7 +178,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@181d5eefc20863364f96762470ba6f862bdef56b # v3.29.2
+        uses: github/codeql-action/upload-sarif@d6bbdef45e766d081b84a2def353b0055f728d3e # v3.29.3
         with:
           sarif_file: results.sarif
           category: zizmor
