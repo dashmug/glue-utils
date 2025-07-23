@@ -2,12 +2,14 @@
 
 from __future__ import annotations
 
+import json
 import sys
 from dataclasses import dataclass, fields
 from typing import (
     TYPE_CHECKING,
     Any,
     ClassVar,
+    cast,
     get_args,
     get_origin,
     get_type_hints,
@@ -54,7 +56,7 @@ class BaseOptions:
     def _convert_field_value(
         self,
         field_name: str,
-        value: object,
+        value: str,
         target_type: type,
     ) -> object:
         """Convert field value using custom converter if available, otherwise use default conversion."""
@@ -68,23 +70,45 @@ class BaseOptions:
         # Fall back to default conversion
         return self._convert_value(value, target_type)
 
-    def _convert_value(self, value: object, target_type: type) -> object:
+    def _convert_value(self, value: str, target_type: type) -> object:
         """Convert value to the target_type, supporting str, int, float, bool."""
         if target_type is str:
-            return str(value)
+            return value
         if target_type is int:
-            return int(str(value))
+            return int(value)
         if target_type is float:
-            return float(str(value))
+            return float(value)
+        if target_type is list:
+            return self._convert_list(value)
+        if target_type is dict:
+            return self._convert_dict(value)
         if target_type is bool:
             return self._convert_bool(value)
         raise UnsupportedTypeError(target_type)
 
-    def _convert_bool(self, value: object) -> bool:
+    def _convert_list(self, value: str) -> list[Any]:
+        """Convert value to list. Handles JSON strings or comma-separated values."""
+        stripped = value.strip()
+        try:
+            if isinstance(parsed := cast("list[Any]", json.loads(stripped)), list):
+                return parsed
+            msg = f"Expected a list from JSON string, got {type(parsed)}."
+            raise ValueError(msg)
+        except json.JSONDecodeError:
+            return [item.strip() for item in stripped.split(",") if item.strip()]
+
+    def _convert_dict(self, value: str) -> dict[str, Any]:
+        """Convert value to dict from a JSON string."""
+        stripped = value.strip()
+        try:
+            return cast("dict[str, Any]", json.loads(stripped))
+        except json.JSONDecodeError as e:
+            msg = f"Cannot convert '{value}' to dict. Expected a valid JSON string."
+            raise ValueError(msg) from e
+
+    def _convert_bool(self, value: str) -> bool:
         """Convert value to bool with special string handling."""
-        if isinstance(value, bool):
-            return value
-        val = str(value).strip().lower()
+        val = value.strip().lower()
         if val in self.TRUE_VALUES:
             return True
         if val in self.FALSE_VALUES:

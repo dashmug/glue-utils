@@ -1,10 +1,10 @@
 # ruff: noqa: UP045
 from __future__ import annotations
 
-import json
-from dataclasses import dataclass, fields
+import re
+from dataclasses import dataclass, field, fields
 from datetime import datetime, timezone
-from typing import Any, ClassVar, Optional, cast
+from typing import Any, ClassVar, Optional
 from unittest.mock import patch
 from uuid import UUID
 
@@ -503,18 +503,11 @@ class TestExtendedBooleanOptions:
 class OptionsWithCustomConverters(BaseOptions):
     """Options class that uses custom converters for values."""
 
-    csv: list[str]
-    json: dict[str, Any]
     created_at: datetime
     uuid: UUID
-
-    def convert_csv(self, value: str) -> list[str]:
-        """Convert a comma-separated string to a list of strings."""
-        return [item.strip() for item in value.split(",") if item.strip()]
-
-    def convert_json(self, value: str) -> dict[str, Any]:
-        """Convert a JSON string to a dictionary."""
-        return cast("dict[str, Any]", json.loads(value))
+    csv: list[str]
+    json_list: list[str] = field(default_factory=list)
+    json_obj: dict[str, Any] = field(default_factory=dict)
 
     def convert_created_at(self, value: str) -> datetime:
         """Convert a string to a datetime object."""
@@ -531,7 +524,8 @@ class TestOptionsWithCustomConverters:
     ) -> None:
         mock_get_resolved_options.return_value = {
             "csv": "apple, banana, cherry",
-            "json": '{"key1": "value1", "key2": 2}',
+            "json_list": '["item1", "item2", "item3"]',
+            "json_obj": '{"key1": "value1", "key2": 2}',
             "created_at": "2023-10-01T12:00:00+00:00",
             "uuid": "12345678-1234-5678-1234-567812345678",
         }
@@ -539,6 +533,81 @@ class TestOptionsWithCustomConverters:
         options = OptionsWithCustomConverters.from_sys_argv()
 
         assert options.csv == ["apple", "banana", "cherry"]
-        assert options.json == {"key1": "value1", "key2": 2}
+        assert options.json_list == ["item1", "item2", "item3"]
+        assert options.json_obj == {"key1": "value1", "key2": 2}
         assert options.created_at == datetime(2023, 10, 1, 12, 0, tzinfo=timezone.utc)
         assert options.uuid == UUID("12345678-1234-5678-1234-567812345678")
+
+    def test_from_sys_argv_default_values(self, mock_get_resolved_options) -> None:
+        mock_get_resolved_options.return_value = {
+            "csv": "apple, banana, cherry",
+            "created_at": "2023-10-01T12:00:00+00:00",
+            "uuid": "12345678-1234-5678-1234-567812345678",
+        }
+
+        options = OptionsWithCustomConverters.from_sys_argv()
+
+        assert options.csv == ["apple", "banana", "cherry"]
+        assert options.json_list == []
+        assert options.json_obj == {}
+        assert options.created_at == datetime(2023, 10, 1, 12, 0, tzinfo=timezone.utc)
+        assert options.uuid == UUID("12345678-1234-5678-1234-567812345678")
+
+    def test_from_sys_argv_with_invalid_json_list(
+        self, mock_get_resolved_options
+    ) -> None:
+        mock_get_resolved_options.return_value = {
+            "csv": "apple, banana, cherry",
+            "created_at": "2023-10-01T12:00:00+00:00",
+            "uuid": "12345678-1234-5678-1234-567812345678",
+            "json_obj": '{"key1": "value1", "key2": 2}',
+            # Parses as dict, not list
+            "json_list": '{"this": "is", "not": "a list"}',
+        }
+
+        with pytest.raises(
+            ValueError,
+            match="Failed to convert field 'json_list' value '{\"this\": \"is\", \"not\": \"a list\"}' to <class 'list'>: Expected a list from JSON string, got <class 'dict'>.",
+        ):
+            OptionsWithCustomConverters.from_sys_argv()
+
+    def test_from_sys_argv_with_invalid_json_obj(
+        self, mock_get_resolved_options
+    ) -> None:
+        mock_get_resolved_options.return_value = {
+            "csv": "apple, banana, cherry",
+            "created_at": "2023-10-01T12:00:00+00:00",
+            "uuid": "12345678-1234-5678-1234-567812345678",
+            "json_list": '["item1", "item2", "item3"]',
+            # # Invalid JSON
+            "json_obj": '{key1: "value1", key2: 2}',
+        }
+
+        with pytest.raises(
+            ValueError,
+            match="Failed to convert field 'json_obj' value '{key1: \"value1\", key2: 2}' to <class 'dict'>: Cannot convert '{key1: \"value1\", key2: 2}' to dict. Expected a valid JSON string.",
+        ):
+            OptionsWithCustomConverters.from_sys_argv()
+
+
+@dataclass
+class OptionsWithUnsupportedType(BaseOptions):
+    """Options class that includes an unsupported type without a custom converter."""
+
+    created_at: datetime
+
+
+class TestOptionsWithUnsupportedType:
+    def test_from_sys_argv(self, mock_get_resolved_options) -> None:
+        mock_get_resolved_options.return_value = {
+            "created_at": "2023-10-01T12:00:00+00:00",
+            "uuid": "12345678-1234-5678-1234-567812345678",
+        }
+
+        with pytest.raises(
+            ValueError,
+            match=re.escape(
+                "Failed to convert field 'created_at' value '2023-10-01T12:00:00+00:00' to <class 'datetime.datetime'>: Unsupported type annotation: <class 'datetime.datetime'>"
+            ),
+        ):
+            OptionsWithUnsupportedType.from_sys_argv()
