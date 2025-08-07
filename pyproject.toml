@@ -43,7 +43,7 @@ build-backend = "hatchling.build"
 include = ["src", "test", "README.md", "pyproject.toml", "LICENSE", "py.typed"]
 
 [dependency-groups]
-dev = ["bumpver==2025.1131", "mypy==1.17.0", "ruff==0.12.4"]
+dev = ["bumpver==2025.1131", "mypy==1.17.1", "ruff==0.12.7"]
 local = ["aws-glue-libs", "pyspark==3.5.4"]
 test = ["pytest==8.4.1", "pytest-cov==6.2.1", "pytest-randomly==3.16.0"]
 
