@@ -567,7 +567,7 @@ class TestOptionsWithCustomConverters:
 
         with pytest.raises(
             ValueError,
-            match="Failed to convert field 'json_list' value '{\"this\": \"is\", \"not\": \"a list\"}' to <class 'list'>: Expected a list from JSON string, got <class 'dict'>.",
+            match=r"Failed to convert field 'json_list' value '{\"this\": \"is\", \"not\": \"a list\"}' to <class 'list'>: Expected a list from JSON string, got <class 'dict'>.",
         ):
             OptionsWithCustomConverters.from_sys_argv()
 
@@ -585,7 +585,7 @@ class TestOptionsWithCustomConverters:
 
         with pytest.raises(
             ValueError,
-            match="Failed to convert field 'json_obj' value '{key1: \"value1\", key2: 2}' to <class 'dict'>: Cannot convert '{key1: \"value1\", key2: 2}' to dict. Expected a valid JSON string.",
+            match=r"Failed to convert field 'json_obj' value '{key1: \"value1\", key2: 2}' to <class 'dict'>: Cannot convert '{key1: \"value1\", key2: 2}' to dict. Expected a valid JSON string.",
         ):
             OptionsWithCustomConverters.from_sys_argv()
 
