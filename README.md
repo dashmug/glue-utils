@@ -1,7 +1,7 @@
 # glue-utils
 
 [![PyPI - Version](https://img.shields.io/pypi/v/glue-utils)](https://pypi.org/project/glue-utils/)
-[![PyPI - Downloads](https://img.shields.io/pypi/dd/glue-utils)](https://pypistats.org/packages/glue-utils)
+![PyPI - Downloads](https://img.shields.io/pypi/dw/glue-utils)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 [![Continuous Integration](https://github.com/dashmug/glue-utils/actions/workflows/ci.yml/badge.svg)](https://github.com/dashmug/glue-utils/actions/workflows/ci.yml)
