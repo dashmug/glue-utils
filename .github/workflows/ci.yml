@@ -24,7 +24,7 @@ jobs:
         # Glue 5.0 uses Python 3.11.
         python-version: ["3.9", "3.10", "3.11"]
     steps:
-      - uses: actions/checkout@71cf2267d89c5cb81562390fa70a37fa40b1305e # v6-beta
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6-beta
         with:
           persist-credentials: false
       - name: Install uv and set the python version
@@ -51,7 +51,7 @@ jobs:
       actions: read
       checks: write
     steps:
-      - uses: actions/checkout@71cf2267d89c5cb81562390fa70a37fa40b1305e # v6-beta
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6-beta
         with:
           persist-credentials: false
           fetch-depth: 0
@@ -86,7 +86,7 @@ jobs:
     name: Check dependencies for vulnerabilities
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@71cf2267d89c5cb81562390fa70a37fa40b1305e # v6-beta
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6-beta
         with:
           persist-credentials: false
       - name: Run Trivy vulnerability scanner
@@ -116,7 +116,7 @@ jobs:
     name: Check Dockerfile
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@71cf2267d89c5cb81562390fa70a37fa40b1305e # v6-beta
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6-beta
         with:
           persist-credentials: false
       - name: Validate Dockerfile using hadolint
@@ -128,7 +128,7 @@ jobs:
     name: Check Makefile
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@71cf2267d89c5cb81562390fa70a37fa40b1305e # v6-beta
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6-beta
         with:
           persist-credentials: false
       - name: Check Makefile for errors
@@ -141,11 +141,11 @@ jobs:
       actions: read
       security-events: write
     steps:
-      - uses: actions/checkout@71cf2267d89c5cb81562390fa70a37fa40b1305e # v6-beta
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6-beta
         with:
           persist-credentials: false
       - name: Check code using Checkov
-        uses: bridgecrewio/checkov-action@68260132005eaae0e6f84c7a73cc3b1532f678bf
+        uses: bridgecrewio/checkov-action@02a4c5d6a02367e5ea493c34c26b094302fd3f61
         with:
           directory: .
           quiet: true
@@ -165,7 +165,7 @@ jobs:
       actions: read
     steps:
       - name: Checkout repository
-        uses: actions/checkout@71cf2267d89c5cb81562390fa70a37fa40b1305e # v6-beta
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6-beta
         with:
           persist-credentials: false
 
