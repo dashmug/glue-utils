@@ -24,11 +24,11 @@ jobs:
         # Glue 5.0 uses Python 3.11.
         python-version: ["3.9", "3.10", "3.11"]
     steps:
-      - uses: actions/checkout@71cf2267d89c5cb81562390fa70a37fa40b1305e # v6-beta
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6-beta
         with:
           persist-credentials: false
       - name: Install uv and set the python version
-        uses: astral-sh/setup-uv@681c641aba71e4a1c380be3ab5e12ad51f415867 # v7.1.6
+        uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
         with:
           python-version: ${{ matrix.python-version }}
           enable-cache: true
@@ -51,7 +51,7 @@ jobs:
       actions: read
       checks: write
     steps:
-      - uses: actions/checkout@71cf2267d89c5cb81562390fa70a37fa40b1305e # v6-beta
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6-beta
         with:
           persist-credentials: false
           fetch-depth: 0
@@ -68,7 +68,7 @@ jobs:
         if: steps.diffset.outputs.glue_files
         run: USER_ID=$(id -u) TARGET=coverage docker compose --file docker/docker-compose.yml run --rm glue-utils -c "pytest -p no:cacheprovider --junitxml=test-results/results.xml --cov=glue_utils --cov-report=xml"
       - name: Generate test report
-        uses: dorny/test-reporter@fe45e9537387dac839af0d33ba56eed8e24189e8 # v2.3.0
+        uses: dorny/test-reporter@b082adf0eced0765477756c2a610396589b8c637 # v2.5.0
         if: steps.diffset.outputs.glue_files
         with:
           name: Test Results
@@ -86,7 +86,7 @@ jobs:
     name: Check dependencies for vulnerabilities
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@71cf2267d89c5cb81562390fa70a37fa40b1305e # v6-beta
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6-beta
         with:
           persist-credentials: false
       - name: Run Trivy vulnerability scanner
@@ -116,7 +116,7 @@ jobs:
     name: Check Dockerfile
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@71cf2267d89c5cb81562390fa70a37fa40b1305e # v6-beta
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6-beta
         with:
           persist-credentials: false
       - name: Validate Dockerfile using hadolint
@@ -128,7 +128,7 @@ jobs:
     name: Check Makefile
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@71cf2267d89c5cb81562390fa70a37fa40b1305e # v6-beta
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6-beta
         with:
           persist-credentials: false
       - name: Check Makefile for errors
@@ -141,11 +141,11 @@ jobs:
       actions: read
       security-events: write
     steps:
-      - uses: actions/checkout@71cf2267d89c5cb81562390fa70a37fa40b1305e # v6-beta
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6-beta
         with:
           persist-credentials: false
       - name: Check code using Checkov
-        uses: bridgecrewio/checkov-action@68260132005eaae0e6f84c7a73cc3b1532f678bf
+        uses: bridgecrewio/checkov-action@8f61ce5b8a3afb4ca94d236b75201878ded6d2cd
         with:
           directory: .
           quiet: true
@@ -165,12 +165,12 @@ jobs:
       actions: read
     steps:
       - name: Checkout repository
-        uses: actions/checkout@71cf2267d89c5cb81562390fa70a37fa40b1305e # v6-beta
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6-beta
         with:
           persist-credentials: false
 
       - name: Install the latest version of uv
-        uses: astral-sh/setup-uv@681c641aba71e4a1c380be3ab5e12ad51f415867 # v7.1.6
+        uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
 
       - name: Run zizmor
         run: uvx zizmor --format sarif . > results.sarif
