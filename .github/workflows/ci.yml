@@ -28,7 +28,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Install uv and set the python version
-        uses: astral-sh/setup-uv@681c641aba71e4a1c380be3ab5e12ad51f415867 # v7.1.6
+        uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
         with:
           python-version: ${{ matrix.python-version }}
           enable-cache: true
@@ -57,7 +57,7 @@ jobs:
           fetch-depth: 0
       - name: Diffset
         id: diffset
-        uses: softprops/diffset@06224b26b159c1d40ebdbe1bcdd3fe7ff3264e46 # v3.0.2
+        uses: softprops/diffset@d60d53313c1b61c12ccb0fc76cbde5a14ae5d330 # v3.0.3
         with:
           base: main
           glue_files: |
@@ -68,7 +68,7 @@ jobs:
         if: steps.diffset.outputs.glue_files
         run: USER_ID=$(id -u) TARGET=coverage docker compose --file docker/docker-compose.yml run --rm glue-utils -c "pytest -p no:cacheprovider --junitxml=test-results/results.xml --cov=glue_utils --cov-report=xml"
       - name: Generate test report
-        uses: dorny/test-reporter@fe45e9537387dac839af0d33ba56eed8e24189e8 # v2.3.0
+        uses: dorny/test-reporter@b082adf0eced0765477756c2a610396589b8c637 # v2.5.0
         if: steps.diffset.outputs.glue_files
         with:
           name: Test Results
@@ -153,7 +153,7 @@ jobs:
           output_file_path: console,checkov.sarif
       - name: Upload SARIF results
         if: success() || failure()
-        uses: github/codeql-action/upload-sarif@5d4e8d1aca955e8d8589aabd499c5cae939e33c7 # v4.31.9
+        uses: github/codeql-action/upload-sarif@b20883b0cd1f46c72ae0ba6d1090936928f9fa30 # v4.32.0
         with:
           sarif_file: checkov.sarif
 
@@ -170,7 +170,7 @@ jobs:
           persist-credentials: false
 
       - name: Install the latest version of uv
-        uses: astral-sh/setup-uv@681c641aba71e4a1c380be3ab5e12ad51f415867 # v7.1.6
+        uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
 
       - name: Run zizmor
         run: uvx zizmor --format sarif . > results.sarif
@@ -178,7 +178,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@5d4e8d1aca955e8d8589aabd499c5cae939e33c7 # v4.31.9
+        uses: github/codeql-action/upload-sarif@b20883b0cd1f46c72ae0ba6d1090936928f9fa30 # v4.32.0
         with:
           sarif_file: results.sarif
           category: zizmor
