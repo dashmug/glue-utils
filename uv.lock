@@ -349,7 +349,7 @@ dev = [
 ]
 local = [
     { name = "aws-glue-libs", git = "https://github.com/awslabs/aws-glue-libs.git?branch=master" },
-    { name = "pyspark", specifier = "==3.5.4" },
+    { name = "pyspark", specifier = "==3.5.6" },
 ]
 test = [
     { name = "pytest", specifier = "==8.4.2" },
@@ -607,12 +607,12 @@ wheels = [
 
 [[package]]
 name = "pyspark"
-version = "3.5.4"
+version = "3.5.6"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "py4j" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/4e/18/6bb8c4e857122fc898f32336cb6e9e98415a7802c2a3738e907b4bd60953/pyspark-3.5.4.tar.gz", hash = "sha256:1c2926d63020902163f58222466adf6f8016f6c43c1f319b8e7a71dbaa05fc51", size = 317313656, upload-time = "2024-12-20T14:34:41.128Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/2e/62/36e50d38e5fe158e97cddec983b44f9417b1e205b02320e3c463b5f802fa/pyspark-3.5.6.tar.gz", hash = "sha256:f8b1c4360e41ab398c64904fae08740503bcb6bd389457d659fa6d9f2952cc48", size = 317359167, upload-time = "2025-05-27T08:24:20.82Z" }
 
 [[package]]
 name = "pytest"

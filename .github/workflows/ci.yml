@@ -45,6 +45,7 @@ jobs:
 
   tests:
     name: Run tests in Glue container
+    environment: ci
     runs-on: ubuntu-latest
     permissions:
       contents: read
