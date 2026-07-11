@@ -99,6 +99,7 @@ jobs:
           scan-type: "repo"
           scan-ref: "."
           output: "trivy.txt"
+          version: v0.72.0
       - name: Publish Trivy output to Summary
         run: |
           if [[ -s trivy.txt ]]; then
@@ -133,7 +134,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Check Makefile for errors
-        uses: Uno-Takashi/checkmake-action@262a34644d3dc1e5fff345b2b9edac3d8907ba5e
+        uses: Uno-Takashi/checkmake-action@bc11ee86274ceaf5710dbcd80871d7cd7ecc78ce # v2
 
   checkov:
     name: Run Checkov
@@ -146,7 +147,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Check code using Checkov
-        uses: bridgecrewio/checkov-action@4a1afa9897f7afe297a3762c926e1e800361464f
+        uses: bridgecrewio/checkov-action@7b972723c44fb3d256283fac96fae5d7c1894bb7 # v12.3114.0
         with:
           directory: .
           quiet: true
